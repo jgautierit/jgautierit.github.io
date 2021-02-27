@@ -158,10 +158,9 @@
 Many reasons can lead to a host becoming not responding and often a call to GSS becomes essential.
 If the host is not responding, a reboot can become required as the last step and most of the time a root cause analysis will be expected.
 Usually, the regular ESXi logs are not enough to diagnose the issue.</p>
-<p><img src="/iu.png" alt="image alt text"></p>
 <h2 id="why-a-nmi">Why a NMI?</h2>
 <p>The NMI or Non Maskable Interrupt allows to generate the famous &quot;Purple Screen Of Death&quot; on the ESXi. As a consequence, a dump will be generated and will allow the analysis by VMware of the dump taken previously in order to establish a root cause.</p>
-<p><img src="/PSOD.jpeg" alt="Example image"></p>
+<p><img src="/PSOD.jpeg" alt="Example of a PSOD Screen"></p>
 <p>Warning : A NMI should be the last step. Do not send the NMI if no troubleshooting steps was tried.</p>
 <h2 id="how-to-generate-a-nmi">How to generate a NMI?</h2>
 <p>Every vendor should have the option in their management interface like ILO or IDRAC. Please refer to their documentation.</p>
