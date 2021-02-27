@@ -16,10 +16,9 @@
       <description>
         
           &lt;p&gt;It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.&lt;/p&gt;
-&lt;p&gt;One particular scenario would be when you replace a e1000 by a vmxnet3.&lt;/p&gt;
+&lt;p&gt;One particular scenario would be when you replace a E1000 by a vmxnet3.&lt;/p&gt;
 &lt;h3 id=&#34;netsh&#34;&gt;netsh&lt;/h3&gt;
-&lt;p&gt;Windows has a handy utility called netsh. This utility allows to import/export the network configuration of a NIC easily.
-{: .text-justify}&lt;/p&gt;
+&lt;p&gt;Windows has a handy utility called netsh. This utility allows to import/export the network configuration of a NIC easily.&lt;/p&gt;
 &lt;p&gt;To export :&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# netsh interface dump &amp;gt; c:\network.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To import :&lt;/p&gt;
