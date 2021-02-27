@@ -133,18 +133,5 @@
   </url><url>
     <loc>https://jgautierit.github.io/pt/categories/temas/</loc>
     <lastmod>2019-03-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://jgautierit.github.io/pt/about/</loc>
-    <lastmod>2019-02-28T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://jgautierit.github.io/about/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://jgautierit.github.io/pt/about/"
-                />
   </url>
 </urlset>
