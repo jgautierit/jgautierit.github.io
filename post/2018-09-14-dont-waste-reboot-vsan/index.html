@@ -25,7 +25,7 @@
 <meta property="og:url" content="https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/" />
 <meta property="og:title" content="Don&#39;t waste reboots in vSAN!" />
 <meta property="og:description" content="An article about the importance of not rebooting without dumps in vSAN" />
-<meta property="og:image" content="https://jgautierit.github.io/images/thumbnail.png" />
+<meta property="og:image" content="https://jgautierit.github.io/images/PSOD.jpeg" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
 <link rel="manifest" href='https://jgautierit.github.io/icons/site.webmanifest'>
@@ -155,25 +155,22 @@
 
     
     <p>This topic will focus on vSAN and more particularly to situations where a host in a vSAN cluster becomes &quot;not responding&quot;.
-{: .text-justify}
 Many reasons can lead to a host becoming not responding and often a call to GSS becomes essential.
 If the host is not responding, a reboot can become required as the last step and most of the time a root cause analysis will be expected.
-{: .text-justify}
 Usually, the regular ESXi logs are not enough to diagnose the issue.</p>
 <h2 id="why-a-nmi">Why a NMI?</h2>
-<p>The NMI or Non Maskable Interrupt allows to generate the famous &quot;Purple Screen Of Death&quot; on the ESXi. As a consequence, a dump will be generated and will allow the analysis by VMware of the dump taken previously in order to establish a root cause.
-{: .text-justify}
-<img src="/assets/images/PSOD.jpeg" alt="NMI PSOD"></p>
-<p>Warning : A NMI should be the last step. Do not send the NMI if no troubleshooting steps was tried.
-{: .notice--warning}</p>
+<p>The NMI or Non Maskable Interrupt allows to generate the famous &quot;Purple Screen Of Death&quot; on the ESXi. As a consequence, a dump will be generated and will allow the analysis by VMware of the dump taken previously in order to establish a root cause.</p>
+<p><img src="./images/PSOD.jpeg" alt="NMI PSOD"></p>
+<p><img src="images/PSOD.jpeg" alt=":inline"></p>
+<p>![NMI PSOD]: &quot;images/PSOD.jpeg&quot;</p>
+<p><img src="https://assets.digitalocean.com/articles/alligator/boo.svg" alt="Alt text" title="a title"></p>
+<p><img src="./images/image-figure.png" alt="Antrea Kubernetes nodes prepared"></p>
+<p>Warning : A NMI should be the last step. Do not send the NMI if no troubleshooting steps was tried.</p>
 <h2 id="how-to-generate-a-nmi">How to generate a NMI?</h2>
-<p>Every vendor should have the option in their management interface like ILO or IDRAC. Please refer to their documentation.
-{: .text-justify}</p>
+<p>Every vendor should have the option in their management interface like ILO or IDRAC. Please refer to their documentation.</p>
 <h2 id="how-to-grab-it-in-logs-">How to grab it in logs ?</h2>
-<p>When you gather the logs through ESXi via vm-support, an automatic script is going to grab the dump and put it in the vm-support tgz. As the dump can be quite heavy, please make sure that you have enough space in the directory where you will generate the support bundle.
-{: .text-justify}
-Last comment but not the least, the host must have a diagnostic partition configured otherwise no dump will be collecting leading to a wasted reboot.
-{: .text-justify}</p>
+<p>When you gather the logs through ESXi via vm-support, an automatic script is going to grab the dump and put it in the vm-support tgz. As the dump can be quite heavy, please make sure that you have enough space in the directory where you will generate the support bundle.</p>
+<p>Last comment but not the least, the host must have a diagnostic partition configured otherwise no dump will be collecting leading to a wasted reboot.</p>
 
 
   </article>
@@ -182,7 +179,7 @@ Last comment but not the least, the host must have a diagnostic partition config
     
       <h2>Jonathan Gautier</h2>
       <div class="sidebar_description">
-        Osef
+        Virtualization, HCI, Homelabs, and Football are my passions.
       </div>
       <a href='https://jgautierit.github.io/about/' class="button mt-1" role="button" title='Read More'>Read More</a>
     <h2 class="mt-4">Recent Posts</h2>
