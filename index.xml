@@ -6,7 +6,619 @@
     <description>Recent content on Clarity</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 14 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</title>
+      <link>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</link>
+      <pubDate>Tue, 23 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</guid>
+      <description>
+        
+          &lt;p&gt;After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/synchcl.jpg&#34; alt=&#34;LCM sync HCL&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Im ny situation, the task was stuck at 10% and failing afterwards with the error &amp;quot;A general system error occcured...&amp;quot;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/errorlcm.jpg&#34; alt=&#34;Error HCL&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the logs (/var/log/vmware/vmware-updatemgr/vum-server/vmware-vum-server.log), it was really difficult to find something relevant but it looks like the download was failing.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;20-06-23T10:09:55.200Z error vmware-vum-server&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;28017&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Originator@6876 &lt;span class=&#34;nv&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Task:com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask ID:52b92e6b-1b4c-1584-c1ad-da57f7571f88. Task Failed. Error: Error:
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;--&amp;gt;    com.vmware.vapi.std.errors.error
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;--&amp;gt; Messages:
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;--&amp;gt;    com.vmware.vcIntegrity.hcl.vvs.unreachable.summary
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;--&amp;gt;    com.vmware.vcIntegrity.hcl.vvs.unreachable.resolution
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;--&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Looking at the tasks, I found out that VMware use multile python scripts in the following directory   /usr/lib/vmware-updatemgr/config/&lt;/p&gt;
+&lt;p&gt;Thanks to my buddy Y.Ilmi for guiding me to the specific script called vvs-config.json.&lt;/p&gt;
+&lt;p&gt;This script provides the URL that VMware use to download the hcl : vvs.esp.vmware.com&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/vvsconfigjson.jpg&#34; alt=&#34;vvs-config&#34;&gt;&lt;/p&gt;
+&lt;p&gt;vCenter was unable to reach the URL (use curl to test it) I asked the security team to grant access.&lt;/p&gt;
+&lt;p&gt;Problem solved!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/HCL2.jpg&#34; alt=&#34;HCL&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/hcl3.jpg&#34; alt=&#34;HCL&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync Updates</title>
+      <link>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</guid>
+      <description>
+        
+          &lt;p&gt;After upgrading vCenter 6.7 to 7.0, I had a strange issue where I could not Sync Updates anymore within the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/lcmsync.jpg&#34; alt=&#34;LCM sync&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The error message was the following : A general system occured: An error occured while downloading depot metadata from file:///storage/updatemgr/patch-store/hostupdate/vmw/vmw-ESXi-5.0.0-metadata.zip&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/lcmerror.jpg&#34; alt=&#34;LCM error&#34;&gt;&lt;/p&gt;
+&lt;p&gt;From the error, it looks like it&#39;s trying to download the metadata file from the 5.0 zip file which should not be really used anymore since vCenter 7.0 is not compatible anymore with any hosts &amp;lt; 6.5.&lt;/p&gt;
+&lt;p&gt;I went to look at the directory (/storage/updatemgr/patch-store/hostupdate/vmw/) within vCenter and indeed the file was missing. In order to see if I was really missing a file here, I went to look in a freshly deployed vCenter and it seems like there is no file named this way either.&lt;/p&gt;
+&lt;p&gt;I tried to compare the xml files and see if anything was missing or corrupted but everything seemed to be fine.&lt;/p&gt;
+&lt;p&gt;At some point, I decided to reset completely Update Manager but I was not sure how.&lt;/p&gt;
+&lt;p&gt;I found this VMware Knowledge Base article &lt;a href=&#34;https://kb.vmware.com/s/article/2147284&#34; title=&#34;VMware KB2147284&#34;&gt;here&lt;/a&gt; which describe how to reset the database.&lt;/p&gt;
+&lt;p&gt;After executing the following steps my issue was fixed and update manager was not complaining about the file anymore (even though it&#39;s still does not exist...)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# service-control --start vmware-updatemgr&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# /usr/lib/vmware-updatemgr/bin/updatemgr-utility.py reset-db&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# rm -rf /storage/updatemgr/patch-store/*&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# service-control --start vmware-updatemgr&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I hope this has been useful for you and I&#39;d like to thank you for reading!&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Nutanix Playbooks - Telegram Bot</title>
+      <link>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</link>
+      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</guid>
+      <description>
+        
+          &lt;p&gt;In this new post, I will describe how to send a notification to your Telegram via a Telegram Bot using Nutanix Playbooks.&lt;/p&gt;
+&lt;p&gt;I recently got this idea by watching the Nutanix University video &lt;a href=&#34;https://www.youtube.com/watch?v=KmS5jCbQV40&#34; title=&#34;Nutanix WeChat&#34;&gt;here&lt;/a&gt; describing how to send notification to WeChat.&lt;/p&gt;
+&lt;p&gt;As this is not popular in Europe, and also because I am a big fan of Telegram, I will describe the procedure in this post.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-telegram-bot&#34;&gt;Create a Telegram Bot&lt;/h2&gt;
+&lt;p&gt;In order to create a Telegram bot, just chat the BotFather (@BotFather) and ask him to create a new bot with the command : /newbot&lt;/p&gt;
+&lt;p&gt;It will ask you for a botname and bot username.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/telegrambot.jpg&#34; alt=&#34;Telegram Bot&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once the bot has been created, the BotFather will provide the token to use the HTTP API. This one is important.&lt;/p&gt;
+&lt;h2 id=&#34;get-the-chat-id&#34;&gt;Get the Chat ID&lt;/h2&gt;
+&lt;p&gt;We are going to create a group on Telegram. This is the only easy way I found to get the chat_id.&lt;/p&gt;
+&lt;p&gt;Create a new group and call it whatever you want, insert your new bot user and create a chat.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/creategroup.jpg&#34; alt=&#34;Create Group&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now, click in your group and look at the URL in your web browser. This is your chat ID (the digits only)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/chatidurl.jpg&#34; alt=&#34;Chat ID URL&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;test-it&#34;&gt;Test it&lt;/h2&gt;
+&lt;p&gt;In order to confirm that we have all the info required, we can run a quick test with this online API tester &lt;a href=&#34;https://reqbin.com&#34; title=&#34;API Tester&#34;&gt;here&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;First, we need the URL. To send a message with Telegram via the bot, the URL needs to be this way :
+&lt;a href=&#34;https://api.telegram.org/botAPITOKEN/sendMessage&#34;&gt;https://api.telegram.org/botAPITOKEN/sendMessage&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Remember, the Telegram bot provided an APITOKEN, you just need to add the word &amp;quot;bot&amp;quot; before the token, here is an example:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://api.telegram.org/bot123456789:XXXXXYYYYYYYY/sendMessage&#34;&gt;https://api.telegram.org/bot123456789:XXXXXYYYYYYYY/sendMessage&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Secondly, we need to specify that we are going to use JSON and provide the Chat ID we found in the test above.&lt;/p&gt;
+&lt;p&gt;The chat ID needs to have the minus sign before the digits.&lt;/p&gt;
+&lt;p&gt;Select the POST action and click Send. If this worked, not only you will get a message in the Telegram Group, you also will get a 200 status response.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/testapi.jpg&#34; alt=&#34;Test API&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;nutanix-playbook&#34;&gt;Nutanix Playbook&lt;/h2&gt;
+&lt;p&gt;The harder has been done ;) You are now going to use Prism Central, create a Playbook (manual or alert), and trigger a REST API Action.
+{: .text-justify}&lt;/p&gt;
+&lt;p&gt;In the menu, click Operations,Playbooks and create a Playbook.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/menu.jpg&#34; alt=&#34;Playbooks menu&#34;&gt;&lt;/p&gt;
+&lt;p&gt;For this demo, I will use a Manual Playbook as it is quicker. But you can create the same action based on an Alert.&lt;/p&gt;
+&lt;p&gt;Select the trigger (Manual) and select an entity type (VM).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/manual.jpg&#34; alt=&#34;Trigger&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Click on Add Action, search for API and use REST API.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/restapi.jpg&#34; alt=&#34;Action REST API&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Here is the parameters you need to enter :&lt;/p&gt;
+&lt;pre&gt;
+Method : POST
+URL : https://api.telegram.org/bot123456789:XXXXXYYYYYYYY/sendMessage
+Request Body : {&#34;chat_id&#34;:&#34;-462316723&#34;, &#34;text&#34;:&#34;Alert!&#34;}
+Request Headers : Content-Type:application/json;charset=utf-8
+&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/parametersapi.jpg&#34; alt=&#34;Parameters REST API&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Save, Enable and That&#39;s it!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/saveplaybook.jpg&#34; alt=&#34;Save Playbook&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You are now ready to pull the trigger and try it out!&lt;/p&gt;
+&lt;h2 id=&#34;test-the-playbook&#34;&gt;Test the playbook&lt;/h2&gt;
+&lt;p&gt;Now go to your VMs, select any, click on Action and Run Playbook. Select your playbook and click Run!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/runplaybookvm.jpg&#34; alt=&#34;Run Playbook&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/selectbot.jpg&#34; alt=&#34;Select Bot&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Did you get a notification ? Yes ? Well done!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/alertontelegram.jpg&#34; alt=&#34;Notification&#34;&gt;&lt;/p&gt;
+&lt;p&gt;No ? Go to the menu, click on Plays and you will be able to check if it failed.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/playslist.jpg&#34; alt=&#34;List of Plays&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Obviously, I created the easiest message you can get. But you can personalize this message or alert by using the Parameters option in your request body (to get the VM Name for example).
+{: .text-justify}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/parameters.jpg&#34; alt=&#34;Add VM Name&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>SimpliVity Upgrade - Walkthrough</title>
+      <link>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</guid>
+      <description>
+        
+          &lt;p&gt;This new post is dedicated to the update / upgrade of SimpliVity Omnistack and its underlying stack (VMware, Firmwares).
+The purpose of it is to show how the different update stages go along as well as the reflections to be carried out before taking action.&lt;/p&gt;
+&lt;p&gt;A complete update is divided into different stages:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Updating the arbiter.&lt;/li&gt;
+&lt;li&gt;Updating the SimpliVity &amp;quot;Web Client&amp;quot; plugin.&lt;/li&gt;
+&lt;li&gt;The Omnistack update.&lt;/li&gt;
+&lt;li&gt;The vSphere update (ESXi).&lt;/li&gt;
+&lt;li&gt;The server firmware update (SVTSP).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In this list, several steps are optional. Why? Because SimpliVity allows flexibility in terms of updates as long as the interoperability matrix is checked.&lt;/p&gt;
+&lt;p&gt;Therefore, we could consider that we want to update the vSphere version (vCenter + ESXi) without updating Omnistack and vice-versa.&lt;/p&gt;
+&lt;p&gt;One condition though, if Omnistack is updated, it must be done with the arbiter and the plugin for vSphere.&lt;/p&gt;
+&lt;p&gt;If you do update/upgrade ESXi, do not forget to do the same on vCenter before performing them on ESXi (check the HPE interoperability to confirm the supported version of vCenter with Omnistack and the VMware interoperability matrix between ESXi/vCenter.)&lt;/p&gt;
+&lt;p&gt;Disclaimer: This guide does not exempt anyone from consulting official documentation. This article is only there to potentially clarify different steps.&lt;/p&gt;
+&lt;h1 id=&#34;identify-all-versions&#34;&gt;Identify all versions&lt;/h1&gt;
+&lt;h2 id=&#34;omnistack&#34;&gt;Omnistack&lt;/h2&gt;
+&lt;p&gt;First, we need to know what version we are running currently in order to understand :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What version exists today ? Is there a new version ?&lt;/li&gt;
+&lt;li&gt;What is going to be the upgrade path ? Am I allowed to update from the current version to the target version ?&lt;/li&gt;
+&lt;li&gt;What documentation I am going to use for the upgrade ?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are several ways to find this version. The easiest is to click on your vCenter Menu &amp;gt; HPE SimpliVity Federation -&amp;gt; Connected Clusters -&amp;gt; Cluster version.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/clusterversion.jpg&#34; alt=&#34;Omnistack version&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If you want to double check, you can SSH one of your OVC and run :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ svt-version-show
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/svtversionshow.jpg&#34; alt=&#34;Omnistack Version&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vsphere&#34;&gt;vSphere&lt;/h2&gt;
+&lt;h3 id=&#34;esxi&#34;&gt;ESXi&lt;/h3&gt;
+&lt;p&gt;Once again, multiple ways to know the build it&#39;s currently running. The easiest is to go to your vCenter Inventory, click on one of your ESXi and in Summary the build will appear.&lt;/p&gt;
+&lt;p&gt;Not sure what build belongs to what update ? Check &lt;a href=&#34;https://kb.vmware.com/s/article/2143832&#34; title=&#34;ESXi builds version&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;vcenter&#34;&gt;vCenter&lt;/h3&gt;
+&lt;p&gt;In your vCenter inventory, click on your vCenter and in Summary, the version and build will appear.&lt;/p&gt;
+&lt;h2 id=&#34;firmware&#34;&gt;Firmware&lt;/h2&gt;
+&lt;p&gt;If you&#39;re familiar with HPE servers updates, you probably know that you can patch your firmware with the HPE SPP.
+For SimpliVity servers, it&#39;s almost the same thing. This is called SVTSP.&lt;/p&gt;
+&lt;p&gt;As far as I know, there is no way to clearly identify the exact version that was previously applied on the server.&lt;/p&gt;
+&lt;p&gt;It is therefore necessary to be logical in order to &amp;quot;match&amp;quot; the current version of your firmware as well as a possible SVTSP, by consulting for example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The ILO version&lt;/li&gt;
+&lt;li&gt;The System ROM version&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/fwversion.jpg&#34; alt=&#34;Firmware version&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once you collected this version, go to the interoperability document and do a small research with one of the version above.
+This should give you the SVTSP version that was applied previously and which version can be applied today.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/interoperability.jpg&#34; alt=&#34;Interoperability&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;arbiter--web-client-plugin&#34;&gt;Arbiter &amp;amp; Web Client Plugin&lt;/h2&gt;
+&lt;p&gt;Before 4.0.0, the arbiter and plugin version where totally different than the Omnistack version. It was very confusing for administrators.&lt;/p&gt;
+&lt;p&gt;From 4.0.0, these are now matching the Omnistack version which means that if your Omnistack is in this version, the Web client and Arbiter version will be 4.0.0&lt;/p&gt;
+&lt;p&gt;If you want to confirm the current version of your plugin click on your vCenter Menu &amp;gt; HPE SimpliVity Federation -&amp;gt; About.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/plugin.jpg&#34; alt=&#34;Plugin Version&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If you want to confirm the current version of the arbiter, go to your control panel and check the installed software.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/arbiter2.jpg&#34; alt=&#34;Arbiter Version&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;get-the-right-documentation&#34;&gt;Get the right documentation&lt;/h1&gt;
+&lt;p&gt;The HPE document library is useful to find the documentation we need in this case.&lt;/p&gt;
+&lt;p&gt;Click &lt;a href=&#34;https://techlibrary.hpe.com/us/en/enterprise/integrated-systems/info-library/index.aspx?cat=hyper_converged_systems&amp;amp;subcat=svt&amp;amp;type=3&#34; title=&#34;HPE Document Library&#34;&gt;here&lt;/a&gt; to be redirected.&lt;/p&gt;
+&lt;p&gt;For me, these two PDF files are essentials :&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;HPE SimpliVity OmniStack X.X.X Interoperability Guide&lt;/li&gt;
+&lt;li&gt;HPE OmniStack X.X.X for vSphere Upgrade Guide&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The first document will be useful to cross check every version involved in the updates and verify the interoperability.
+The second will guide you through every stages of the update. I recommend to check it for every new version.&lt;/p&gt;
+&lt;h1 id=&#34;gather-all-updates&#34;&gt;Gather all updates&lt;/h1&gt;
+&lt;p&gt;To download the SVTSP necessary for the update, open the interoperability document and click on the SVTSP required. It will automatically redirect you to the download page.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/svtspversion.jpg&#34; alt=&#34;SVTSP&#34;&gt;&lt;/p&gt;
+&lt;p&gt;On the screenshot, you can notice that different versions of the SVTSP are available and compatible in this example with 4.0.0.&lt;/p&gt;
+&lt;p&gt;To download the ESXi version, open the interoperability document and click on the HPE link within the Source section.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/esxiversion.jpg&#34; alt=&#34;SVTSP&#34;&gt;&lt;/p&gt;
+&lt;p&gt;To download all the others (Upgrade Manager, Omnistack Update, Arbiter and Web Client plugin) follow the procedure located within the &amp;quot;Obtain the HPE OmniStack upgrade software&amp;quot; within the &amp;quot;HPE OmniStack for vSphere Upgrade Guide&amp;quot;, they will be all in the same package.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/downloadomnistack.jpg&#34; alt=&#34;Omnistack Download&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Before updating, please read carefully the interoperability guide to make sure that your upgrade path will be supported.&lt;/p&gt;
+&lt;p&gt;Once everything is downloaded, open the zip file &amp;quot;Omnistack Software&amp;quot; and extract the :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HPE-SimpliVity-Plug-in-for-vSphere-Client-XXXXXXXXXXX.run&lt;/li&gt;
+&lt;li&gt;Simplivity-arbiter-XXXXX.msi&lt;/li&gt;
+&lt;li&gt;Simplivity-upgrade-manager-XXXXXX.exe&lt;/li&gt;
+&lt;li&gt;SimpliVity-OmniStack-Software-revA-x.x.x.tar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At this point, you should have all the listed above as well as the SVTSP .iso and the ESXi Offline bundle.&lt;/p&gt;
+&lt;h1 id=&#34;update&#34;&gt;Update&lt;/h1&gt;
+&lt;p&gt;You have now confirmed that all targets versions are compatible with each other and also the update path. We need a last check.
+Make sure that all your VMs are HA Compliant! There is different ways to do this depending on the version of Omnistack you run.&lt;/p&gt;
+&lt;p&gt;This way is available on all versions :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$  svt-vm-show
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/HAcompliant.jpg&#34; alt=&#34;HA Compliant&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;arbiter&#34;&gt;Arbiter&lt;/h2&gt;
+&lt;p&gt;For the arbiter, it&#39;s very simple, upload the .msi to your windows machine, execute it and next, next, next... It will upgrade the version.
+Do not uninstall the current arbiter. This is advised in the documentation.&lt;/p&gt;
+&lt;h2 id=&#34;webclient-plugin&#34;&gt;Webclient Plugin&lt;/h2&gt;
+&lt;p&gt;For this procedure you need to uninstall, install the plugin as there is no update.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Upload the bundle to the /tmp of your vCenter Appliance with WinSCP for instance (if you are getting an error at this stage, follow this &lt;a href=&#34;https://kb.vmware.com/s/article/2107727&#34; title=&#34;KB2107727&#34;&gt;link&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;SSH the vCenter and execute the following commands :&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;Command&amp;gt; shell
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# cd /opt/Hewlett \Packard \Enterprise/HPESimpliVityPluginForVSphereClient-XXXX  (replace XXX by the current version or just press tab)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# ./uninstall&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Confirm by pressing the letter Y and then Enter.&lt;/p&gt;
+&lt;p&gt;The uninstall is complete, we need to install the new plugin.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# cd /tmp&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# chmod +x HPE-SimpliVity-Plug-in-for-vSphere-Client-linux-XXXX.run (replace XXX by the current version or just press tab)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# ./HPE-SimpliVity-Plug-in-for-vSphere-Client-linux-XXXX.run&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Press enter until it goes through the License Agreement, accept it by pressing the letter y and confirm the default installation directory by pressing enter.&lt;/p&gt;
+&lt;p&gt;Then enter your SSO username (&lt;a href=&#34;mailto:administrator@vsphere.local&#34;&gt;administrator@vsphere.local&lt;/a&gt;) and password as well as an unnecessary email address and finally press Y to continue and install.&lt;/p&gt;
+&lt;p&gt;At the end, it will ask you to restart the ui service, press Y.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/plugininstall.jpg&#34; alt=&#34;Plugin Install&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;upgrade-manager-for-all-the-others&#34;&gt;Upgrade manager for all the others.&lt;/h2&gt;
+&lt;p&gt;All the manual updates are now completed. We can now use the software provided by HPE to install the Firmware, Omnistack and ESXi updates.&lt;/p&gt;
+&lt;p&gt;Before executing the upgrade manager, make sure that the update files (.iso and .zip) are in the same directory as the upgrade manager. HPE was probably too lazy to implement a Browse button.&lt;/p&gt;
+&lt;p&gt;Once everything is in the same folder, launch the update manager. It will require the FQDN of your vCenter as well as the credentials.&lt;/p&gt;
+&lt;p&gt;Select in the drop down menu each updates you want to perform, if you select the firmware upgrade it will also ask you for the ILO details.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/select.jpg&#34; alt=&#34;Select&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The update manager will first run a series of pre-checks and then start the upgrade node after node. If you do have vSphere DRS, SimpliVity will use it to move your workloads off one host to another.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/precheck.jpg&#34; alt=&#34;Prechecks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;At the end, you will need to commit the Omnistack update in order to apply the new version.
+&lt;img src=&#34;https://jgautierit.github.io/commit.jpg&#34; alt=&#34;Commit&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You can find a video describing the steps &lt;a href=&#34;https://hpesimplivityvideos.brightcovegallery.com/detail/videos/install-upgrade/video/6117232112001/hpe-simplivity-lifecycle-management-using-simplivity-upgrade-manager?autoStart=true&#34; title=&#34;Update manager&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;troubleshooting&#34;&gt;Troubleshooting&lt;/h2&gt;
+&lt;h3 id=&#34;svtsp&#34;&gt;SVTSP&lt;/h3&gt;
+&lt;p&gt;If for any reasons the firmware update is failing through the Update Manager, just boot the server on the SVTSP iso through ILO.&lt;/p&gt;
+&lt;h3 id=&#34;omnistack-1&#34;&gt;Omnistack&lt;/h3&gt;
+&lt;p&gt;For Omnistack, please consult the svt-upgrade.log inside the OVC and try to search for the error message.&lt;/p&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I hope this article has been useful to clarify the update process for SimpliVity.&lt;/p&gt;
+&lt;p&gt;HPE has now released a series of videos recording the upgrade process. These videos are available &lt;a href=&#34;https://hpesimplivityvideos.brightcovegallery.com/&#34; title=&#34;Videos&#34;&gt;here&lt;/a&gt; and cover most of the topics described above.&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Omnistack Virtual machine memory usage alarm, a workaround.</title>
+      <link>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</link>
+      <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</guid>
+      <description>
+        
+          &lt;p&gt;If you have been running SimpliVity in your data centre, you probably came across these alarms. SimpliVity presents many advantages but being a non-native solution can have some little annoyance. One of them being the Virtual machine memory usage being triggered continuously on the Omnistack VMs. These alarms are “normal”. This is simply because these OVC uses memory reservations.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/memory.jpg&#34; alt=&#34;Memory&#34;&gt;&lt;/p&gt;
+&lt;p&gt;By default, in vCenter, a critical alarm is being triggered when the VM memory usage is above 95% for 10 minutes. One of the workarounds I found &lt;a href=&#34;https://virtualknightz.com/2018/04/05/how-can-i-disable-high-memory-alarm-for-a-specific-vms/&#34; title=&#34;OVC Alarms&#34;&gt;here&lt;/a&gt; is to disable the alarm at the vCenter level, and then enable it for every VM folder but (unless I am wrong) it looks like not possible any more in the latest vCenter version as you cannot enable the alarm at the vCenter level and disable it for some folders either.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/Alarm.jpg&#34; alt=&#34;Alarm&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The other workaround I found is the following.&lt;/p&gt;
+&lt;p&gt;1 - Disable the Alarm at the vCenter level.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/disable.jpg&#34; alt=&#34;Disable&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Disabling the alarm will disable it for every VMs attached to your vCenter, do not forget to enable it correctly following the next steps.&lt;/p&gt;
+&lt;p&gt;2 - Create a VM folder for your Omnistack VMs.&lt;/p&gt;
+&lt;p&gt;3 - Move your Omnistack VMs to the folder.&lt;/p&gt;
+&lt;p&gt;4 - Create one or many VMs folders for your production VMs (these VMs will be monitored).&lt;/p&gt;
+&lt;p&gt;5 - Re-create the alarm with the following settings.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm.jpg&#34; alt=&#34;New Alarm&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm1.jpg&#34; alt=&#34;New Alarm 1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm2.jpg&#34; alt=&#34;New Alarm 2&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm3.jpg&#34; alt=&#34;New Alarm 3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;6 - Move your production VMs to the folders you just created.&lt;/p&gt;
+&lt;p&gt;Be careful to do not forget to recreate the alarm for every folder containing the VMs you want to monitor.
+Do not forget to include the VM in a folder when you create a new one either.&lt;/p&gt;
+&lt;p&gt;Otherwise you can just create a global VM folder and put different folders inside.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/hierarchy.jpg&#34; alt=&#34;Hierarchy&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Windows Server 2019 optimized for SimpliVity</title>
+      <link>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</link>
+      <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</guid>
+      <description>
+        
+          &lt;p&gt;I’ve recently started to implement HPE SimpliVity clusters.
+As per the documentation, SimpliVity uses 8k blocks while Windows Server uses 4k by default.
+HPE recommend using this block size for VMs, especially if you use file servers. In order to install a brand new Windows server, a workaround has to be implemented if you wish to use this specific block size on the OS disk.
+At the beginning, I was following this useful blog &lt;a href=&#34;https://www.v-wave.ch/en/2016/05/18/create-simplivity-optimized-windows-server/&#34; title=&#34;8kdiskOS&#34;&gt;article&lt;/a&gt; where it is explained how to change the block size when installing Windows servers.
+Things changed a bit since the creation of this article so I will describe the procedure below.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-vm-with-a-new-disk&#34;&gt;Create a VM with a new disk.&lt;/h2&gt;
+&lt;p&gt;Well, the first step is obvious : create the VM. For this demonstration, I will use Windows Server 2019 so I am going to create a VM with a brand new disk of 40GB and a VMware Paravirtual controller.&lt;/p&gt;
+&lt;h2 id=&#34;start-the-vm-installation&#34;&gt;Start the VM installation&lt;/h2&gt;
+&lt;p&gt;The next step is to boot the VM on the Windows ISO.&lt;/p&gt;
+&lt;p&gt;Do not forget to include the Windows ISO of the VMware tools in order to detect your disk (using the paravirtual driver).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tools.jpg&#34; alt=&#34;Tools&#34;&gt;&lt;/p&gt;
+&lt;p&gt;When the driver is installed and the disk is detected, please proceed and select &amp;quot;New&amp;quot;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;newdisk.jpg&#34; alt=&#34;New&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Microsoft will create 4 partitions necessary for the Windows Server&#39;s installation.
+{: .text-justify}
+Identify the partition that we are going to use to install the system (the biggest) and press with your keyboard Shift + F10.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/prompt.jpg&#34; alt=&#34;Prompt&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;format-to-ntfs-with-8k-block-size&#34;&gt;Format to NTFS with 8k block size&lt;/h2&gt;
+&lt;p&gt;Enter the following commands :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;X&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;\Sources&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&amp;gt;diskpart&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;list disk
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select disk 0
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select partition 4
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select volume 3
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;format quick unit=8192
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;exit
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Click Refresh and Next.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/refresh.jpg&#34; alt=&#34;Refresh&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As soon as your Windows installation is completed, you can verify the NTFS block size with the following command :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;filesystems
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;ntfs8k.jpg&#34; alt=&#34;NTFS&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VxRAIL Roles Script</title>
+      <link>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</guid>
+      <description>
+        
+          &lt;p&gt;In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL.
+N.B : This script works for VxRail 4.7.x. This can change depending on the features/requirement that VxRAIL will implement in the future.
+N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delassus.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;  1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# This is a script to create the required roles for VxRAIL users when an external vCenter is required.&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Made by Jonathan Gautier on the 08/04/2019&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  3&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Review by Steve Delassus on the 11/01/2021 based on the latest solve procedure &lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  5&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;This is a PowerCLI Script to create the required roles for VxRAIL&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt;  6&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Connect-VIServer&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Your vCenter FQDN or IP &amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  7&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  8&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#VxRail Initial Gobal Role Name&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  9&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$vxrailrole1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;VxRail Initial Global&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 10&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 11&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#VxRail DC Gobal Role Name&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 12&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$vxrailrole2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;VxRail Datacenter Global&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 13&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 14&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$initglobal&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;@(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 15&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Anonymous&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 16&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.View&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 17&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Read&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 18&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.ManageCustomFields&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 19&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.SetCustomField&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 20&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.LogEvent&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 21&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Licenses&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 22&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Diagnostics&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 23&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 24&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 25&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 26&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.Browse&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 27&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.DeleteFile&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 28&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.FileManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 29&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.AllocateSpace&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 30&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.UpdateVirtualMachineFiles&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 31&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Network.Assign&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 32&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 33&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.HostOp&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 34&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.ResourceManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 35&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVPortgroup.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 36&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.AddHostToCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 37&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.RemoveHostFromCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 38&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.EditCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 39&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.SystemManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 40&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Maintenance&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 41&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Storage&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 42&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.NetService&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 43&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Network&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 44&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 45&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Power&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 46&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 47&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Unregister&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 48&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOn&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 49&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOff&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 50&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.ConsoleInteract&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 51&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.DeviceConnection&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 52&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.SetCDMedia&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 53&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.GuestControl&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 54&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.Query&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 55&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 56&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.Execute&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 57&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.QueryAliases&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 58&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.ModifyAliases&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 59&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.State.CreateSnapshot&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 60&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.State.RemoveSnapshot&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 61&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Resource.HotMigrate&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 62&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Resource.ColdMigrate&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 63&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 64&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 65&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.SetStatus&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 66&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ModifyRoles&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 67&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ReassignRolePermissions&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 68&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ModifyPermissions&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 69&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Extension.Register&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 70&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VApp.ApplicationConfig&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 71&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VApp.Import&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 72&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VApp.ExtractOvfEnvironment&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 73&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Cryptographer.Access&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 74&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Cryptographer.Decrypt&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 75&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Cryptographer.Migrate&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 76&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ModifyPrivileges&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 77&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;StorageProfile.Update&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 78&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;StorageProfile.View&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 79&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 80&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 81&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$dcglobal&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;@(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 82&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Anonymous&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 83&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.View&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 84&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Read&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 85&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.ManageCustomFields&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 86&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.SetCustomField&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 87&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 88&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 89&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 90&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.Rename&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 91&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Network.Assign&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 92&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 93&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 94&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.HostOp&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 95&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.ResourceManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 96&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVPortgroup.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 97&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVPortgroup.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 98&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.CreateCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 99&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.AddHostToCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.DeleteCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;101&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.EditCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;102&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.AutoStart&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;103&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Storage&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;104&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.NetService&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;105&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Network&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;106&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;107&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;108&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Unregister&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;109&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOn&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;110&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOff&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;111&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Config.AddNewDisk&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;112&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Config.EditDevice&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;113&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Config.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;114&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.SetStatus&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;115&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Extension.Register&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;116&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;117&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;118&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Create New $vxrailrole1 Role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;119&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;New-VIRole&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Name&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$vxrailrole1&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Privilege&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Get-VIPrivilege&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-id&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$initglobal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Out-Null&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;120&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Create New $vxrailrole2 Role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;121&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;New-VIRole&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Name&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$vxrailrole2&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Privilege&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Get-VIPrivilege&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-id&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$dcglobal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Out-Null&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;122&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Done&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The rest of the procedure to apply the roles/permissionsa are available in Solve.&lt;/p&gt;
+&lt;p&gt;Hope this helps.&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Update Manager 6.7 fails to remediate - Check your ports !</title>
+      <link>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</link>
+      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</guid>
+      <description>
+        
+          &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
+Working at a customer site and upgrading the hosts to 6.7, Update Manager was failing to remediate my ESXi upgrade with the following error :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
+&lt;p&gt;What a nice error message ...Very Helpful!&lt;/p&gt;
+&lt;p&gt;No more indication was provided by the vCenter tasks &amp;amp; events so I had to look at the logs.&lt;/p&gt;
+&lt;p&gt;In vCenter Server Appliance, the Update manager logs are located here :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;/var/log/vmware/vmware-updatemgr/vum-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Looking at the last &amp;quot;vmware-vum-server.log&amp;quot;, I quickly matched an error with the last try :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;2018-09-20T11:31:14.436Z warning vmware-vum-server[06197] [Originator@6876 sub=Default] Failed to connect socket; &amp;lt;io_obj p:0x00007fb0840161f0, h:20, &amp;lt;TCP &amp;#39;X.X.X.X : 42026&amp;#39;&amp;gt;, &amp;lt;TCP &amp;#39;Y.Y.Y.Y : 80&amp;#39;&amp;gt;&amp;gt;, e: 111(Connection refused)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This error indicates that the IP X.X.X.X tries to communicate through the port 80 on the IP address Y.Y.Y.Y. X being my vCenter and Y my ESXi host.&lt;/p&gt;
+&lt;p&gt;In order to prove that the error was the consequence of a blocked port, I used this the following command to test the ports :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# curl -v telnet://Y.Y.Y.Y:80&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Guess the result ?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;* Rebuilt URL to: telnet://Y.Y.Y.Y:80/
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;*   Trying Y.Y.Y.Y...
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;* TCP_NODELAY set
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;* connect to Y.Y.Y.Y port 80 failed: Connection refused
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;* Failed to connect to Y.Y.Y.Y port 80: Connection refused
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;* Closing connection 0
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;curl: (7) Failed to connect to Y.Y.Y.Y port 80: Connection refused
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We then tested a known working port such as 443 :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# curl -v telnet://Y.Y.Y.Y:443
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;* Rebuilt URL to: telnet://Y.Y.Y.Y:443
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;*   Trying Y.Y.Y.Y...
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;* TCP_NODELAY set
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;* Connected to Y.Y.Y.Y (Y.Y.Y.Y) port 443 (#0)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It become then obvious that the port was blocked by some firewall.&lt;/p&gt;
+&lt;p&gt;We asked kindly the colleagues to open the port. Required ports for update manager are listed &lt;a href=&#34;https://kb.vmware.com/s/article/1004543&#34; title=&#34;KB1004543&#34;&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Problem Solved!&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>New Export Directory - Upgrade from 6.5 to 6.7</title>
+      <link>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</link>
+      <pubDate>Tue, 18 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</guid>
+      <description>
+        
+          &lt;p&gt;This post is dedicated to the &amp;quot;Stage 2&amp;quot; of the upgrade process from vCenter 6.5 to vCenter 6.7. I recently came across a scenario where the configuration exceeded the size of the root partition within the source vCenter appliance.&lt;/p&gt;
+&lt;p&gt;In this case, a new export has to be provided to the upgrade utility in order to go forward.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/vcconfig.jpg&#34; alt=&#34;Export&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This process is also applicable to previous versions. The &lt;a href=&#34;https://kb.vmware.com/s/article/2113947&#34; title=&#34;KB2113947&#34;&gt;KB&lt;/a&gt; defines the process that I will describe below, however it has been created for vCenter 6.0.&lt;/p&gt;
+&lt;p&gt;Usually, these steps are not required. Especially when the data (configuration and historical data) are not big enough (2-3GB), but this time I had 21GB to migrate.&lt;/p&gt;
+&lt;p&gt;Of course, I could have applied a workaround and cleaned up a bit the events/tasks table but I wanted to export everything.&lt;/p&gt;
+&lt;p&gt;The target of this blog article is not to copy/paste the &lt;a href=&#34;https://kb.vmware.com/s/article/2113947&#34; title=&#34;KB2113947&#34;&gt;Knowledge Base article&lt;/a&gt; but to demonstrate that it is still valid for 6.5. Also, I hope it will bring clarity to the administrators.&lt;/p&gt;
+&lt;p&gt;Make sure that you have a valid backup ready to restore and take a snapshot before proceeding!&lt;/p&gt;
+&lt;h2 id=&#34;how-to-create-the-export&#34;&gt;How to create the export?&lt;/h2&gt;
+&lt;p&gt;If you don&#39;t read carefully (like I did the first time..) you will probably waste minutes of your precious time.&lt;/p&gt;
+&lt;p&gt;The message on the screenshot indicates that the root partition on the &lt;strong&gt;SOURCE&lt;/strong&gt; vCenter does not have enough space and requires an export directory, do not be confused with the &lt;strong&gt;DESTINATION&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;I believe that I could have increased the size of the root partition. However, if you take a screenshot, you won&#39;t be able to resize the primary disk. Please also note that by the &lt;a href=&#34;https://kb.vmware.com/s/article/2145603&#34; title=&#34;KB2145603&#34;&gt;VMware article&lt;/a&gt;, it is not supported.Don&#39;t worry too much though,it would only be temporary as the source appliance is meant to be shutdown.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-new-disk&#34;&gt;Create a new disk.&lt;/h2&gt;
+&lt;p&gt;The first step is to create the new disk on the source VM (original vCenter). If you don&#39;t want to spend too much time on the recognition of that disk afterwards, I recommend to use a size that is not currently being used by any of the disks of the vCenter Appliance.Also, use enough capacity to store the data needed as provided by the screenshot.&lt;/p&gt;
+&lt;p&gt;Once the disk has been created, the VMware KB states that you need to rescan the storage by running&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# echo &amp;#34;- - -&amp;#34; &amp;gt; /sys/class/scsi_host/host0/scan&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Unfortunately, this did not work as expected for me, I had to restart the whole appliance.&lt;/p&gt;
+&lt;p&gt;After the reboot, list the disks by using :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# fdisk -l&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;identify&#34;&gt;Identify&lt;/h2&gt;
+&lt;p&gt;At this point, you will be able to identify the disk previously created (in my situation, I created a disk of 120GB) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;Disk /dev/sdm: &lt;span class=&#34;m&#34;&gt;120&lt;/span&gt; GiB, &lt;span class=&#34;m&#34;&gt;128849018880&lt;/span&gt; bytes, &lt;span class=&#34;m&#34;&gt;251658240&lt;/span&gt; sectors
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Units: sectors of &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; * &lt;span class=&#34;nv&#34;&gt;512&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;Sector size &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;logical/physical&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes / &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;I/O size &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;minimum/optimal&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes / &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once that identification has been done, proceed by creating a partition and its file system :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# fdisk -u /dev/sdm&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;Welcome to fdisk &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;util-linux 2.27.1&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;Changes will remain in memory only, &lt;span class=&#34;k&#34;&gt;until&lt;/span&gt; you decide to write them.
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;Be careful before using the write command.
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;Device does not contain a recognized partition table.
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;Created a new DOS disklabel with disk identifier 0xeba5fea2.
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;Command &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;m &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: n
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;Partition &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;   p   primary &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; primary, &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; extended, &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; free&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;   e   extended &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;container &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; logical partitions&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;Select &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;default p&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: p
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;Partition number &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1-4, default 1&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;First sector &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;2048-251658239, default 2048&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: “Enter”
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;Last sector, +sectors or +size&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;K,M,G,T,P&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;2048-251658239, default 251658239&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: “Enter”
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;Created a new partition &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; of &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Linux&amp;#39;&lt;/span&gt; and of size &lt;span class=&#34;m&#34;&gt;120&lt;/span&gt; GiB.
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;Command &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;m &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: w
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;The partition table has been altered.
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;Calling ioctl&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; to re-read partition table.
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;Syncing disks.
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# mkfs -t ext3 -j /dev/sdm&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;mke2fs 1.42.13 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;17-May-2015&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;Found a dos partition table in /dev/sdm
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;Proceed anyway? &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;y,n&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; y
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;Creating filesystem with &lt;span class=&#34;m&#34;&gt;31457280&lt;/span&gt; 4k blocks and &lt;span class=&#34;m&#34;&gt;7864320&lt;/span&gt; inodes
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;Filesystem UUID: 68d869a7-f1c2-45e3-a3d8-355681905610
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;Superblock backups stored on blocks:
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;        4096000, 7962624, 11239424, 20480000, &lt;span class=&#34;m&#34;&gt;23887872&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;Allocating group tables: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;Writing inode tables: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;Creating journal &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;32768&lt;/span&gt; blocks&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;Writing superblocks and filesystem accounting information: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# mkdir /storage/tmp2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# mount -t ext3 /dev/sdm /storage/tmp2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Don&#39;t forget to replace the device name (sdm) by the one you identified with fdisk previously.&lt;/p&gt;
+&lt;h2 id=&#34;provide-the-new-export-to-the-upgrade-utility&#34;&gt;Provide the new export to the upgrade utility&lt;/h2&gt;
+&lt;p&gt;The last step is the easiest, just provide the newly created export to the utility as per the screenshot below :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/export.jpg&#34; alt=&#34;Export&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Job Done!&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
     <item>
       <title>Don&#39;t waste reboots in vSAN!</title>
       <link>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</link>
@@ -46,9 +658,9 @@ Usually, the regular ESXi logs are not enough to diagnose the issue.&lt;/p&gt;
 &lt;h3 id=&#34;netsh&#34;&gt;netsh&lt;/h3&gt;
 &lt;p&gt;Windows has a handy utility called netsh. This utility allows to import/export the network configuration of a NIC easily.&lt;/p&gt;
 &lt;p&gt;To export :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;test# netsh interface dump &lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; c:\network.txt
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# netsh interface dump &lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; c:\network.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To import :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;test# netsh -c interface -f c:\network
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# netsh -c interface -f c:\network
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         
       </description>

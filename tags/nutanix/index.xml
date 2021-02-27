@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nutanix on Clarity</title>
+    <link>https://jgautierit.github.io/tags/nutanix/</link>
+    <description>Recent content in Nutanix on Clarity</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
+    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/nutanix/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nutanix Playbooks - Telegram Bot</title>
+      <link>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</link>
+      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</guid>
+      <description>
+        
+          &lt;p&gt;In this new post, I will describe how to send a notification to your Telegram via a Telegram Bot using Nutanix Playbooks.&lt;/p&gt;
+&lt;p&gt;I recently got this idea by watching the Nutanix University video &lt;a href=&#34;https://www.youtube.com/watch?v=KmS5jCbQV40&#34; title=&#34;Nutanix WeChat&#34;&gt;here&lt;/a&gt; describing how to send notification to WeChat.&lt;/p&gt;
+&lt;p&gt;As this is not popular in Europe, and also because I am a big fan of Telegram, I will describe the procedure in this post.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-telegram-bot&#34;&gt;Create a Telegram Bot&lt;/h2&gt;
+&lt;p&gt;In order to create a Telegram bot, just chat the BotFather (@BotFather) and ask him to create a new bot with the command : /newbot&lt;/p&gt;
+&lt;p&gt;It will ask you for a botname and bot username.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/telegrambot.jpg&#34; alt=&#34;Telegram Bot&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once the bot has been created, the BotFather will provide the token to use the HTTP API. This one is important.&lt;/p&gt;
+&lt;h2 id=&#34;get-the-chat-id&#34;&gt;Get the Chat ID&lt;/h2&gt;
+&lt;p&gt;We are going to create a group on Telegram. This is the only easy way I found to get the chat_id.&lt;/p&gt;
+&lt;p&gt;Create a new group and call it whatever you want, insert your new bot user and create a chat.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/creategroup.jpg&#34; alt=&#34;Create Group&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now, click in your group and look at the URL in your web browser. This is your chat ID (the digits only)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/chatidurl.jpg&#34; alt=&#34;Chat ID URL&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;test-it&#34;&gt;Test it&lt;/h2&gt;
+&lt;p&gt;In order to confirm that we have all the info required, we can run a quick test with this online API tester &lt;a href=&#34;https://reqbin.com&#34; title=&#34;API Tester&#34;&gt;here&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;First, we need the URL. To send a message with Telegram via the bot, the URL needs to be this way :
+&lt;a href=&#34;https://api.telegram.org/botAPITOKEN/sendMessage&#34;&gt;https://api.telegram.org/botAPITOKEN/sendMessage&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Remember, the Telegram bot provided an APITOKEN, you just need to add the word &amp;quot;bot&amp;quot; before the token, here is an example:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://api.telegram.org/bot123456789:XXXXXYYYYYYYY/sendMessage&#34;&gt;https://api.telegram.org/bot123456789:XXXXXYYYYYYYY/sendMessage&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Secondly, we need to specify that we are going to use JSON and provide the Chat ID we found in the test above.&lt;/p&gt;
+&lt;p&gt;The chat ID needs to have the minus sign before the digits.&lt;/p&gt;
+&lt;p&gt;Select the POST action and click Send. If this worked, not only you will get a message in the Telegram Group, you also will get a 200 status response.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/testapi.jpg&#34; alt=&#34;Test API&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;nutanix-playbook&#34;&gt;Nutanix Playbook&lt;/h2&gt;
+&lt;p&gt;The harder has been done ;) You are now going to use Prism Central, create a Playbook (manual or alert), and trigger a REST API Action.
+{: .text-justify}&lt;/p&gt;
+&lt;p&gt;In the menu, click Operations,Playbooks and create a Playbook.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/menu.jpg&#34; alt=&#34;Playbooks menu&#34;&gt;&lt;/p&gt;
+&lt;p&gt;For this demo, I will use a Manual Playbook as it is quicker. But you can create the same action based on an Alert.&lt;/p&gt;
+&lt;p&gt;Select the trigger (Manual) and select an entity type (VM).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/manual.jpg&#34; alt=&#34;Trigger&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Click on Add Action, search for API and use REST API.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/restapi.jpg&#34; alt=&#34;Action REST API&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Here is the parameters you need to enter :&lt;/p&gt;
+&lt;pre&gt;
+Method : POST
+URL : https://api.telegram.org/bot123456789:XXXXXYYYYYYYY/sendMessage
+Request Body : {&#34;chat_id&#34;:&#34;-462316723&#34;, &#34;text&#34;:&#34;Alert!&#34;}
+Request Headers : Content-Type:application/json;charset=utf-8
+&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/parametersapi.jpg&#34; alt=&#34;Parameters REST API&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Save, Enable and That&#39;s it!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/saveplaybook.jpg&#34; alt=&#34;Save Playbook&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You are now ready to pull the trigger and try it out!&lt;/p&gt;
+&lt;h2 id=&#34;test-the-playbook&#34;&gt;Test the playbook&lt;/h2&gt;
+&lt;p&gt;Now go to your VMs, select any, click on Action and Run Playbook. Select your playbook and click Run!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/runplaybookvm.jpg&#34; alt=&#34;Run Playbook&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/selectbot.jpg&#34; alt=&#34;Select Bot&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Did you get a notification ? Yes ? Well done!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/alertontelegram.jpg&#34; alt=&#34;Notification&#34;&gt;&lt;/p&gt;
+&lt;p&gt;No ? Go to the menu, click on Plays and you will be able to check if it failed.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/playslist.jpg&#34; alt=&#34;List of Plays&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Obviously, I created the easiest message you can get. But you can personalize this message or alert by using the Parameters option in your request body (to get the VM Name for example).
+{: .text-justify}&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/parameters.jpg&#34; alt=&#34;Add VM Name&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

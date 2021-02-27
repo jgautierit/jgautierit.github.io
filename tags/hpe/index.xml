@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HPE on Clarity</title>
+    <link>https://jgautierit.github.io/tags/hpe/</link>
+    <description>Recent content in HPE on Clarity</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
+    <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/hpe/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SimpliVity Upgrade - Walkthrough</title>
+      <link>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</guid>
+      <description>
+        
+          &lt;p&gt;This new post is dedicated to the update / upgrade of SimpliVity Omnistack and its underlying stack (VMware, Firmwares).
+The purpose of it is to show how the different update stages go along as well as the reflections to be carried out before taking action.&lt;/p&gt;
+&lt;p&gt;A complete update is divided into different stages:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Updating the arbiter.&lt;/li&gt;
+&lt;li&gt;Updating the SimpliVity &amp;quot;Web Client&amp;quot; plugin.&lt;/li&gt;
+&lt;li&gt;The Omnistack update.&lt;/li&gt;
+&lt;li&gt;The vSphere update (ESXi).&lt;/li&gt;
+&lt;li&gt;The server firmware update (SVTSP).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In this list, several steps are optional. Why? Because SimpliVity allows flexibility in terms of updates as long as the interoperability matrix is checked.&lt;/p&gt;
+&lt;p&gt;Therefore, we could consider that we want to update the vSphere version (vCenter + ESXi) without updating Omnistack and vice-versa.&lt;/p&gt;
+&lt;p&gt;One condition though, if Omnistack is updated, it must be done with the arbiter and the plugin for vSphere.&lt;/p&gt;
+&lt;p&gt;If you do update/upgrade ESXi, do not forget to do the same on vCenter before performing them on ESXi (check the HPE interoperability to confirm the supported version of vCenter with Omnistack and the VMware interoperability matrix between ESXi/vCenter.)&lt;/p&gt;
+&lt;p&gt;Disclaimer: This guide does not exempt anyone from consulting official documentation. This article is only there to potentially clarify different steps.&lt;/p&gt;
+&lt;h1 id=&#34;identify-all-versions&#34;&gt;Identify all versions&lt;/h1&gt;
+&lt;h2 id=&#34;omnistack&#34;&gt;Omnistack&lt;/h2&gt;
+&lt;p&gt;First, we need to know what version we are running currently in order to understand :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What version exists today ? Is there a new version ?&lt;/li&gt;
+&lt;li&gt;What is going to be the upgrade path ? Am I allowed to update from the current version to the target version ?&lt;/li&gt;
+&lt;li&gt;What documentation I am going to use for the upgrade ?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are several ways to find this version. The easiest is to click on your vCenter Menu &amp;gt; HPE SimpliVity Federation -&amp;gt; Connected Clusters -&amp;gt; Cluster version.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/clusterversion.jpg&#34; alt=&#34;Omnistack version&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If you want to double check, you can SSH one of your OVC and run :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ svt-version-show
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/svtversionshow.jpg&#34; alt=&#34;Omnistack Version&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;vsphere&#34;&gt;vSphere&lt;/h2&gt;
+&lt;h3 id=&#34;esxi&#34;&gt;ESXi&lt;/h3&gt;
+&lt;p&gt;Once again, multiple ways to know the build it&#39;s currently running. The easiest is to go to your vCenter Inventory, click on one of your ESXi and in Summary the build will appear.&lt;/p&gt;
+&lt;p&gt;Not sure what build belongs to what update ? Check &lt;a href=&#34;https://kb.vmware.com/s/article/2143832&#34; title=&#34;ESXi builds version&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;vcenter&#34;&gt;vCenter&lt;/h3&gt;
+&lt;p&gt;In your vCenter inventory, click on your vCenter and in Summary, the version and build will appear.&lt;/p&gt;
+&lt;h2 id=&#34;firmware&#34;&gt;Firmware&lt;/h2&gt;
+&lt;p&gt;If you&#39;re familiar with HPE servers updates, you probably know that you can patch your firmware with the HPE SPP.
+For SimpliVity servers, it&#39;s almost the same thing. This is called SVTSP.&lt;/p&gt;
+&lt;p&gt;As far as I know, there is no way to clearly identify the exact version that was previously applied on the server.&lt;/p&gt;
+&lt;p&gt;It is therefore necessary to be logical in order to &amp;quot;match&amp;quot; the current version of your firmware as well as a possible SVTSP, by consulting for example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The ILO version&lt;/li&gt;
+&lt;li&gt;The System ROM version&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/fwversion.jpg&#34; alt=&#34;Firmware version&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once you collected this version, go to the interoperability document and do a small research with one of the version above.
+This should give you the SVTSP version that was applied previously and which version can be applied today.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/interoperability.jpg&#34; alt=&#34;Interoperability&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;arbiter--web-client-plugin&#34;&gt;Arbiter &amp;amp; Web Client Plugin&lt;/h2&gt;
+&lt;p&gt;Before 4.0.0, the arbiter and plugin version where totally different than the Omnistack version. It was very confusing for administrators.&lt;/p&gt;
+&lt;p&gt;From 4.0.0, these are now matching the Omnistack version which means that if your Omnistack is in this version, the Web client and Arbiter version will be 4.0.0&lt;/p&gt;
+&lt;p&gt;If you want to confirm the current version of your plugin click on your vCenter Menu &amp;gt; HPE SimpliVity Federation -&amp;gt; About.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/plugin.jpg&#34; alt=&#34;Plugin Version&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If you want to confirm the current version of the arbiter, go to your control panel and check the installed software.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/arbiter2.jpg&#34; alt=&#34;Arbiter Version&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;get-the-right-documentation&#34;&gt;Get the right documentation&lt;/h1&gt;
+&lt;p&gt;The HPE document library is useful to find the documentation we need in this case.&lt;/p&gt;
+&lt;p&gt;Click &lt;a href=&#34;https://techlibrary.hpe.com/us/en/enterprise/integrated-systems/info-library/index.aspx?cat=hyper_converged_systems&amp;amp;subcat=svt&amp;amp;type=3&#34; title=&#34;HPE Document Library&#34;&gt;here&lt;/a&gt; to be redirected.&lt;/p&gt;
+&lt;p&gt;For me, these two PDF files are essentials :&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;HPE SimpliVity OmniStack X.X.X Interoperability Guide&lt;/li&gt;
+&lt;li&gt;HPE OmniStack X.X.X for vSphere Upgrade Guide&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The first document will be useful to cross check every version involved in the updates and verify the interoperability.
+The second will guide you through every stages of the update. I recommend to check it for every new version.&lt;/p&gt;
+&lt;h1 id=&#34;gather-all-updates&#34;&gt;Gather all updates&lt;/h1&gt;
+&lt;p&gt;To download the SVTSP necessary for the update, open the interoperability document and click on the SVTSP required. It will automatically redirect you to the download page.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/svtspversion.jpg&#34; alt=&#34;SVTSP&#34;&gt;&lt;/p&gt;
+&lt;p&gt;On the screenshot, you can notice that different versions of the SVTSP are available and compatible in this example with 4.0.0.&lt;/p&gt;
+&lt;p&gt;To download the ESXi version, open the interoperability document and click on the HPE link within the Source section.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/esxiversion.jpg&#34; alt=&#34;SVTSP&#34;&gt;&lt;/p&gt;
+&lt;p&gt;To download all the others (Upgrade Manager, Omnistack Update, Arbiter and Web Client plugin) follow the procedure located within the &amp;quot;Obtain the HPE OmniStack upgrade software&amp;quot; within the &amp;quot;HPE OmniStack for vSphere Upgrade Guide&amp;quot;, they will be all in the same package.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/downloadomnistack.jpg&#34; alt=&#34;Omnistack Download&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Before updating, please read carefully the interoperability guide to make sure that your upgrade path will be supported.&lt;/p&gt;
+&lt;p&gt;Once everything is downloaded, open the zip file &amp;quot;Omnistack Software&amp;quot; and extract the :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HPE-SimpliVity-Plug-in-for-vSphere-Client-XXXXXXXXXXX.run&lt;/li&gt;
+&lt;li&gt;Simplivity-arbiter-XXXXX.msi&lt;/li&gt;
+&lt;li&gt;Simplivity-upgrade-manager-XXXXXX.exe&lt;/li&gt;
+&lt;li&gt;SimpliVity-OmniStack-Software-revA-x.x.x.tar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At this point, you should have all the listed above as well as the SVTSP .iso and the ESXi Offline bundle.&lt;/p&gt;
+&lt;h1 id=&#34;update&#34;&gt;Update&lt;/h1&gt;
+&lt;p&gt;You have now confirmed that all targets versions are compatible with each other and also the update path. We need a last check.
+Make sure that all your VMs are HA Compliant! There is different ways to do this depending on the version of Omnistack you run.&lt;/p&gt;
+&lt;p&gt;This way is available on all versions :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$  svt-vm-show
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/HAcompliant.jpg&#34; alt=&#34;HA Compliant&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;arbiter&#34;&gt;Arbiter&lt;/h2&gt;
+&lt;p&gt;For the arbiter, it&#39;s very simple, upload the .msi to your windows machine, execute it and next, next, next... It will upgrade the version.
+Do not uninstall the current arbiter. This is advised in the documentation.&lt;/p&gt;
+&lt;h2 id=&#34;webclient-plugin&#34;&gt;Webclient Plugin&lt;/h2&gt;
+&lt;p&gt;For this procedure you need to uninstall, install the plugin as there is no update.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Upload the bundle to the /tmp of your vCenter Appliance with WinSCP for instance (if you are getting an error at this stage, follow this &lt;a href=&#34;https://kb.vmware.com/s/article/2107727&#34; title=&#34;KB2107727&#34;&gt;link&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;SSH the vCenter and execute the following commands :&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;Command&amp;gt; shell
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# cd /opt/Hewlett \Packard \Enterprise/HPESimpliVityPluginForVSphereClient-XXXX  (replace XXX by the current version or just press tab)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# ./uninstall&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Confirm by pressing the letter Y and then Enter.&lt;/p&gt;
+&lt;p&gt;The uninstall is complete, we need to install the new plugin.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# cd /tmp&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# chmod +x HPE-SimpliVity-Plug-in-for-vSphere-Client-linux-XXXX.run (replace XXX by the current version or just press tab)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# ./HPE-SimpliVity-Plug-in-for-vSphere-Client-linux-XXXX.run&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Press enter until it goes through the License Agreement, accept it by pressing the letter y and confirm the default installation directory by pressing enter.&lt;/p&gt;
+&lt;p&gt;Then enter your SSO username (&lt;a href=&#34;mailto:administrator@vsphere.local&#34;&gt;administrator@vsphere.local&lt;/a&gt;) and password as well as an unnecessary email address and finally press Y to continue and install.&lt;/p&gt;
+&lt;p&gt;At the end, it will ask you to restart the ui service, press Y.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/plugininstall.jpg&#34; alt=&#34;Plugin Install&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;upgrade-manager-for-all-the-others&#34;&gt;Upgrade manager for all the others.&lt;/h2&gt;
+&lt;p&gt;All the manual updates are now completed. We can now use the software provided by HPE to install the Firmware, Omnistack and ESXi updates.&lt;/p&gt;
+&lt;p&gt;Before executing the upgrade manager, make sure that the update files (.iso and .zip) are in the same directory as the upgrade manager. HPE was probably too lazy to implement a Browse button.&lt;/p&gt;
+&lt;p&gt;Once everything is in the same folder, launch the update manager. It will require the FQDN of your vCenter as well as the credentials.&lt;/p&gt;
+&lt;p&gt;Select in the drop down menu each updates you want to perform, if you select the firmware upgrade it will also ask you for the ILO details.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/select.jpg&#34; alt=&#34;Select&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The update manager will first run a series of pre-checks and then start the upgrade node after node. If you do have vSphere DRS, SimpliVity will use it to move your workloads off one host to another.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/precheck.jpg&#34; alt=&#34;Prechecks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;At the end, you will need to commit the Omnistack update in order to apply the new version.
+&lt;img src=&#34;https://jgautierit.github.io/commit.jpg&#34; alt=&#34;Commit&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You can find a video describing the steps &lt;a href=&#34;https://hpesimplivityvideos.brightcovegallery.com/detail/videos/install-upgrade/video/6117232112001/hpe-simplivity-lifecycle-management-using-simplivity-upgrade-manager?autoStart=true&#34; title=&#34;Update manager&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;troubleshooting&#34;&gt;Troubleshooting&lt;/h2&gt;
+&lt;h3 id=&#34;svtsp&#34;&gt;SVTSP&lt;/h3&gt;
+&lt;p&gt;If for any reasons the firmware update is failing through the Update Manager, just boot the server on the SVTSP iso through ILO.&lt;/p&gt;
+&lt;h3 id=&#34;omnistack-1&#34;&gt;Omnistack&lt;/h3&gt;
+&lt;p&gt;For Omnistack, please consult the svt-upgrade.log inside the OVC and try to search for the error message.&lt;/p&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I hope this article has been useful to clarify the update process for SimpliVity.&lt;/p&gt;
+&lt;p&gt;HPE has now released a series of videos recording the upgrade process. These videos are available &lt;a href=&#34;https://hpesimplivityvideos.brightcovegallery.com/&#34; title=&#34;Videos&#34;&gt;here&lt;/a&gt; and cover most of the topics described above.&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Omnistack Virtual machine memory usage alarm, a workaround.</title>
+      <link>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</link>
+      <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</guid>
+      <description>
+        
+          &lt;p&gt;If you have been running SimpliVity in your data centre, you probably came across these alarms. SimpliVity presents many advantages but being a non-native solution can have some little annoyance. One of them being the Virtual machine memory usage being triggered continuously on the Omnistack VMs. These alarms are “normal”. This is simply because these OVC uses memory reservations.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/memory.jpg&#34; alt=&#34;Memory&#34;&gt;&lt;/p&gt;
+&lt;p&gt;By default, in vCenter, a critical alarm is being triggered when the VM memory usage is above 95% for 10 minutes. One of the workarounds I found &lt;a href=&#34;https://virtualknightz.com/2018/04/05/how-can-i-disable-high-memory-alarm-for-a-specific-vms/&#34; title=&#34;OVC Alarms&#34;&gt;here&lt;/a&gt; is to disable the alarm at the vCenter level, and then enable it for every VM folder but (unless I am wrong) it looks like not possible any more in the latest vCenter version as you cannot enable the alarm at the vCenter level and disable it for some folders either.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/Alarm.jpg&#34; alt=&#34;Alarm&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The other workaround I found is the following.&lt;/p&gt;
+&lt;p&gt;1 - Disable the Alarm at the vCenter level.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/disable.jpg&#34; alt=&#34;Disable&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Disabling the alarm will disable it for every VMs attached to your vCenter, do not forget to enable it correctly following the next steps.&lt;/p&gt;
+&lt;p&gt;2 - Create a VM folder for your Omnistack VMs.&lt;/p&gt;
+&lt;p&gt;3 - Move your Omnistack VMs to the folder.&lt;/p&gt;
+&lt;p&gt;4 - Create one or many VMs folders for your production VMs (these VMs will be monitored).&lt;/p&gt;
+&lt;p&gt;5 - Re-create the alarm with the following settings.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm.jpg&#34; alt=&#34;New Alarm&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm1.jpg&#34; alt=&#34;New Alarm 1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm2.jpg&#34; alt=&#34;New Alarm 2&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newalarm3.jpg&#34; alt=&#34;New Alarm 3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;6 - Move your production VMs to the folders you just created.&lt;/p&gt;
+&lt;p&gt;Be careful to do not forget to recreate the alarm for every folder containing the VMs you want to monitor.
+Do not forget to include the VM in a folder when you create a new one either.&lt;/p&gt;
+&lt;p&gt;Otherwise you can just create a global VM folder and put different folders inside.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/hierarchy.jpg&#34; alt=&#34;Hierarchy&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Windows Server 2019 optimized for SimpliVity</title>
+      <link>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</link>
+      <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</guid>
+      <description>
+        
+          &lt;p&gt;I’ve recently started to implement HPE SimpliVity clusters.
+As per the documentation, SimpliVity uses 8k blocks while Windows Server uses 4k by default.
+HPE recommend using this block size for VMs, especially if you use file servers. In order to install a brand new Windows server, a workaround has to be implemented if you wish to use this specific block size on the OS disk.
+At the beginning, I was following this useful blog &lt;a href=&#34;https://www.v-wave.ch/en/2016/05/18/create-simplivity-optimized-windows-server/&#34; title=&#34;8kdiskOS&#34;&gt;article&lt;/a&gt; where it is explained how to change the block size when installing Windows servers.
+Things changed a bit since the creation of this article so I will describe the procedure below.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-vm-with-a-new-disk&#34;&gt;Create a VM with a new disk.&lt;/h2&gt;
+&lt;p&gt;Well, the first step is obvious : create the VM. For this demonstration, I will use Windows Server 2019 so I am going to create a VM with a brand new disk of 40GB and a VMware Paravirtual controller.&lt;/p&gt;
+&lt;h2 id=&#34;start-the-vm-installation&#34;&gt;Start the VM installation&lt;/h2&gt;
+&lt;p&gt;The next step is to boot the VM on the Windows ISO.&lt;/p&gt;
+&lt;p&gt;Do not forget to include the Windows ISO of the VMware tools in order to detect your disk (using the paravirtual driver).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tools.jpg&#34; alt=&#34;Tools&#34;&gt;&lt;/p&gt;
+&lt;p&gt;When the driver is installed and the disk is detected, please proceed and select &amp;quot;New&amp;quot;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;newdisk.jpg&#34; alt=&#34;New&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Microsoft will create 4 partitions necessary for the Windows Server&#39;s installation.
+{: .text-justify}
+Identify the partition that we are going to use to install the system (the biggest) and press with your keyboard Shift + F10.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/prompt.jpg&#34; alt=&#34;Prompt&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;format-to-ntfs-with-8k-block-size&#34;&gt;Format to NTFS with 8k block size&lt;/h2&gt;
+&lt;p&gt;Enter the following commands :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;X&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;\Sources&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&amp;gt;diskpart&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;list disk
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select disk 0
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select partition 4
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select volume 3
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;format quick unit=8192
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;exit
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Click Refresh and Next.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/refresh.jpg&#34; alt=&#34;Refresh&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As soon as your Windows installation is completed, you can verify the NTFS block size with the following command :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;filesystems
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;ntfs8k.jpg&#34; alt=&#34;NTFS&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

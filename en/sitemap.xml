@@ -5,11 +5,8 @@
     <loc>https://jgautierit.github.io/about/</loc>
     <lastmod>2021-02-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://jgautierit.github.io/archives/</loc>
-    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://jgautierit.github.io/</loc>
-    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -21,17 +18,11 @@
                 href="https://jgautierit.github.io/"
                 />
   </url><url>
-    <loc>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</loc>
-    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://jgautierit.github.io/post/</loc>
-    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://jgautierit.github.io/tags/psod/</loc>
-    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/tags/</loc>
-    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -43,19 +34,73 @@
                 href="https://jgautierit.github.io/tags/"
                 />
   </url><url>
+    <loc>https://jgautierit.github.io/tags/updatemanager/</loc>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/vcenter/</loc>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://jgautierit.github.io/tags/vmware/</loc>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</loc>
+    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</loc>
+    <lastmod>2020-06-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/nutanix/</loc>
+    <lastmod>2020-05-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</loc>
+    <lastmod>2020-05-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/hpe/</loc>
+    <lastmod>2020-04-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/simplivity/</loc>
+    <lastmod>2020-04-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</loc>
+    <lastmod>2020-04-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</loc>
+    <lastmod>2019-10-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</loc>
+    <lastmod>2019-10-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/archives/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/vxrail/</loc>
+    <lastmod>2019-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</loc>
+    <lastmod>2019-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</loc>
+    <lastmod>2018-09-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/network/</loc>
+    <lastmod>2018-09-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</loc>
+    <lastmod>2018-09-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/nic/</loc>
+    <lastmod>2018-09-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</loc>
+    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/psod/</loc>
     <lastmod>2018-09-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/tags/vsan/</loc>
     <lastmod>2018-09-14T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</loc>
-    <lastmod>2018-09-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://jgautierit.github.io/tags/network/</loc>
-    <lastmod>2018-09-13T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://jgautierit.github.io/tags/nic/</loc>
     <lastmod>2018-09-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/categories/</loc>
@@ -69,8 +114,6 @@
                 hreflang="en"
                 href="https://jgautierit.github.io/categories/"
                 />
-  </url><url>
-    <loc>https://jgautierit.github.io/tags/index/</loc>
   </url><url>
     <loc>https://jgautierit.github.io/series/</loc>
     <xhtml:link

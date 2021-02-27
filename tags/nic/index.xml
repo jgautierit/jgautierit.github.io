@@ -6,7 +6,89 @@
     <description>Recent content in nic on Clarity</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 13 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/nic/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/nic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>New Export Directory - Upgrade from 6.5 to 6.7</title>
+      <link>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</link>
+      <pubDate>Tue, 18 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</guid>
+      <description>
+        
+          &lt;p&gt;This post is dedicated to the &amp;quot;Stage 2&amp;quot; of the upgrade process from vCenter 6.5 to vCenter 6.7. I recently came across a scenario where the configuration exceeded the size of the root partition within the source vCenter appliance.&lt;/p&gt;
+&lt;p&gt;In this case, a new export has to be provided to the upgrade utility in order to go forward.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/vcconfig.jpg&#34; alt=&#34;Export&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This process is also applicable to previous versions. The &lt;a href=&#34;https://kb.vmware.com/s/article/2113947&#34; title=&#34;KB2113947&#34;&gt;KB&lt;/a&gt; defines the process that I will describe below, however it has been created for vCenter 6.0.&lt;/p&gt;
+&lt;p&gt;Usually, these steps are not required. Especially when the data (configuration and historical data) are not big enough (2-3GB), but this time I had 21GB to migrate.&lt;/p&gt;
+&lt;p&gt;Of course, I could have applied a workaround and cleaned up a bit the events/tasks table but I wanted to export everything.&lt;/p&gt;
+&lt;p&gt;The target of this blog article is not to copy/paste the &lt;a href=&#34;https://kb.vmware.com/s/article/2113947&#34; title=&#34;KB2113947&#34;&gt;Knowledge Base article&lt;/a&gt; but to demonstrate that it is still valid for 6.5. Also, I hope it will bring clarity to the administrators.&lt;/p&gt;
+&lt;p&gt;Make sure that you have a valid backup ready to restore and take a snapshot before proceeding!&lt;/p&gt;
+&lt;h2 id=&#34;how-to-create-the-export&#34;&gt;How to create the export?&lt;/h2&gt;
+&lt;p&gt;If you don&#39;t read carefully (like I did the first time..) you will probably waste minutes of your precious time.&lt;/p&gt;
+&lt;p&gt;The message on the screenshot indicates that the root partition on the &lt;strong&gt;SOURCE&lt;/strong&gt; vCenter does not have enough space and requires an export directory, do not be confused with the &lt;strong&gt;DESTINATION&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;I believe that I could have increased the size of the root partition. However, if you take a screenshot, you won&#39;t be able to resize the primary disk. Please also note that by the &lt;a href=&#34;https://kb.vmware.com/s/article/2145603&#34; title=&#34;KB2145603&#34;&gt;VMware article&lt;/a&gt;, it is not supported.Don&#39;t worry too much though,it would only be temporary as the source appliance is meant to be shutdown.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-new-disk&#34;&gt;Create a new disk.&lt;/h2&gt;
+&lt;p&gt;The first step is to create the new disk on the source VM (original vCenter). If you don&#39;t want to spend too much time on the recognition of that disk afterwards, I recommend to use a size that is not currently being used by any of the disks of the vCenter Appliance.Also, use enough capacity to store the data needed as provided by the screenshot.&lt;/p&gt;
+&lt;p&gt;Once the disk has been created, the VMware KB states that you need to rescan the storage by running&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# echo &amp;#34;- - -&amp;#34; &amp;gt; /sys/class/scsi_host/host0/scan&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Unfortunately, this did not work as expected for me, I had to restart the whole appliance.&lt;/p&gt;
+&lt;p&gt;After the reboot, list the disks by using :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# fdisk -l&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;identify&#34;&gt;Identify&lt;/h2&gt;
+&lt;p&gt;At this point, you will be able to identify the disk previously created (in my situation, I created a disk of 120GB) :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;Disk /dev/sdm: &lt;span class=&#34;m&#34;&gt;120&lt;/span&gt; GiB, &lt;span class=&#34;m&#34;&gt;128849018880&lt;/span&gt; bytes, &lt;span class=&#34;m&#34;&gt;251658240&lt;/span&gt; sectors
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Units: sectors of &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; * &lt;span class=&#34;nv&#34;&gt;512&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;Sector size &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;logical/physical&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes / &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;I/O size &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;minimum/optimal&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes / &lt;span class=&#34;m&#34;&gt;512&lt;/span&gt; bytes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once that identification has been done, proceed by creating a partition and its file system :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# fdisk -u /dev/sdm&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;Welcome to fdisk &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;util-linux 2.27.1&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;Changes will remain in memory only, &lt;span class=&#34;k&#34;&gt;until&lt;/span&gt; you decide to write them.
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;Be careful before using the write command.
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;Device does not contain a recognized partition table.
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;Created a new DOS disklabel with disk identifier 0xeba5fea2.
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;Command &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;m &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: n
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;Partition &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;   p   primary &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; primary, &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; extended, &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; free&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;   e   extended &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;container &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; logical partitions&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;Select &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;default p&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: p
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;Partition number &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;1-4, default 1&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;First sector &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;2048-251658239, default 2048&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: “Enter”
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;Last sector, +sectors or +size&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;K,M,G,T,P&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;2048-251658239, default 251658239&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: “Enter”
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;Created a new partition &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; of &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Linux&amp;#39;&lt;/span&gt; and of size &lt;span class=&#34;m&#34;&gt;120&lt;/span&gt; GiB.
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;Command &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;m &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: w
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;The partition table has been altered.
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;Calling ioctl&lt;span class=&#34;o&#34;&gt;()&lt;/span&gt; to re-read partition table.
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;Syncing disks.
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# mkfs -t ext3 -j /dev/sdm&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;mke2fs 1.42.13 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;17-May-2015&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;Found a dos partition table in /dev/sdm
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;Proceed anyway? &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;y,n&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; y
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;Creating filesystem with &lt;span class=&#34;m&#34;&gt;31457280&lt;/span&gt; 4k blocks and &lt;span class=&#34;m&#34;&gt;7864320&lt;/span&gt; inodes
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;Filesystem UUID: 68d869a7-f1c2-45e3-a3d8-355681905610
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;Superblock backups stored on blocks:
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;        4096000, 7962624, 11239424, 20480000, &lt;span class=&#34;m&#34;&gt;23887872&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;32&lt;/span&gt;Allocating group tables: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;33&lt;/span&gt;Writing inode tables: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;34&lt;/span&gt;Creating journal &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;32768&lt;/span&gt; blocks&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;35&lt;/span&gt;Writing superblocks and filesystem accounting information: &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;36&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;37&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# mkdir /storage/tmp2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;38&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# mount -t ext3 /dev/sdm /storage/tmp2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Don&#39;t forget to replace the device name (sdm) by the one you identified with fdisk previously.&lt;/p&gt;
+&lt;h2 id=&#34;provide-the-new-export-to-the-upgrade-utility&#34;&gt;Provide the new export to the upgrade utility&lt;/h2&gt;
+&lt;p&gt;The last step is the easiest, just provide the newly created export to the utility as per the screenshot below :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/export.jpg&#34; alt=&#34;Export&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Job Done!&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
     <item>
       <title>Import/Export Network Settings on Windows</title>
       <link>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</link>
@@ -20,9 +102,9 @@
 &lt;h3 id=&#34;netsh&#34;&gt;netsh&lt;/h3&gt;
 &lt;p&gt;Windows has a handy utility called netsh. This utility allows to import/export the network configuration of a NIC easily.&lt;/p&gt;
 &lt;p&gt;To export :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;test# netsh interface dump &lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; c:\network.txt
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# netsh interface dump &lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; c:\network.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To import :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;test# netsh -c interface -f c:\network
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# netsh -c interface -f c:\network
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
         
       </description>

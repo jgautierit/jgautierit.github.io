@@ -20,12 +20,12 @@
 <meta property="og:type" content="article">
 <meta name="description" content="How to create an export directory when upgrading vCenter.">
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:creator" content="@janedoe">
+<meta name="twitter:creator" content="@jgautierit">
 <meta name="twitter:title" content="New Export Directory - Upgrade from 6.5 to 6.7" />
 <meta property="og:url" content="https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/" />
 <meta property="og:title" content="New Export Directory - Upgrade from 6.5 to 6.7" />
 <meta property="og:description" content="How to create an export directory when upgrading vCenter." />
-<meta property="og:image" content="https://jgautierit.github.io/images/thumbnail.png" />
+<meta property="og:image" content="https://jgautierit.github.io/images/vcconfig.jpg" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
 <link rel="manifest" href='https://jgautierit.github.io/icons/site.webmanifest'>
@@ -74,43 +74,27 @@
     <a href="https://jgautierit.github.io/" class="nav_item" title="Home">Home </a>
   </div>
   <div class="nav_parent">
-    <a href="https://jgautierit.github.io/post/rich-content/" class="nav_item" title="Archives">Archives </a>
-  </div>
-  <div class="nav_parent">
-    <a href="https://jgautierit.github.io/" class="nav_item" title="Links">Links <img src='https://jgautierit.github.io/icons/caret-icon.svg' alt="icon" class="nav_icon"></a>
-    <div class="nav_sub">
-      <span class="nav_child"></span>
-        <a href="https://www.linkedin.com/" class="nav_child nav_item" title="LinkedIn">LinkedIn</a>
-        <a href="https://twitter.com/" class="nav_child nav_item" title="Twitter">Twitter</a>
-    </div>
-  </div>
-  <div class="nav_parent">
     <a href="https://jgautierit.github.io/about/" class="nav_item" title="About">About </a>
   </div>
       
       <div class="nav_parent">
-        <a href="#" class="nav_item">🌐</a>
+        <a href="#" class="nav_item"></a>
         <div class="nav_sub">
           <span class="nav_child"></span>
           
           <a href="https://jgautierit.github.io/" class="nav_child nav_item">English</a>
           
-          <a href="https://jgautierit.github.io/pt/" class="nav_child nav_item">Português</a>
+          <a href="https://jgautierit.github.io/pt/" class="nav_child nav_item"></a>
           
         </div>
       </div>
 <div class='follow'>
-  <a href="https://github.com/#">
-    <svg class="icon">
-  <use xlink:href="#github"></use>
-</svg>
-  </a>
-  <a href="https://twitter.com/#">
+  <a href="https://twitter.com/jgautierit">
     <svg class="icon">
   <use xlink:href="#twitter"></use>
 </svg>
   </a>
-  <a href="https://www.linkedin.com/in/#">
+  <a href="https://www.linkedin.com/in/jgautierit">
     <svg class="icon">
   <use xlink:href="#linkedin"></use>
 </svg>
@@ -142,11 +126,11 @@
 </svg>
     <span class="post_date">
       Sep 18, 2018</span>
-      <a href='https://jgautierit.github.io/tags/vcenter' title="vCenter" class="post_tag button button_translucent">vCenter
+      <a href='https://jgautierit.github.io/tags/nic' title="nic" class="post_tag button button_translucent">nic
+      </a>
+      <a href='https://jgautierit.github.io/tags/network' title="network" class="post_tag button button_translucent">network
       </a>
       <a href='https://jgautierit.github.io/tags/vmware' title="VMware" class="post_tag button button_translucent">VMware
-      </a>
-      <a href='https://jgautierit.github.io/tags/upgrade' title="Upgrade" class="post_tag button button_translucent">Upgrade
       </a>
 </div>
 
@@ -176,111 +160,86 @@
   </div>
 
     
-    <p>This post is dedicated to the &quot;Stage 2&quot; of the upgrade process from vCenter 6.5 to vCenter 6.7. I recently came across a scenario where the configuration exceeded the size of the root partition within the source vCenter appliance.
-{: .text-justify}
-In this case, a new export has to be provided to the upgrade utility in order to go forward.</p>
-<p><img src="/assets/images/vcconfig.jpg" alt="Export"></p>
-<p>This process is also applicable to previous versions. The <a href="https://kb.vmware.com/s/article/2113947" title="KB2113947">KB</a> defines the process that I will describe below, however it has been created for vCenter 6.0.
-{: .text-justify}
-Usually, these steps are not required. Especially when the data (configuration and historical data) are not big enough (2-3GB), but this time I had 21GB to migrate.
-{: .text-justify}
-Of course, I could have applied a workaround and cleaned up a bit the events/tasks table but I wanted to export everything.
-{: .text-justify}
-The target of this blog article is not to copy/paste the <a href="https://kb.vmware.com/s/article/2113947" title="KB2113947">Knowledge Base article</a> but to demonstrate that it is still valid for 6.5. Also, I hope it will bring clarity to the administrators.
-{: .text-justify}
-Make sure that you have a valid backup ready to restore and take a snapshot before proceeding!
-{: .notice--warning}</p>
+    <p>This post is dedicated to the &quot;Stage 2&quot; of the upgrade process from vCenter 6.5 to vCenter 6.7. I recently came across a scenario where the configuration exceeded the size of the root partition within the source vCenter appliance.</p>
+<p>In this case, a new export has to be provided to the upgrade utility in order to go forward.</p>
+<p><img src="/vcconfig.jpg" alt="Export"></p>
+<p>This process is also applicable to previous versions. The <a href="https://kb.vmware.com/s/article/2113947" title="KB2113947">KB</a> defines the process that I will describe below, however it has been created for vCenter 6.0.</p>
+<p>Usually, these steps are not required. Especially when the data (configuration and historical data) are not big enough (2-3GB), but this time I had 21GB to migrate.</p>
+<p>Of course, I could have applied a workaround and cleaned up a bit the events/tasks table but I wanted to export everything.</p>
+<p>The target of this blog article is not to copy/paste the <a href="https://kb.vmware.com/s/article/2113947" title="KB2113947">Knowledge Base article</a> but to demonstrate that it is still valid for 6.5. Also, I hope it will bring clarity to the administrators.</p>
+<p>Make sure that you have a valid backup ready to restore and take a snapshot before proceeding!</p>
 <h2 id="how-to-create-the-export">How to create the export?</h2>
-<p>If you don't read carefully (like I did the first time..) you will probably waste minutes of your precious time.
-{: .text-justify}
-The message on the screenshot indicates that the root partition on the <strong>SOURCE</strong> vCenter does not have enough space and requires an export directory, do not be confused with the <strong>DESTINATION</strong>.
-{: .text-justify}</p>
-<p>I believe that I could have increased the size of the root partition. However, if you take a screenshot, you won't be able to resize the primary disk. Please also note that by the <a href="https://kb.vmware.com/s/article/2145603" title="KB2145603">VMware article</a>, it is not supported.Don't worry too much though,it would only be temporary as the source appliance is meant to be shutdown.
-{: .text-justify}
-{:.notice--info}</p>
+<p>If you don't read carefully (like I did the first time..) you will probably waste minutes of your precious time.</p>
+<p>The message on the screenshot indicates that the root partition on the <strong>SOURCE</strong> vCenter does not have enough space and requires an export directory, do not be confused with the <strong>DESTINATION</strong>.</p>
+<p>I believe that I could have increased the size of the root partition. However, if you take a screenshot, you won't be able to resize the primary disk. Please also note that by the <a href="https://kb.vmware.com/s/article/2145603" title="KB2145603">VMware article</a>, it is not supported.Don't worry too much though,it would only be temporary as the source appliance is meant to be shutdown.</p>
 <h2 id="create-a-new-disk">Create a new disk.</h2>
-<p>The first step is to create the new disk on the source VM (original vCenter). If you don't want to spend too much time on the recognition of that disk afterwards, I recommend to use a size that is not currently being used by any of the disks of the vCenter Appliance.Also, use enough capacity to store the data needed as provided by the screenshot.
-{: .text-justify}</p>
-<p>Once the disk has been created, the VMware KB states that you need to rescan the storage by running :
-{: .text-justify}</p>
+<p>The first step is to create the new disk on the source VM (original vCenter). If you don't want to spend too much time on the recognition of that disk afterwards, I recommend to use a size that is not currently being used by any of the disks of the vCenter Appliance.Also, use enough capacity to store the data needed as provided by the screenshot.</p>
+<p>Once the disk has been created, the VMware KB states that you need to rescan the storage by running</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="c1"># echo &#34;- - -&#34; &gt; /sys/class/scsi_host/host0/scan</span>
-</code></pre></div><p>Unfortunately, this did not work as expected for me, I had to restart the whole appliance.
-{: .text-justify}</p>
+</code></pre></div><p>Unfortunately, this did not work as expected for me, I had to restart the whole appliance.</p>
 <p>After the reboot, list the disks by using :</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="c1"># fdisk -l</span>
 </code></pre></div><h2 id="identify">Identify</h2>
-<p>At this point, you will be able to identify the disk previously created (in my situation, I created a disk of 120GB) :
-{: .text-justify}</p>
+<p>At this point, you will be able to identify the disk previously created (in my situation, I created a disk of 120GB) :</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>Disk /dev/sdm: <span class="m">120</span> GiB, <span class="m">128849018880</span> bytes, <span class="m">251658240</span> sectors
 <span class="ln">2</span>Units: sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
 <span class="ln">3</span>Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
 <span class="ln">4</span>I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
-</code></pre></div><p>Once that identification has been done, proceed by creating a partition and its file system :
-{: .text-justify}</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln"> 1</span>
-<span class="ln"> 2</span># fdisk -u /dev/sdm
-<span class="ln"> 3</span>
-<span class="ln"> 4</span>Welcome to fdisk (util-linux 2.27.1).
-<span class="ln"> 5</span>Changes will remain in memory only, until you decide to write them.
-<span class="ln"> 6</span>Be careful before using the write command.
-<span class="ln"> 7</span>Device does not contain a recognized partition table.
-<span class="ln"> 8</span>Created a new DOS disklabel with disk identifier 0xeba5fea2.
-<span class="ln"> 9</span>Command (m for help): n
-<span class="ln">10</span>Partition type
-<span class="ln">11</span>   p   primary (0 primary, 0 extended, 4 free)
-<span class="ln">12</span>   e   extended (container for logical partitions)
-<span class="ln">13</span>Select (default p): p
-<span class="ln">14</span>Partition number (1-4, default 1): 1
-<span class="ln">15</span>First sector (2048-251658239, default 2048): “Enter”
-<span class="ln">16</span>Last sector, +sectors or +size{K,M,G,T,P} (2048-251658239, default 251658239): “Enter”
-<span class="ln">17</span>Created a new partition 1 of type &#39;Linux&#39; and of size 120 GiB.
-<span class="ln">18</span>Command (m for help): w
-<span class="ln">19</span>The partition table has been altered.
-<span class="ln">20</span>Calling ioctl() to re-read partition table.
-<span class="ln">21</span>Syncing disks.
-<span class="ln">22</span>
-<span class="ln">23</span># mkfs -t ext3 -j /dev/sdm
-<span class="ln">24</span>mke2fs 1.42.13 (17-May-2015)
-<span class="ln">25</span>Found a dos partition table in /dev/sdm
-<span class="ln">26</span>Proceed anyway? (y,n) y
-<span class="ln">27</span>Creating filesystem with 31457280 4k blocks and 7864320 inodes
-<span class="ln">28</span>Filesystem UUID: 68d869a7-f1c2-45e3-a3d8-355681905610
-<span class="ln">29</span>Superblock backups stored on blocks:
-<span class="ln">30</span>        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
-<span class="ln">31</span>        4096000, 7962624, 11239424, 20480000, 23887872
-<span class="ln">32</span>
-<span class="ln">33</span>Allocating group tables: done
-<span class="ln">34</span>Writing inode tables: done
-<span class="ln">35</span>Creating journal (32768 blocks): done
-<span class="ln">36</span>Writing superblocks and filesystem accounting information: done
-<span class="ln">37</span>
-<span class="ln">38</span># mkdir /storage/tmp2
-<span class="ln">39</span># mount -t ext3 /dev/sdm /storage/tmp2
-</code></pre></div><p>Don't forget to replace the device name (sdm) by the one you identified with fdisk previously.
-{: .text-justify}</p>
+</code></pre></div><p>Once that identification has been done, proceed by creating a partition and its file system :</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln"> 1</span><span class="c1"># fdisk -u /dev/sdm</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span>Welcome to fdisk <span class="o">(</span>util-linux 2.27.1<span class="o">)</span>.
+<span class="ln"> 4</span>Changes will remain in memory only, <span class="k">until</span> you decide to write them.
+<span class="ln"> 5</span>Be careful before using the write command.
+<span class="ln"> 6</span>Device does not contain a recognized partition table.
+<span class="ln"> 7</span>Created a new DOS disklabel with disk identifier 0xeba5fea2.
+<span class="ln"> 8</span>Command <span class="o">(</span>m <span class="k">for</span> <span class="nb">help</span><span class="o">)</span>: n
+<span class="ln"> 9</span>Partition <span class="nb">type</span>
+<span class="ln">10</span>   p   primary <span class="o">(</span><span class="m">0</span> primary, <span class="m">0</span> extended, <span class="m">4</span> free<span class="o">)</span>
+<span class="ln">11</span>   e   extended <span class="o">(</span>container <span class="k">for</span> logical partitions<span class="o">)</span>
+<span class="ln">12</span>Select <span class="o">(</span>default p<span class="o">)</span>: p
+<span class="ln">13</span>Partition number <span class="o">(</span>1-4, default 1<span class="o">)</span>: <span class="m">1</span>
+<span class="ln">14</span>First sector <span class="o">(</span>2048-251658239, default 2048<span class="o">)</span>: “Enter”
+<span class="ln">15</span>Last sector, +sectors or +size<span class="o">{</span>K,M,G,T,P<span class="o">}</span> <span class="o">(</span>2048-251658239, default 251658239<span class="o">)</span>: “Enter”
+<span class="ln">16</span>Created a new partition <span class="m">1</span> of <span class="nb">type</span> <span class="s1">&#39;Linux&#39;</span> and of size <span class="m">120</span> GiB.
+<span class="ln">17</span>Command <span class="o">(</span>m <span class="k">for</span> <span class="nb">help</span><span class="o">)</span>: w
+<span class="ln">18</span>The partition table has been altered.
+<span class="ln">19</span>Calling ioctl<span class="o">()</span> to re-read partition table.
+<span class="ln">20</span>Syncing disks.
+<span class="ln">21</span>
+<span class="ln">22</span><span class="c1"># mkfs -t ext3 -j /dev/sdm</span>
+<span class="ln">23</span>mke2fs 1.42.13 <span class="o">(</span>17-May-2015<span class="o">)</span>
+<span class="ln">24</span>Found a dos partition table in /dev/sdm
+<span class="ln">25</span>Proceed anyway? <span class="o">(</span>y,n<span class="o">)</span> y
+<span class="ln">26</span>Creating filesystem with <span class="m">31457280</span> 4k blocks and <span class="m">7864320</span> inodes
+<span class="ln">27</span>Filesystem UUID: 68d869a7-f1c2-45e3-a3d8-355681905610
+<span class="ln">28</span>Superblock backups stored on blocks:
+<span class="ln">29</span>        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+<span class="ln">30</span>        4096000, 7962624, 11239424, 20480000, <span class="m">23887872</span>
+<span class="ln">31</span>
+<span class="ln">32</span>Allocating group tables: <span class="k">done</span>
+<span class="ln">33</span>Writing inode tables: <span class="k">done</span>
+<span class="ln">34</span>Creating journal <span class="o">(</span><span class="m">32768</span> blocks<span class="o">)</span>: <span class="k">done</span>
+<span class="ln">35</span>Writing superblocks and filesystem accounting information: <span class="k">done</span>
+<span class="ln">36</span>
+<span class="ln">37</span><span class="c1"># mkdir /storage/tmp2</span>
+<span class="ln">38</span><span class="c1"># mount -t ext3 /dev/sdm /storage/tmp2</span>
+</code></pre></div><p>Don't forget to replace the device name (sdm) by the one you identified with fdisk previously.</p>
 <h2 id="provide-the-new-export-to-the-upgrade-utility">Provide the new export to the upgrade utility</h2>
-<p>The last step is the easiest, just provide the newly created export to the utility as per the screenshot below :
-{: .text-justify}</p>
-<p><img src="/assets/images/export.jpg" alt="Export"></p>
-<p>Job Done!
-{: .notice--success}</p>
+<p>The last step is the easiest, just provide the newly created export to the utility as per the screenshot below :</p>
+<p><img src="/export.jpg" alt="Export"></p>
+<p>Job Done!</p>
 
 
   </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     
-      <h2>Jane Doe</h2>
+      <h2>Jonathan Gautier</h2>
       <div class="sidebar_description">
-        Technologist, perpetual student, teacher, continual incremental improvement.
+        Virtualization, HCI, Homelabs, and Football are my passions.
       </div>
       <a href='https://jgautierit.github.io/about/' class="button mt-1" role="button" title='Read More'>Read More</a>
-    <h2 class="mt-4">Featured Posts</h2>
-    <ul>
-      <li>
-        <a href="https://jgautierit.github.io/post/markdown-syntax/" class="nav-link" title="Markdown Syntax Guide">Markdown Syntax Guide</a>
-      </li>
-    </ul>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
@@ -296,7 +255,7 @@ The message on the screenshot indicates that the root partition on the <strong>S
         <a href="https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/" class="nav-link" title="SimpliVity Upgrade - Walkthrough">SimpliVity Upgrade - Walkthrough</a>
       </li>
       <li>
-        <a href="https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/" class="nav-link" title="Omnistack &#34;Virtual machine memory usage&#34; alarm, a workaround.">Omnistack &#34;Virtual machine memory usage&#34; alarm, a workaround.</a>
+        <a href="https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/" class="nav-link" title="Omnistack Virtual machine memory usage alarm, a workaround.">Omnistack Virtual machine memory usage alarm, a workaround.</a>
       </li>
       <li>
         <a href="https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/" class="nav-link" title="Windows Server 2019 optimized for SimpliVity">Windows Server 2019 optimized for SimpliVity</a>
@@ -305,205 +264,68 @@ The message on the screenshot indicates that the root partition on the <strong>S
         <a href="https://jgautierit.github.io/post/2019-04-18-vxrail-roles/" class="nav-link" title="VxRAIL Roles Script">VxRAIL Roles Script</a>
       </li>
       <li>
-        <a href="https://jgautierit.github.io/post/markdown-syntax/" class="nav-link" title="Markdown Syntax Guide">Markdown Syntax Guide</a>
+        <a href="https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/" class="nav-link" title="Update Manager 6.7 fails to remediate - Check your ports !">Update Manager 6.7 fails to remediate - Check your ports !</a>
       </li>
     </ul>
     <div>
-      <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
-      <nav class="tags_nav">
-        <a href='https://jgautierit.github.io/categories/syntax/' class="post_tag button button_translucent" title="syntax">
-          SYNTAX
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/categories/themes/' class="post_tag button button_translucent" title="themes">
-          THEMES
-          <span class="button_tally">1</span>
-        </a>
-        
-        
-      </nav>
-    </div>
-    <div>
-      <h2 class="mt-4 taxonomy" id="series-section">Series</h2>
-      <nav class="tags_nav">
-        <a href='https://jgautierit.github.io/series/themes-guide/' class="post_tag button button_translucent" title="themes-guide">
-          THEMES-GUIDE
-          <span class="button_tally">1</span>
-        </a>
-        
-        
-      </nav>
-    </div>
-    <div>
       <h2 class="mt-4 taxonomy" id="tags-section">Tags</h2>
       <nav class="tags_nav">
-        <a href='https://jgautierit.github.io/tags/markdown/' class="post_tag button button_translucent" title="markdown">
-          MARKDOWN
+        <a href='https://jgautierit.github.io/tags/vmware/' class="post_tag button button_translucent" title="vmware">
+          VMWARE
+          <span class="button_tally">10</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/vcenter/' class="post_tag button button_translucent" title="vcenter">
+          VCENTER
+          <span class="button_tally">5</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/hpe/' class="post_tag button button_translucent" title="hpe">
+          HPE
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/simplivity/' class="post_tag button button_translucent" title="simplivity">
+          SIMPLIVITY
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/updatemanager/' class="post_tag button button_translucent" title="updatemanager">
+          UPDATEMANAGER
+          <span class="button_tally">3</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/network/' class="post_tag button button_translucent" title="network">
+          NETWORK
           <span class="button_tally">2</span>
         </a>
         
-        <a href='https://jgautierit.github.io/tags/vmware-hpe-hci-simplivity/' class="post_tag button button_translucent" title="vmware-hpe-hci-simplivity">
-          VMWARE-HPE-HCI-SIMPLIVITY
+        <a href='https://jgautierit.github.io/tags/nic/' class="post_tag button button_translucent" title="nic">
+          NIC
           <span class="button_tally">2</span>
         </a>
         
-        <a href='https://jgautierit.github.io/tags/css/' class="post_tag button button_translucent" title="css">
-          CSS
+        <a href='https://jgautierit.github.io/tags/nutanix/' class="post_tag button button_translucent" title="nutanix">
+          NUTANIX
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://jgautierit.github.io/tags/emoji/' class="post_tag button button_translucent" title="emoji">
-          EMOJI
+        <a href='https://jgautierit.github.io/tags/psod/' class="post_tag button button_translucent" title="psod">
+          PSOD
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://jgautierit.github.io/tags/featured/' class="post_tag button button_translucent" title="featured">
-          FEATURED
+        <a href='https://jgautierit.github.io/tags/vsan/' class="post_tag button button_translucent" title="vsan">
+          VSAN
           <span class="button_tally">1</span>
         </a>
         
-        <a href='https://jgautierit.github.io/tags/hci-nutanix/' class="post_tag button button_translucent" title="hci-nutanix">
-          HCI-NUTANIX
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/html/' class="post_tag button button_translucent" title="html">
-          HTML
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/index/' class="post_tag button button_translucent" title="index">
-          INDEX
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/network-e1000-vmxnet3-vmware-windows/' class="post_tag button button_translucent" title="network-e1000-vmxnet3-vmware-windows">
-          NETWORK-E1000-VMXNET3-VMWARE-WINDOWS
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/privacy/' class="post_tag button button_translucent" title="privacy">
-          PRIVACY
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/shortcodes/' class="post_tag button button_translucent" title="shortcodes">
-          SHORTCODES
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/text/' class="post_tag button button_translucent" title="text">
-          TEXT
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/themes/' class="post_tag button button_translucent" title="themes">
-          THEMES
-          <span class="button_tally">1</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/upgrade/' class="post_tag button button_translucent" title="upgrade">
-          UPGRADE
+        <a href='https://jgautierit.github.io/tags/vxrail/' class="post_tag button button_translucent" title="vxrail">
+          VXRAIL
           <span class="button_tally">1</span>
         </a>
         
         
-        <br>
-        <div class="post_tags_toggle button">All Tags</div>
-        <div class="post_tags">
-          <div class="tags_list">
-            
-            <a href='https://jgautierit.github.io/tags/css/' class=" post_tag button button_translucent" data-position=1 title="css">CSS<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/emoji/' class=" post_tag button button_translucent" data-position=1 title="emoji">EMOJI<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/featured/' class=" post_tag button button_translucent" data-position=1 title="featured">FEATURED<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/hci-nutanix/' class=" post_tag button button_translucent" data-position=1 title="hci-nutanix">HCI-NUTANIX<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/html/' class=" post_tag button button_translucent" data-position=1 title="html">HTML<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/index/' class=" post_tag button button_translucent" data-position=1 title="index">INDEX<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/markdown/' class=" post_tag button button_translucent" data-position=2 title="markdown">MARKDOWN<span class="button_tally">2</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/network-e1000-vmxnet3-vmware-windows/' class=" post_tag button button_translucent" data-position=1 title="network-e1000-vmxnet3-vmware-windows">NETWORK-E1000-VMXNET3-VMWARE-WINDOWS<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/privacy/' class=" post_tag button button_translucent" data-position=1 title="privacy">PRIVACY<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/shortcodes/' class=" post_tag button button_translucent" data-position=1 title="shortcodes">SHORTCODES<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/text/' class=" post_tag button button_translucent" data-position=1 title="text">TEXT<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/themes/' class=" post_tag button button_translucent" data-position=1 title="themes">THEMES<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/upgrade/' class=" post_tag button button_translucent" data-position=1 title="upgrade">UPGRADE<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vcenter/' class=" post_tag button button_translucent" data-position=1 title="vcenter">VCENTER<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vmware/' class=" post_tag button button_translucent" data-position=1 title="vmware">VMWARE<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vmware-dell-vsan-vxrail/' class=" post_tag button button_translucent" data-position=1 title="vmware-dell-vsan-vxrail">VMWARE-DELL-VSAN-VXRAIL<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vmware-hpe-hci-simplivity/' class=" post_tag button button_translucent" data-position=2 title="vmware-hpe-hci-simplivity">VMWARE-HPE-HCI-SIMPLIVITY<span class="button_tally">2</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vmware-hpe-simplivity-hci/' class=" post_tag button button_translucent" data-position=1 title="vmware-hpe-simplivity-hci">VMWARE-HPE-SIMPLIVITY-HCI<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vmware-upgrade-vcenter-updatemanager/' class=" post_tag button button_translucent" data-position=1 title="vmware-upgrade-vcenter-updatemanager">VMWARE-UPGRADE-VCENTER-UPDATEMANAGER<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vmware-vcenter/' class=" post_tag button button_translucent" data-position=1 title="vmware-vcenter">VMWARE-VCENTER<span class="button_tally">1</span>
-            </a>
-            
-            
-            <a href='https://jgautierit.github.io/tags/vsan-vmware/' class=" post_tag button button_translucent" data-position=1 title="vsan-vmware">VSAN-VMWARE<span class="button_tally">1</span>
-            </a>
-            
-            <div class="tags_sort"><span title="sort alphabetically">[A~Z]</span><span title="sort by count">[0~9]</span>
-            </div>
-            <span class="tags_hide"><svg class="icon">
-            <use xlink:href="#closeme"></use>
-          </svg></span>
-          </div>
-        </div>
       </nav>
     </div>
   </section>

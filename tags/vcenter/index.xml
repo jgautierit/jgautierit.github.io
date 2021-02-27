@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vCenter on Clarity</title>
+    <link>https://jgautierit.github.io/tags/vcenter/</link>
+    <description>Recent content in vCenter on Clarity</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 23 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/vcenter/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</title>
+      <link>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</link>
+      <pubDate>Tue, 23 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</guid>
+      <description>
+        
+          &lt;p&gt;After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/synchcl.jpg&#34; alt=&#34;LCM sync HCL&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Im ny situation, the task was stuck at 10% and failing afterwards with the error &amp;quot;A general system error occcured...&amp;quot;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/errorlcm.jpg&#34; alt=&#34;Error HCL&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the logs (/var/log/vmware/vmware-updatemgr/vum-server/vmware-vum-server.log), it was really difficult to find something relevant but it looks like the download was failing.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;20-06-23T10:09:55.200Z error vmware-vum-server&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;28017&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Originator@6876 &lt;span class=&#34;nv&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Task:com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask ID:52b92e6b-1b4c-1584-c1ad-da57f7571f88. Task Failed. Error: Error:
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;--&amp;gt;    com.vmware.vapi.std.errors.error
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;--&amp;gt; Messages:
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;--&amp;gt;    com.vmware.vcIntegrity.hcl.vvs.unreachable.summary
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;--&amp;gt;    com.vmware.vcIntegrity.hcl.vvs.unreachable.resolution
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;--&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Looking at the tasks, I found out that VMware use multile python scripts in the following directory   /usr/lib/vmware-updatemgr/config/&lt;/p&gt;
+&lt;p&gt;Thanks to my buddy Y.Ilmi for guiding me to the specific script called vvs-config.json.&lt;/p&gt;
+&lt;p&gt;This script provides the URL that VMware use to download the hcl : vvs.esp.vmware.com&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/vvsconfigjson.jpg&#34; alt=&#34;vvs-config&#34;&gt;&lt;/p&gt;
+&lt;p&gt;vCenter was unable to reach the URL (use curl to test it) I asked the security team to grant access.&lt;/p&gt;
+&lt;p&gt;Problem solved!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/HCL2.jpg&#34; alt=&#34;HCL&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/hcl3.jpg&#34; alt=&#34;HCL&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync Updates</title>
+      <link>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</link>
+      <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</guid>
+      <description>
+        
+          &lt;p&gt;After upgrading vCenter 6.7 to 7.0, I had a strange issue where I could not Sync Updates anymore within the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/lcmsync.jpg&#34; alt=&#34;LCM sync&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The error message was the following : A general system occured: An error occured while downloading depot metadata from file:///storage/updatemgr/patch-store/hostupdate/vmw/vmw-ESXi-5.0.0-metadata.zip&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/lcmerror.jpg&#34; alt=&#34;LCM error&#34;&gt;&lt;/p&gt;
+&lt;p&gt;From the error, it looks like it&#39;s trying to download the metadata file from the 5.0 zip file which should not be really used anymore since vCenter 7.0 is not compatible anymore with any hosts &amp;lt; 6.5.&lt;/p&gt;
+&lt;p&gt;I went to look at the directory (/storage/updatemgr/patch-store/hostupdate/vmw/) within vCenter and indeed the file was missing. In order to see if I was really missing a file here, I went to look in a freshly deployed vCenter and it seems like there is no file named this way either.&lt;/p&gt;
+&lt;p&gt;I tried to compare the xml files and see if anything was missing or corrupted but everything seemed to be fine.&lt;/p&gt;
+&lt;p&gt;At some point, I decided to reset completely Update Manager but I was not sure how.&lt;/p&gt;
+&lt;p&gt;I found this VMware Knowledge Base article &lt;a href=&#34;https://kb.vmware.com/s/article/2147284&#34; title=&#34;VMware KB2147284&#34;&gt;here&lt;/a&gt; which describe how to reset the database.&lt;/p&gt;
+&lt;p&gt;After executing the following steps my issue was fixed and update manager was not complaining about the file anymore (even though it&#39;s still does not exist...)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# service-control --start vmware-updatemgr&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# /usr/lib/vmware-updatemgr/bin/updatemgr-utility.py reset-db&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# rm -rf /storage/updatemgr/patch-store/*&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# service-control --start vmware-updatemgr&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I hope this has been useful for you and I&#39;d like to thank you for reading!&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Windows Server 2019 optimized for SimpliVity</title>
+      <link>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</link>
+      <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</guid>
+      <description>
+        
+          &lt;p&gt;I’ve recently started to implement HPE SimpliVity clusters.
+As per the documentation, SimpliVity uses 8k blocks while Windows Server uses 4k by default.
+HPE recommend using this block size for VMs, especially if you use file servers. In order to install a brand new Windows server, a workaround has to be implemented if you wish to use this specific block size on the OS disk.
+At the beginning, I was following this useful blog &lt;a href=&#34;https://www.v-wave.ch/en/2016/05/18/create-simplivity-optimized-windows-server/&#34; title=&#34;8kdiskOS&#34;&gt;article&lt;/a&gt; where it is explained how to change the block size when installing Windows servers.
+Things changed a bit since the creation of this article so I will describe the procedure below.&lt;/p&gt;
+&lt;h2 id=&#34;create-a-vm-with-a-new-disk&#34;&gt;Create a VM with a new disk.&lt;/h2&gt;
+&lt;p&gt;Well, the first step is obvious : create the VM. For this demonstration, I will use Windows Server 2019 so I am going to create a VM with a brand new disk of 40GB and a VMware Paravirtual controller.&lt;/p&gt;
+&lt;h2 id=&#34;start-the-vm-installation&#34;&gt;Start the VM installation&lt;/h2&gt;
+&lt;p&gt;The next step is to boot the VM on the Windows ISO.&lt;/p&gt;
+&lt;p&gt;Do not forget to include the Windows ISO of the VMware tools in order to detect your disk (using the paravirtual driver).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tools.jpg&#34; alt=&#34;Tools&#34;&gt;&lt;/p&gt;
+&lt;p&gt;When the driver is installed and the disk is detected, please proceed and select &amp;quot;New&amp;quot;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;newdisk.jpg&#34; alt=&#34;New&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Microsoft will create 4 partitions necessary for the Windows Server&#39;s installation.
+{: .text-justify}
+Identify the partition that we are going to use to install the system (the biggest) and press with your keyboard Shift + F10.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/prompt.jpg&#34; alt=&#34;Prompt&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;format-to-ntfs-with-8k-block-size&#34;&gt;Format to NTFS with 8k block size&lt;/h2&gt;
+&lt;p&gt;Enter the following commands :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;X&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;\Sources&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&amp;gt;diskpart&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;list disk
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select disk 0
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select partition 4
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;select volume 3
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;format quick unit=8192
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;exit
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;exit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Click Refresh and Next.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/refresh.jpg&#34; alt=&#34;Refresh&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As soon as your Windows installation is completed, you can verify the NTFS block size with the following command :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;filesystems
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;ntfs8k.jpg&#34; alt=&#34;NTFS&#34;&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>VxRAIL Roles Script</title>
+      <link>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</guid>
+      <description>
+        
+          &lt;p&gt;In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL.
+N.B : This script works for VxRail 4.7.x. This can change depending on the features/requirement that VxRAIL will implement in the future.
+N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delassus.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span class=&#34;ln&#34;&gt;  1&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# This is a script to create the required roles for VxRAIL users when an external vCenter is required.&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  2&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Made by Jonathan Gautier on the 08/04/2019&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  3&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Review by Steve Delassus on the 11/01/2021 based on the latest solve procedure &lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  5&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;This is a PowerCLI Script to create the required roles for VxRAIL&amp;#34;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt; 
+&lt;span class=&#34;ln&#34;&gt;  6&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Connect-VIServer&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Your vCenter FQDN or IP &amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  7&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  8&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#VxRail Initial Gobal Role Name&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;  9&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$vxrailrole1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;VxRail Initial Global&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 10&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 11&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#VxRail DC Gobal Role Name&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 12&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$vxrailrole2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;VxRail Datacenter Global&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 13&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 14&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$initglobal&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;@(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 15&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Anonymous&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 16&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.View&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 17&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Read&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 18&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.ManageCustomFields&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 19&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.SetCustomField&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 20&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.LogEvent&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 21&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Licenses&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 22&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Diagnostics&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 23&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 24&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 25&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 26&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.Browse&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 27&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.DeleteFile&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 28&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.FileManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 29&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.AllocateSpace&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 30&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.UpdateVirtualMachineFiles&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 31&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Network.Assign&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 32&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 33&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.HostOp&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 34&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.ResourceManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 35&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVPortgroup.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 36&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.AddHostToCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 37&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.RemoveHostFromCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 38&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.EditCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 39&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.SystemManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 40&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Maintenance&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 41&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Storage&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 42&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.NetService&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 43&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Network&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 44&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 45&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Power&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 46&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 47&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Unregister&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 48&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOn&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 49&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOff&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 50&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.ConsoleInteract&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 51&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.DeviceConnection&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 52&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.SetCDMedia&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 53&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.GuestControl&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 54&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.Query&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 55&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 56&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.Execute&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 57&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.QueryAliases&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 58&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.GuestOperations.ModifyAliases&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 59&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.State.CreateSnapshot&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 60&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.State.RemoveSnapshot&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 61&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Resource.HotMigrate&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 62&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Resource.ColdMigrate&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 63&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 64&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 65&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.SetStatus&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 66&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ModifyRoles&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 67&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ReassignRolePermissions&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 68&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ModifyPermissions&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 69&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Extension.Register&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 70&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VApp.ApplicationConfig&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 71&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VApp.Import&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 72&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VApp.ExtractOvfEnvironment&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 73&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Cryptographer.Access&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 74&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Cryptographer.Decrypt&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 75&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Cryptographer.Migrate&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 76&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Authorization.ModifyPrivileges&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 77&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;StorageProfile.Update&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 78&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;StorageProfile.View&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 79&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 80&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 81&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$dcglobal&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;@(&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 82&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Anonymous&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 83&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.View&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 84&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;System.Read&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 85&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.ManageCustomFields&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 86&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.SetCustomField&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 87&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Global.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 88&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 89&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Folder.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 90&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Datastore.Rename&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 91&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Network.Assign&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 92&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 93&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 94&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.HostOp&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 95&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVSwitch.ResourceManagement&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 96&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVPortgroup.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 97&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;DVPortgroup.Modify&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 98&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.CreateCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 99&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.AddHostToCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;100&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.DeleteCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;101&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Inventory.EditCluster&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;102&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.AutoStart&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;103&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Storage&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;104&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.NetService&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;105&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Host.Config.Network&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;106&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Create&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;107&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Delete&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;108&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Inventory.Unregister&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;109&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOn&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;110&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Interact.PowerOff&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;111&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Config.AddNewDisk&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;112&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Config.EditDevice&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;113&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;VirtualMachine.Config.Settings&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;114&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Alarm.SetStatus&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;115&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Extension.Register&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;116&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;117&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;118&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Create New $vxrailrole1 Role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;119&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;New-VIRole&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Name&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$vxrailrole1&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Privilege&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Get-VIPrivilege&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-id&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$initglobal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Out-Null&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;120&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Create New $vxrailrole2 Role&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;121&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;New-VIRole&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Name&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$vxrailrole2&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-Privilege&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Get-VIPrivilege&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-id&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$dcglobal&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Out-Null&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;122&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Done&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The rest of the procedure to apply the roles/permissionsa are available in Solve.&lt;/p&gt;
+&lt;p&gt;Hope this helps.&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Update Manager 6.7 fails to remediate - Check your ports !</title>
+      <link>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</link>
+      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</guid>
+      <description>
+        
+          &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
+Working at a customer site and upgrading the hosts to 6.7, Update Manager was failing to remediate my ESXi upgrade with the following error :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
+&lt;p&gt;What a nice error message ...Very Helpful!&lt;/p&gt;
+&lt;p&gt;No more indication was provided by the vCenter tasks &amp;amp; events so I had to look at the logs.&lt;/p&gt;
+&lt;p&gt;In vCenter Server Appliance, the Update manager logs are located here :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;/var/log/vmware/vmware-updatemgr/vum-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Looking at the last &amp;quot;vmware-vum-server.log&amp;quot;, I quickly matched an error with the last try :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;2018-09-20T11:31:14.436Z warning vmware-vum-server[06197] [Originator@6876 sub=Default] Failed to connect socket; &amp;lt;io_obj p:0x00007fb0840161f0, h:20, &amp;lt;TCP &amp;#39;X.X.X.X : 42026&amp;#39;&amp;gt;, &amp;lt;TCP &amp;#39;Y.Y.Y.Y : 80&amp;#39;&amp;gt;&amp;gt;, e: 111(Connection refused)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This error indicates that the IP X.X.X.X tries to communicate through the port 80 on the IP address Y.Y.Y.Y. X being my vCenter and Y my ESXi host.&lt;/p&gt;
+&lt;p&gt;In order to prove that the error was the consequence of a blocked port, I used this the following command to test the ports :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# curl -v telnet://Y.Y.Y.Y:80&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Guess the result ?&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;* Rebuilt URL to: telnet://Y.Y.Y.Y:80/
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;*   Trying Y.Y.Y.Y...
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;* TCP_NODELAY set
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;* connect to Y.Y.Y.Y port 80 failed: Connection refused
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;* Failed to connect to Y.Y.Y.Y port 80: Connection refused
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;* Closing connection 0
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;curl: (7) Failed to connect to Y.Y.Y.Y port 80: Connection refused
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We then tested a known working port such as 443 :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# curl -v telnet://Y.Y.Y.Y:443
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;* Rebuilt URL to: telnet://Y.Y.Y.Y:443
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;*   Trying Y.Y.Y.Y...
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;* TCP_NODELAY set
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;* Connected to Y.Y.Y.Y (Y.Y.Y.Y) port 443 (#0)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It become then obvious that the port was blocked by some firewall.&lt;/p&gt;
+&lt;p&gt;We asked kindly the colleagues to open the port. Required ports for update manager are listed &lt;a href=&#34;https://kb.vmware.com/s/article/1004543&#34; title=&#34;KB1004543&#34;&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Problem Solved!&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>
