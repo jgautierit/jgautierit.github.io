@@ -28,6 +28,20 @@ Usually, the regular ESXi logs are not enough to diagnose the issue.&lt;/p&gt;
 &lt;h2 id=&#34;how-to-grab-it-in-logs-&#34;&gt;How to grab it in logs ?&lt;/h2&gt;
 &lt;p&gt;When you gather the logs through ESXi via vm-support, an automatic script is going to grab the dump and put it in the vm-support tgz. As the dump can be quite heavy, please make sure that you have enough space in the directory where you will generate the support bundle.&lt;/p&gt;
 &lt;p&gt;Last comment but not the least, the host must have a diagnostic partition configured otherwise no dump will be collecting leading to a wasted reboot.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;:exclamation:  This is very important&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;/table&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;:zap:        Ignore at your own risk!&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;/table&gt;
 
         
       </description>
