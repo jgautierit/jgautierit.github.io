@@ -5,6 +5,40 @@
     <link>https://jgautierit.github.io/post/</link>
     <description>Recent content in Posts on Clarity</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright><atom:link href="https://jgautierit.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
+    <lastBuildDate>Fri, 14 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Don&#39;t waste reboots in vSAN!</title>
+      <link>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</link>
+      <pubDate>Fri, 14 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</guid>
+      <description>
+        
+          &lt;p&gt;This topic will focus on vSAN and more particularly to situations where a host in a vSAN cluster becomes &amp;quot;not responding&amp;quot;.
+{: .text-justify}
+Many reasons can lead to a host becoming not responding and often a call to GSS becomes essential.
+If the host is not responding, a reboot can become required as the last step and most of the time a root cause analysis will be expected.
+{: .text-justify}
+Usually, the regular ESXi logs are not enough to diagnose the issue.&lt;/p&gt;
+&lt;h2 id=&#34;why-a-nmi&#34;&gt;Why a NMI?&lt;/h2&gt;
+&lt;p&gt;The NMI or Non Maskable Interrupt allows to generate the famous &amp;quot;Purple Screen Of Death&amp;quot; on the ESXi. As a consequence, a dump will be generated and will allow the analysis by VMware of the dump taken previously in order to establish a root cause.
+{: .text-justify}
+&lt;img src=&#34;https://jgautierit.github.io/assets/images/PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Warning : A NMI should be the last step. Do not send the NMI if no troubleshooting steps was tried.
+{: .notice--warning}&lt;/p&gt;
+&lt;h2 id=&#34;how-to-generate-a-nmi&#34;&gt;How to generate a NMI?&lt;/h2&gt;
+&lt;p&gt;Every vendor should have the option in their management interface like ILO or IDRAC. Please refer to their documentation.
+{: .text-justify}&lt;/p&gt;
+&lt;h2 id=&#34;how-to-grab-it-in-logs-&#34;&gt;How to grab it in logs ?&lt;/h2&gt;
+&lt;p&gt;When you gather the logs through ESXi via vm-support, an automatic script is going to grab the dump and put it in the vm-support tgz. As the dump can be quite heavy, please make sure that you have enough space in the directory where you will generate the support bundle.
+{: .text-justify}
+Last comment but not the least, the host must have a diagnostic partition configured otherwise no dump will be collecting leading to a wasted reboot.
+{: .text-justify}&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
   </channel>
 </rss>
