@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "styles.css",
-	"sourceRoot": "/Users/gautierj/Documents/blog/jgautierit.blog",
+	"sourceRoot": "/Users/gautierj/OneDrive - VMware, Inc/blog/jgautierit.blog",
 	"sources": [
 		"themes/hugo-clarity/assets/sass/main.sass",
 		"themes/hugo-clarity/assets/sass/_variables.sass",
