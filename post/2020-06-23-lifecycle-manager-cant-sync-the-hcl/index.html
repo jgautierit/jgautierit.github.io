@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
   <head>
-<title>Math Typesetting | Clarity</title>
+<title>vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL | Clarity</title>
 <meta charset="utf-8">
 <meta name="generator" content="Hugo 0.81.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -18,13 +18,13 @@
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="A brief guide to setup KaTeX">
+<meta name="description" content="XXX">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@janedoe">
-<meta name="twitter:title" content="Math Typesetting" />
-<meta property="og:url" content="https://jgautierit.github.io/post/math-typesetting/" />
-<meta property="og:title" content="Math Typesetting" />
-<meta property="og:description" content="A brief guide to setup KaTeX" />
+<meta name="twitter:title" content="vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL" />
+<meta property="og:url" content="https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/" />
+<meta property="og:title" content="vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL" />
+<meta property="og:description" content="XXX" />
 <meta property="og:image" content="https://jgautierit.github.io/images/thumbnail.png" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
@@ -33,7 +33,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-<link rel="canonical" href="https://jgautierit.github.io/post/math-typesetting/">
+<link rel="canonical" href="https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/">
 
     
 
@@ -135,24 +135,28 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Math Typesetting</h1><div class="post_meta">
+    <h1 class="post_title">vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</h1><div class="post_meta">
   
     <svg class="icon">
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      Mar 8, 2019</span>
+      Jun 23, 2020</span>
+      <a href='https://jgautierit.github.io/tags/vcenter' title="vCenter" class="post_tag button button_translucent">vCenter
+      </a>
+      <a href='https://jgautierit.github.io/tags/vmware' title="VMware" class="post_tag button button_translucent">VMware
+      </a>
 </div>
 
     
   <div class="post_share">
     Share on:
-    <a href="https://twitter.com/intent/tweet?text=Math%20Typesetting&url=https%3a%2f%2fjgautierit.github.io%2fpost%2fmath-typesetting%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <a href="https://twitter.com/intent/tweet?text=vSphere%207%20Lifecycle%20Manager%20-%20Can%27t%20Sync%20the%20HCL&url=https%3a%2f%2fjgautierit.github.io%2fpost%2f2020-06-23-lifecycle-manager-cant-sync-the-hcl%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#twitter"></use>
 </svg>
     </a>
-    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjgautierit.github.io%2fpost%2fmath-typesetting%2f&t=Math%20Typesetting" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjgautierit.github.io%2fpost%2f2020-06-23-lifecycle-manager-cant-sync-the-hcl%2f&t=vSphere%207%20Lifecycle%20Manager%20-%20Can%27t%20Sync%20the%20HCL" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#facebook"></use>
 </svg>
@@ -162,7 +166,7 @@
   <use xlink:href="#linkedin"></use>
 </svg>
     </a>
-    <a href="https://jgautierit.github.io/post/math-typesetting/" title="Copy Link" class="link link_yank">
+    <a href="https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/" title="Copy Link" class="link link_yank">
       <svg class="icon">
   <use xlink:href="#copy"></use>
 </svg>
@@ -170,28 +174,26 @@
   </div>
 
     
-    <p>Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries.</p>
-<p>In this example we will be using <a href="https://katex.org/">KaTeX</a></p>
-<ul>
-<li>Create a partial under <code>/layouts/partials/math.html</code></li>
-<li>Within this partial reference the <a href="https://katex.org/docs/autorender.html">Auto-render Extension</a> or host these scripts locally.</li>
-<li>Include the partial in your templates like so:</li>
-</ul>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="o">{{</span> <span class="k">if</span> or .Params.math .Site.Params.math <span class="o">}}</span>
-<span class="ln">2</span><span class="o">{{</span> partial <span class="s2">&#34;math.html&#34;</span> . <span class="o">}}</span>
-<span class="ln">3</span><span class="o">{{</span> end <span class="o">}}</span>
-</code></pre></div><ul>
-<li>To enable KaTex globally set the parameter <code>math</code> to <code>true</code> in a project's configuration</li>
-<li>To enable KaTex on a per page basis include the parameter <code>math: true</code> in content files</li>
-</ul>
-<p><strong>Note:</strong> Use the online reference of <a href="https://katex.org/docs/supported.html">Supported TeX Functions</a></p>
+    <p>After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0</p>
+<p><img src="/assets/images/synchcl.jpg" alt="LCM sync HCL"></p>
+<p>Im ny situation, the task was stuck at 10% and failing afterwards with the error &quot;A general system error occcured...&quot;</p>
+<p><img src="/assets/images/errorlcm.jpg" alt="Error HCL"></p>
+<p>Looking at the logs (/var/log/vmware/vmware-updatemgr/vum-server/vmware-vum-server.log), it was really difficult to find something relevant but it looks like the download was failing.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>20-06-23T10:09:55.200Z error vmware-vum-server<span class="o">[</span>28017<span class="o">]</span> <span class="o">[</span>Originator@6876 <span class="nv">sub</span><span class="o">=</span>com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask<span class="o">]</span> Task:com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask ID:52b92e6b-1b4c-1584-c1ad-da57f7571f88. Task Failed. Error: Error:
+<span class="ln">2</span>--&gt;    com.vmware.vapi.std.errors.error
+<span class="ln">3</span>--&gt; Messages:
+<span class="ln">4</span>--&gt;    com.vmware.vcIntegrity.hcl.vvs.unreachable.summary
+<span class="ln">5</span>--&gt;    com.vmware.vcIntegrity.hcl.vvs.unreachable.resolution
+<span class="ln">6</span>--&gt;
+</code></pre></div><p>Looking at the tasks, I found out that VMware use multile python scripts in the following directory   /usr/lib/vmware-updatemgr/config/</p>
+<p>Thanks to my buddy Y.Ilmi for guiding me to the specific script called vvs-config.json.</p>
+<p>This script provides the URL that VMware use to download the hcl : vvs.esp.vmware.com</p>
+<p><img src="/assets/images/vvsconfigjson.jpg" alt="vvs-config"></p>
+<p>vCenter was unable to reach the URL (use curl to test it) I asked the security team to grant access.</p>
+<p>Problem solved!</p>
+<p><img src="/assets/images/HCL2.jpg" alt="HCL"></p>
+<p><img src="/assets/images/hcl3.jpg" alt="HCL"></p>
 
-<h3 id="examples">Examples</h3>
-
-<p>Block math:
-$$
-\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
-$$</p>
 
   </article>
 <aside class="sidebar">
@@ -210,9 +212,6 @@ $$</p>
     </ul>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
-      <li>
-        <a href="https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/" class="nav-link" title="vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL">vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</a>
-      </li>
       <li>
         <a href="https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/" class="nav-link" title="vSphere 7 Lifecycle Manager - Can&#39;t Sync Updates">vSphere 7 Lifecycle Manager - Can&#39;t Sync Updates</a>
       </li>
@@ -233,6 +232,9 @@ $$</p>
       </li>
       <li>
         <a href="https://jgautierit.github.io/post/markdown-syntax/" class="nav-link" title="Markdown Syntax Guide">Markdown Syntax Guide</a>
+      </li>
+      <li>
+        <a href="https://jgautierit.github.io/post/rich-content/" class="nav-link" title="Rich Content">Rich Content</a>
       </li>
     </ul>
     <div>
