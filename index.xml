@@ -653,15 +653,7 @@ Usually, the regular ESXi logs are not enough to diagnose the issue.&lt;/p&gt;
       <guid>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</guid>
       <description>
         
-          &lt;p&gt;{::options parse_block_html=&amp;quot;true&amp;quot; /}&lt;/p&gt;
-&lt;div class=&#34;panel panel-info&#34;&gt;
-**Note**
-{: .panel-heading}
-&lt;div class=&#34;panel-body&#34;&gt;
-&lt;p&gt;NOTE DESCRIPTION&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.&lt;/p&gt;
+          &lt;p style=&#39;text-align: justify;&#39;&gt;It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.&lt;/p&gt;
 &lt;p&gt;One particular scenario would be when you replace a E1000 by a vmxnet3.&lt;/p&gt;
 &lt;h3 id=&#34;netsh&#34;&gt;netsh&lt;/h3&gt;
 &lt;p&gt;Windows has a handy utility called netsh. This utility allows to import/export the network configuration of a NIC easily.&lt;/p&gt;

@@ -18,17 +18,13 @@
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="{::options parse_block_html=&quot;true&quot; /}
-**Note** {: .panel-heading} NOTE DESCRIPTION
-  It is often required to change the network type of a Virtual NIC …">
+<meta name="description" content="It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@jgautierit">
 <meta name="twitter:title" content="Import/Export Network Settings on Windows" />
 <meta property="og:url" content="https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/" />
 <meta property="og:title" content="Import/Export Network Settings on Windows" />
-<meta property="og:description" content="{::options parse_block_html=&quot;true&quot; /}
-**Note** {: .panel-heading} NOTE DESCRIPTION
-  It is often required to change the network type of a Virtual NIC …" />
+<meta property="og:description" content="It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the …" />
 <meta property="og:image" content="https://jgautierit.github.io/images/net.png" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
@@ -164,15 +160,7 @@
   </div>
 
     
-    <p>{::options parse_block_html=&quot;true&quot; /}</p>
-<div class="panel panel-info">
-**Note**
-{: .panel-heading}
-<div class="panel-body">
-<p>NOTE DESCRIPTION</p>
-</div>
-</div>
-<p>It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.</p>
+    <p style='text-align: justify;'>It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.</p>
 <p>One particular scenario would be when you replace a E1000 by a vmxnet3.</p>
 <h3 id="netsh">netsh</h3>
 <p>Windows has a handy utility called netsh. This utility allows to import/export the network configuration of a NIC easily.</p>
