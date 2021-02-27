@@ -21,16 +21,7 @@ If the host is not responding, a reboot can become required as the last step and
 Usually, the regular ESXi logs are not enough to diagnose the issue.&lt;/p&gt;
 &lt;h2 id=&#34;why-a-nmi&#34;&gt;Why a NMI?&lt;/h2&gt;
 &lt;p&gt;The NMI or Non Maskable Interrupt allows to generate the famous &amp;quot;Purple Screen Of Death&amp;quot; on the ESXi. As a consequence, a dump will be generated and will allow the analysis by VMware of the dump taken previously in order to establish a root cause.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;./images/PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;./resources/images/PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;resources/images/PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;./static/images/PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;./static/images/PSOD.jpeg&#34; alt=&#34;NMI PSOD&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;images/PSOD.jpeg&#34; alt=&#34;:inline&#34;&gt;&lt;/p&gt;
-&lt;p&gt;![NMI PSOD]: &amp;quot;images/PSOD.jpeg&amp;quot;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://assets.digitalocean.com/articles/alligator/boo.svg&#34; alt=&#34;Alt text&#34; title=&#34;a title&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;./images/image-figure.png&#34; alt=&#34;Antrea Kubernetes nodes prepared&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/static/PSOD.jpeg&#34; alt=&#34;Example image&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Warning : A NMI should be the last step. Do not send the NMI if no troubleshooting steps was tried.&lt;/p&gt;
 &lt;h2 id=&#34;how-to-generate-a-nmi&#34;&gt;How to generate a NMI?&lt;/h2&gt;
 &lt;p&gt;Every vendor should have the option in their management interface like ILO or IDRAC. Please refer to their documentation.&lt;/p&gt;
