@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/nutanix/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nutanix Playbooks - Telegram Bot</title>
-      <link>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</link>
+      <link>https://jgautierit.github.io/post/nutanix-telegram/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</guid>
+      <guid>https://jgautierit.github.io/post/nutanix-telegram/</guid>
       <description>
         
           &lt;p&gt;In this new post, I will describe how to send a notification to your Telegram via a Telegram Bot using Nutanix Playbooks.&lt;/p&gt;

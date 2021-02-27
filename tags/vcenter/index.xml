@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 23 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/vcenter/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</title>
-      <link>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</link>
+      <link>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/</link>
       <pubDate>Tue, 23 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</guid>
+      <guid>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/</guid>
       <description>
         
           &lt;p&gt;After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
@@ -41,10 +41,10 @@
     
     <item>
       <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync Updates</title>
-      <link>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</link>
+      <link>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-update/</link>
       <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</guid>
+      <guid>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-update/</guid>
       <description>
         
           &lt;p&gt;After upgrading vCenter 6.7 to 7.0, I had a strange issue where I could not Sync Updates anymore within the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
@@ -69,10 +69,10 @@
     
     <item>
       <title>Windows Server 2019 optimized for SimpliVity</title>
-      <link>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</link>
+      <link>https://jgautierit.github.io/post/simplivity-windowsserver/</link>
       <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-windowsserver/</guid>
       <description>
         
           &lt;p&gt;I’ve recently started to implement HPE SimpliVity clusters.
@@ -114,10 +114,10 @@ Identify the partition that we are going to use to install the system (the bigge
     
     <item>
       <title>VxRAIL Roles Script</title>
-      <link>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</link>
+      <link>https://jgautierit.github.io/post/vxrail-roles/</link>
       <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</guid>
+      <guid>https://jgautierit.github.io/post/vxrail-roles/</guid>
       <description>
         
           &lt;p&gt;In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL.
@@ -254,10 +254,10 @@ N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delas
     
     <item>
       <title>Update Manager 6.7 fails to remediate - Check your ports !</title>
-      <link>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</link>
+      <link>https://jgautierit.github.io/post/update-manager-fails-to.remediate/</link>
       <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</guid>
+      <guid>https://jgautierit.github.io/post/update-manager-fails-to.remediate/</guid>
       <description>
         
           &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.

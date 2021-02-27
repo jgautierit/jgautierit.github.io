@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/hpe/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SimpliVity Upgrade - Walkthrough</title>
-      <link>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</link>
+      <link>https://jgautierit.github.io/post/simplivity-upgrade/</link>
       <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-upgrade/</guid>
       <description>
         
           &lt;p&gt;This new post is dedicated to the update / upgrade of SimpliVity Omnistack and its underlying stack (VMware, Firmwares).
@@ -149,10 +149,10 @@ Do not uninstall the current arbiter. This is advised in the documentation.&lt;/
     
     <item>
       <title>Omnistack Virtual machine memory usage alarm, a workaround.</title>
-      <link>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</link>
+      <link>https://jgautierit.github.io/post/simplivity-ovc-memoryalarms/</link>
       <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-ovc-memoryalarms/</guid>
       <description>
         
           &lt;p&gt;If you have been running SimpliVity in your data centre, you probably came across these alarms. SimpliVity presents many advantages but being a non-native solution can have some little annoyance. One of them being the Virtual machine memory usage being triggered continuously on the Omnistack VMs. These alarms are “normal”. This is simply because these OVC uses memory reservations.&lt;/p&gt;
@@ -184,10 +184,10 @@ Do not forget to include the VM in a folder when you create a new one either.&lt
     
     <item>
       <title>Windows Server 2019 optimized for SimpliVity</title>
-      <link>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</link>
+      <link>https://jgautierit.github.io/post/simplivity-windowsserver/</link>
       <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-windowsserver/</guid>
       <description>
         
           &lt;p&gt;I’ve recently started to implement HPE SimpliVity clusters.

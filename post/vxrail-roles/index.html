@@ -1,8 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="en" data-figures="">
+<html lang="en" data-figures="" class="page">
   <head>
-<title>VxRAIL | Clarity</title>
+<title>VxRAIL Roles Script | Clarity</title>
 <meta charset="utf-8">
 <meta name="generator" content="Hugo 0.81.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -14,17 +14,18 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+  
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL. N.B : This script works for VxRail …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@jgautierit">
-<meta name="twitter:title" content="VxRAIL" />
-<meta property="og:url" content="https://jgautierit.github.io/tags/vxrail/" />
-<meta property="og:title" content="VxRAIL" />
-<meta property="og:description" content="" />
-<meta property="og:image" content="https://jgautierit.github.io/images/thumbnail.png" />
+<meta name="twitter:title" content="VxRAIL Roles Script" />
+<meta property="og:url" content="https://jgautierit.github.io/post/vxrail-roles/" />
+<meta property="og:title" content="VxRAIL Roles Script" />
+<meta property="og:description" content="In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL. N.B : This script works for VxRail …" />
+<meta property="og:image" content="https://jgautierit.github.io/images/code.jpg" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
 <link rel="manifest" href='https://jgautierit.github.io/icons/site.webmanifest'>
@@ -32,8 +33,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-<link rel="canonical" href="https://jgautierit.github.io/tags/vxrail/">
-<link rel="alternate" type="application/rss+xml" href="https://jgautierit.github.io/tags/vxrail/index.xml" title="Clarity" />
+<link rel="canonical" href="https://jgautierit.github.io/post/vxrail-roles/">
 
     
 
@@ -116,16 +116,10 @@
 </header>
 
     <main>
-
+  
 <div class="grid-inverse wrap content">
-  <ul class="posts" id="posts">
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://jgautierit.github.io/post/vxrail-roles/" title="VxRAIL Roles Script">VxRAIL Roles Script</a>
-      </h3>
-      <div class="post_meta">
+  <article class="post_content">
+    <h1 class="post_title">VxRAIL Roles Script</h1><div class="post_meta">
   
     <svg class="icon">
   <use xlink:href="#calendar"></use>
@@ -140,29 +134,162 @@
       </a>
 </div>
 
-    </div>
-    <div class="excerpt_footer partition">
-      <div class="excerpt_thumbnail">
-        <img src='https://jgautierit.github.io/images/code.jpg' alt="VxRAIL Roles Script">
-      </div>
-      
-        <div>
-          <p class="pale">
-            
-              In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL. N.B : This script works for VxRail 4.7.x. This can change depending on the features/requirement that VxRAIL will implement in the future. N.B : This script is valid as of 11/01/2021. Updated by my …
-            
-          </p>
-          <a href="https://jgautierit.github.io/post/vxrail-roles/" title="Read More" class="excerpt_more button">Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=VxRAIL%20Roles%20Script&url=https%3a%2f%2fjgautierit.github.io%2fpost%2fvxrail-roles%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjgautierit.github.io%2fpost%2fvxrail-roles%2f&t=VxRAIL%20Roles%20Script" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="https://jgautierit.github.io/post/vxrail-roles/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
 
-    <li>
+    
+    <p>In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL.
+N.B : This script works for VxRail 4.7.x. This can change depending on the features/requirement that VxRAIL will implement in the future.
+N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delassus.</p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="ln">  1</span><span class="c"># This is a script to create the required roles for VxRAIL users when an external vCenter is required.</span>
+<span class="ln">  2</span><span class="c"># Made by Jonathan Gautier on the 08/04/2019</span>
+<span class="ln">  3</span><span class="c"># Review by Steve Delassus on the 11/01/2021 based on the latest solve procedure </span>
+<span class="ln">  4</span>
+<span class="ln">  5</span><span class="nb">Write-Host</span> <span class="s2">&#34;This is a PowerCLI Script to create the required roles for VxRAIL&#34;</span> <span class="n">-ForeGroundColor</span> <span class="n">Cyan</span> 
+<span class="ln">  6</span><span class="nb">Connect-VIServer</span> <span class="s2">&#34;Your vCenter FQDN or IP &#34;</span>
+<span class="ln">  7</span>
+<span class="ln">  8</span><span class="c">#VxRail Initial Gobal Role Name</span>
+<span class="ln">  9</span><span class="nv">$vxrailrole1</span> <span class="p">=</span> <span class="s2">&#34;VxRail Initial Global&#34;</span>
+<span class="ln"> 10</span>
+<span class="ln"> 11</span><span class="c">#VxRail DC Gobal Role Name</span>
+<span class="ln"> 12</span><span class="nv">$vxrailrole2</span> <span class="p">=</span> <span class="s2">&#34;VxRail Datacenter Global&#34;</span>
+<span class="ln"> 13</span>
+<span class="ln"> 14</span><span class="nv">$initglobal</span> <span class="p">=</span> <span class="p">@(</span>
+<span class="ln"> 15</span><span class="s1">&#39;System.Anonymous&#39;</span>
+<span class="ln"> 16</span><span class="s1">&#39;System.View&#39;</span>
+<span class="ln"> 17</span><span class="s1">&#39;System.Read&#39;</span>
+<span class="ln"> 18</span><span class="s1">&#39;Global.ManageCustomFields&#39;</span>
+<span class="ln"> 19</span><span class="s1">&#39;Global.SetCustomField&#39;</span>
+<span class="ln"> 20</span><span class="s1">&#39;Global.LogEvent&#39;</span>
+<span class="ln"> 21</span><span class="s1">&#39;Global.Licenses&#39;</span>
+<span class="ln"> 22</span><span class="s1">&#39;Global.Diagnostics&#39;</span>
+<span class="ln"> 23</span><span class="s1">&#39;Global.Settings&#39;</span>
+<span class="ln"> 24</span><span class="s1">&#39;Folder.Create&#39;</span>
+<span class="ln"> 25</span><span class="s1">&#39;Folder.Delete&#39;</span>
+<span class="ln"> 26</span><span class="s1">&#39;Datastore.Browse&#39;</span>
+<span class="ln"> 27</span><span class="s1">&#39;Datastore.DeleteFile&#39;</span>
+<span class="ln"> 28</span><span class="s1">&#39;Datastore.FileManagement&#39;</span>
+<span class="ln"> 29</span><span class="s1">&#39;Datastore.AllocateSpace&#39;</span>
+<span class="ln"> 30</span><span class="s1">&#39;Datastore.UpdateVirtualMachineFiles&#39;</span>
+<span class="ln"> 31</span><span class="s1">&#39;Network.Assign&#39;</span>
+<span class="ln"> 32</span><span class="s1">&#39;DVSwitch.Modify&#39;</span>
+<span class="ln"> 33</span><span class="s1">&#39;DVSwitch.HostOp&#39;</span>
+<span class="ln"> 34</span><span class="s1">&#39;DVSwitch.ResourceManagement&#39;</span>
+<span class="ln"> 35</span><span class="s1">&#39;DVPortgroup.Modify&#39;</span>
+<span class="ln"> 36</span><span class="s1">&#39;Host.Inventory.AddHostToCluster&#39;</span>
+<span class="ln"> 37</span><span class="s1">&#39;Host.Inventory.RemoveHostFromCluster&#39;</span>
+<span class="ln"> 38</span><span class="s1">&#39;Host.Inventory.EditCluster&#39;</span>
+<span class="ln"> 39</span><span class="s1">&#39;Host.Config.SystemManagement&#39;</span>
+<span class="ln"> 40</span><span class="s1">&#39;Host.Config.Maintenance&#39;</span>
+<span class="ln"> 41</span><span class="s1">&#39;Host.Config.Storage&#39;</span>
+<span class="ln"> 42</span><span class="s1">&#39;Host.Config.NetService&#39;</span>
+<span class="ln"> 43</span><span class="s1">&#39;Host.Config.Network&#39;</span>
+<span class="ln"> 44</span><span class="s1">&#39;Host.Config.Settings&#39;</span>
+<span class="ln"> 45</span><span class="s1">&#39;Host.Config.Power&#39;</span>
+<span class="ln"> 46</span><span class="s1">&#39;VirtualMachine.Inventory.Delete&#39;</span>
+<span class="ln"> 47</span><span class="s1">&#39;VirtualMachine.Inventory.Unregister&#39;</span>
+<span class="ln"> 48</span><span class="s1">&#39;VirtualMachine.Interact.PowerOn&#39;</span>
+<span class="ln"> 49</span><span class="s1">&#39;VirtualMachine.Interact.PowerOff&#39;</span>
+<span class="ln"> 50</span><span class="s1">&#39;VirtualMachine.Interact.ConsoleInteract&#39;</span>
+<span class="ln"> 51</span><span class="s1">&#39;VirtualMachine.Interact.DeviceConnection&#39;</span>
+<span class="ln"> 52</span><span class="s1">&#39;VirtualMachine.Interact.SetCDMedia&#39;</span>
+<span class="ln"> 53</span><span class="s1">&#39;VirtualMachine.Interact.GuestControl&#39;</span>
+<span class="ln"> 54</span><span class="s1">&#39;VirtualMachine.GuestOperations.Query&#39;</span>
+<span class="ln"> 55</span><span class="s1">&#39;VirtualMachine.GuestOperations.Modify&#39;</span>
+<span class="ln"> 56</span><span class="s1">&#39;VirtualMachine.GuestOperations.Execute&#39;</span>
+<span class="ln"> 57</span><span class="s1">&#39;VirtualMachine.GuestOperations.QueryAliases&#39;</span>
+<span class="ln"> 58</span><span class="s1">&#39;VirtualMachine.GuestOperations.ModifyAliases&#39;</span>
+<span class="ln"> 59</span><span class="s1">&#39;VirtualMachine.State.CreateSnapshot&#39;</span>
+<span class="ln"> 60</span><span class="s1">&#39;VirtualMachine.State.RemoveSnapshot&#39;</span>
+<span class="ln"> 61</span><span class="s1">&#39;Resource.HotMigrate&#39;</span>
+<span class="ln"> 62</span><span class="s1">&#39;Resource.ColdMigrate&#39;</span>
+<span class="ln"> 63</span><span class="s1">&#39;Alarm.Create&#39;</span>
+<span class="ln"> 64</span><span class="s1">&#39;Alarm.Delete&#39;</span>
+<span class="ln"> 65</span><span class="s1">&#39;Alarm.SetStatus&#39;</span>
+<span class="ln"> 66</span><span class="s1">&#39;Authorization.ModifyRoles&#39;</span>
+<span class="ln"> 67</span><span class="s1">&#39;Authorization.ReassignRolePermissions&#39;</span>
+<span class="ln"> 68</span><span class="s1">&#39;Authorization.ModifyPermissions&#39;</span>
+<span class="ln"> 69</span><span class="s1">&#39;Extension.Register&#39;</span>
+<span class="ln"> 70</span><span class="s1">&#39;VApp.ApplicationConfig&#39;</span>
+<span class="ln"> 71</span><span class="s1">&#39;VApp.Import&#39;</span>
+<span class="ln"> 72</span><span class="s1">&#39;VApp.ExtractOvfEnvironment&#39;</span>
+<span class="ln"> 73</span><span class="s1">&#39;Cryptographer.Access&#39;</span>
+<span class="ln"> 74</span><span class="s1">&#39;Cryptographer.Decrypt&#39;</span>
+<span class="ln"> 75</span><span class="s1">&#39;Cryptographer.Migrate&#39;</span>
+<span class="ln"> 76</span><span class="s1">&#39;Authorization.ModifyPrivileges&#39;</span>
+<span class="ln"> 77</span><span class="s1">&#39;StorageProfile.Update&#39;</span>
+<span class="ln"> 78</span><span class="s1">&#39;StorageProfile.View&#39;</span>
+<span class="ln"> 79</span><span class="p">)</span>
+<span class="ln"> 80</span>
+<span class="ln"> 81</span><span class="nv">$dcglobal</span> <span class="p">=</span> <span class="p">@(</span>
+<span class="ln"> 82</span><span class="s1">&#39;System.Anonymous&#39;</span>
+<span class="ln"> 83</span><span class="s1">&#39;System.View&#39;</span>
+<span class="ln"> 84</span><span class="s1">&#39;System.Read&#39;</span>
+<span class="ln"> 85</span><span class="s1">&#39;Global.ManageCustomFields&#39;</span>
+<span class="ln"> 86</span><span class="s1">&#39;Global.SetCustomField&#39;</span>
+<span class="ln"> 87</span><span class="s1">&#39;Global.Settings&#39;</span>
+<span class="ln"> 88</span><span class="s1">&#39;Folder.Create&#39;</span>
+<span class="ln"> 89</span><span class="s1">&#39;Folder.Delete&#39;</span>
+<span class="ln"> 90</span><span class="s1">&#39;Datastore.Rename&#39;</span>
+<span class="ln"> 91</span><span class="s1">&#39;Network.Assign&#39;</span>
+<span class="ln"> 92</span><span class="s1">&#39;DVSwitch.Create&#39;</span>
+<span class="ln"> 93</span><span class="s1">&#39;DVSwitch.Modify&#39;</span>
+<span class="ln"> 94</span><span class="s1">&#39;DVSwitch.HostOp&#39;</span>
+<span class="ln"> 95</span><span class="s1">&#39;DVSwitch.ResourceManagement&#39;</span>
+<span class="ln"> 96</span><span class="s1">&#39;DVPortgroup.Create&#39;</span>
+<span class="ln"> 97</span><span class="s1">&#39;DVPortgroup.Modify&#39;</span>
+<span class="ln"> 98</span><span class="s1">&#39;Host.Inventory.CreateCluster&#39;</span>
+<span class="ln"> 99</span><span class="s1">&#39;Host.Inventory.AddHostToCluster&#39;</span>
+<span class="ln">100</span><span class="s1">&#39;Host.Inventory.DeleteCluster&#39;</span>
+<span class="ln">101</span><span class="s1">&#39;Host.Inventory.EditCluster&#39;</span>
+<span class="ln">102</span><span class="s1">&#39;Host.Config.AutoStart&#39;</span>
+<span class="ln">103</span><span class="s1">&#39;Host.Config.Storage&#39;</span>
+<span class="ln">104</span><span class="s1">&#39;Host.Config.NetService&#39;</span>
+<span class="ln">105</span><span class="s1">&#39;Host.Config.Network&#39;</span>
+<span class="ln">106</span><span class="s1">&#39;VirtualMachine.Inventory.Create&#39;</span>
+<span class="ln">107</span><span class="s1">&#39;VirtualMachine.Inventory.Delete&#39;</span>
+<span class="ln">108</span><span class="s1">&#39;VirtualMachine.Inventory.Unregister&#39;</span>
+<span class="ln">109</span><span class="s1">&#39;VirtualMachine.Interact.PowerOn&#39;</span>
+<span class="ln">110</span><span class="s1">&#39;VirtualMachine.Interact.PowerOff&#39;</span>
+<span class="ln">111</span><span class="s1">&#39;VirtualMachine.Config.AddNewDisk&#39;</span>
+<span class="ln">112</span><span class="s1">&#39;VirtualMachine.Config.EditDevice&#39;</span>
+<span class="ln">113</span><span class="s1">&#39;VirtualMachine.Config.Settings&#39;</span>
+<span class="ln">114</span><span class="s1">&#39;Alarm.SetStatus&#39;</span>
+<span class="ln">115</span><span class="s1">&#39;Extension.Register&#39;</span>
+<span class="ln">116</span><span class="p">)</span>
+<span class="ln">117</span>
+<span class="ln">118</span><span class="nb">Write-Host</span> <span class="s2">&#34;Create New $vxrailrole1 Role&#34;</span><span class="p">`</span><span class="n">n</span> <span class="n">-ForeGroundColor</span> <span class="n">Cyan</span>
+<span class="ln">119</span><span class="nb">New-VIRole</span> <span class="n">-Name</span> <span class="nv">$vxrailrole1</span> <span class="n">-Privilege</span> <span class="p">(</span><span class="nb">Get-VIPrivilege</span> <span class="n">-id</span> <span class="nv">$initglobal</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="ln">120</span><span class="nb">Write-Host</span> <span class="s2">&#34;Create New $vxrailrole2 Role&#34;</span><span class="p">`</span><span class="n">n</span> <span class="n">-ForeGroundColor</span> <span class="n">Cyan</span>
+<span class="ln">121</span><span class="nb">New-VIRole</span> <span class="n">-Name</span> <span class="nv">$vxrailrole2</span> <span class="n">-Privilege</span> <span class="p">(</span><span class="nb">Get-VIPrivilege</span> <span class="n">-id</span> <span class="nv">$dcglobal</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="ln">122</span><span class="nb">Write-Host</span> <span class="s2">&#34;Done&#34;</span><span class="p">`</span><span class="n">n</span> <span class="n">-ForeGroundColor</span> <span class="n">Cyan</span>
+</code></pre></div><p>The rest of the procedure to apply the roles/permissionsa are available in Solve.</p>
+<p>Hope this helps.</p>
 
 
-    </li>
-  </ul>
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     
@@ -192,10 +319,10 @@
         <a href="https://jgautierit.github.io/post/simplivity-windowsserver/" class="nav-link" title="Windows Server 2019 optimized for SimpliVity">Windows Server 2019 optimized for SimpliVity</a>
       </li>
       <li>
-        <a href="https://jgautierit.github.io/post/vxrail-roles/" class="nav-link" title="VxRAIL Roles Script">VxRAIL Roles Script</a>
+        <a href="https://jgautierit.github.io/post/update-manager-fails-to.remediate/" class="nav-link" title="Update Manager 6.7 fails to remediate - Check your ports !">Update Manager 6.7 fails to remediate - Check your ports !</a>
       </li>
       <li>
-        <a href="https://jgautierit.github.io/post/update-manager-fails-to.remediate/" class="nav-link" title="Update Manager 6.7 fails to remediate - Check your ports !">Update Manager 6.7 fails to remediate - Check your ports !</a>
+        <a href="https://jgautierit.github.io/post/65-to-67-new-export-directory/" class="nav-link" title="New Export Directory - Upgrade from 6.5 to 6.7">New Export Directory - Upgrade from 6.5 to 6.7</a>
       </li>
     </ul>
     <div>
@@ -262,9 +389,8 @@
   </section>
 </aside>
 
+  
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

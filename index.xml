@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 23 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</title>
-      <link>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</link>
+      <link>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/</link>
       <pubDate>Tue, 23 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-06-23-lifecycle-manager-cant-sync-the-hcl/</guid>
+      <guid>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/</guid>
       <description>
         
           &lt;p&gt;After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
@@ -41,10 +41,10 @@
     
     <item>
       <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync Updates</title>
-      <link>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</link>
+      <link>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-update/</link>
       <pubDate>Thu, 04 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-06-04-lifecycle-manager-cant-sync-update/</guid>
+      <guid>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-update/</guid>
       <description>
         
           &lt;p&gt;After upgrading vCenter 6.7 to 7.0, I had a strange issue where I could not Sync Updates anymore within the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
@@ -69,10 +69,10 @@
     
     <item>
       <title>Nutanix Playbooks - Telegram Bot</title>
-      <link>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</link>
+      <link>https://jgautierit.github.io/post/nutanix-telegram/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-05-20-nutanix-telegram/</guid>
+      <guid>https://jgautierit.github.io/post/nutanix-telegram/</guid>
       <description>
         
           &lt;p&gt;In this new post, I will describe how to send a notification to your Telegram via a Telegram Bot using Nutanix Playbooks.&lt;/p&gt;
@@ -138,10 +138,10 @@ Request Headers : Content-Type:application/json;charset=utf-8
     
     <item>
       <title>SimpliVity Upgrade - Walkthrough</title>
-      <link>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</link>
+      <link>https://jgautierit.github.io/post/simplivity-upgrade/</link>
       <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2020-04-16-simplivity-upgrade/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-upgrade/</guid>
       <description>
         
           &lt;p&gt;This new post is dedicated to the update / upgrade of SimpliVity Omnistack and its underlying stack (VMware, Firmwares).
@@ -278,10 +278,10 @@ Do not uninstall the current arbiter. This is advised in the documentation.&lt;/
     
     <item>
       <title>Omnistack Virtual machine memory usage alarm, a workaround.</title>
-      <link>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</link>
+      <link>https://jgautierit.github.io/post/simplivity-ovc-memoryalarms/</link>
       <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-10-25-simplivity-ovc-memoryalarms/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-ovc-memoryalarms/</guid>
       <description>
         
           &lt;p&gt;If you have been running SimpliVity in your data centre, you probably came across these alarms. SimpliVity presents many advantages but being a non-native solution can have some little annoyance. One of them being the Virtual machine memory usage being triggered continuously on the Omnistack VMs. These alarms are “normal”. This is simply because these OVC uses memory reservations.&lt;/p&gt;
@@ -313,10 +313,10 @@ Do not forget to include the VM in a folder when you create a new one either.&lt
     
     <item>
       <title>Windows Server 2019 optimized for SimpliVity</title>
-      <link>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</link>
+      <link>https://jgautierit.github.io/post/simplivity-windowsserver/</link>
       <pubDate>Thu, 24 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-10-24-simplivity-windowsserver/</guid>
+      <guid>https://jgautierit.github.io/post/simplivity-windowsserver/</guid>
       <description>
         
           &lt;p&gt;I’ve recently started to implement HPE SimpliVity clusters.
@@ -358,10 +358,10 @@ Identify the partition that we are going to use to install the system (the bigge
     
     <item>
       <title>VxRAIL Roles Script</title>
-      <link>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</link>
+      <link>https://jgautierit.github.io/post/vxrail-roles/</link>
       <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2019-04-18-vxrail-roles/</guid>
+      <guid>https://jgautierit.github.io/post/vxrail-roles/</guid>
       <description>
         
           &lt;p&gt;In this article, I will provide an easy script to create the required roles when you use an external vCenter in VxRAIL.
@@ -498,10 +498,10 @@ N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delas
     
     <item>
       <title>Update Manager 6.7 fails to remediate - Check your ports !</title>
-      <link>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</link>
+      <link>https://jgautierit.github.io/post/update-manager-fails-to.remediate/</link>
       <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-20-update-manager-fails-to.remediate/</guid>
+      <guid>https://jgautierit.github.io/post/update-manager-fails-to.remediate/</guid>
       <description>
         
           &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
@@ -540,10 +540,10 @@ Working at a customer site and upgrading the hosts to 6.7, Update Manager was fa
     
     <item>
       <title>New Export Directory - Upgrade from 6.5 to 6.7</title>
-      <link>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</link>
+      <link>https://jgautierit.github.io/post/65-to-67-new-export-directory/</link>
       <pubDate>Tue, 18 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</guid>
+      <guid>https://jgautierit.github.io/post/65-to-67-new-export-directory/</guid>
       <description>
         
           &lt;p&gt;This post is dedicated to the &amp;quot;Stage 2&amp;quot; of the upgrade process from vCenter 6.5 to vCenter 6.7. I recently came across a scenario where the configuration exceeded the size of the root partition within the source vCenter appliance.&lt;/p&gt;
@@ -622,10 +622,10 @@ Working at a customer site and upgrading the hosts to 6.7, Update Manager was fa
     
     <item>
       <title>Don&#39;t waste reboots in vSAN!</title>
-      <link>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</link>
+      <link>https://jgautierit.github.io/post/dont-waste-reboot-vsan/</link>
       <pubDate>Fri, 14 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-14-dont-waste-reboot-vsan/</guid>
+      <guid>https://jgautierit.github.io/post/dont-waste-reboot-vsan/</guid>
       <description>
         
           &lt;p&gt;This topic will focus on vSAN and more particularly to situations where a host in a vSAN cluster becomes &amp;quot;not responding&amp;quot;.
@@ -648,10 +648,10 @@ Usually, the regular ESXi logs are not enough to diagnose the issue.&lt;/p&gt;
     
     <item>
       <title>Import/Export Network Settings on Windows</title>
-      <link>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</link>
+      <link>https://jgautierit.github.io/post/import-export-network-settings/</link>
       <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</guid>
+      <guid>https://jgautierit.github.io/post/import-export-network-settings/</guid>
       <description>
         
           &lt;p style=&#39;text-align: justify;&#39;&gt;It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.&lt;/p&gt;

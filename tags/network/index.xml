@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 18 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>New Export Directory - Upgrade from 6.5 to 6.7</title>
-      <link>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</link>
+      <link>https://jgautierit.github.io/post/65-to-67-new-export-directory/</link>
       <pubDate>Tue, 18 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-18-65-to-67-new-export-directory/</guid>
+      <guid>https://jgautierit.github.io/post/65-to-67-new-export-directory/</guid>
       <description>
         
           &lt;p&gt;This post is dedicated to the &amp;quot;Stage 2&amp;quot; of the upgrade process from vCenter 6.5 to vCenter 6.7. I recently came across a scenario where the configuration exceeded the size of the root partition within the source vCenter appliance.&lt;/p&gt;
@@ -91,10 +91,10 @@
     
     <item>
       <title>Import/Export Network Settings on Windows</title>
-      <link>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</link>
+      <link>https://jgautierit.github.io/post/import-export-network-settings/</link>
       <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://jgautierit.github.io/post/2018-09-14-import-export-network-settings/</guid>
+      <guid>https://jgautierit.github.io/post/import-export-network-settings/</guid>
       <description>
         
           &lt;p style=&#39;text-align: justify;&#39;&gt;It is often required to change the network type of a Virtual NIC within a vSphere environnement. One of the most annoying things is to take note of the configuration in order to do not mess up the network settings.&lt;/p&gt;
