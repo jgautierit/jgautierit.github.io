@@ -27,6 +27,22 @@
     <loc>https://jgautierit.github.io/post/</loc>
     <lastmod>2018-09-14T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://jgautierit.github.io/tags/psod/</loc>
+    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/</loc>
+    <lastmod>2018-09-14T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt"
+                href="https://jgautierit.github.io/pt/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://jgautierit.github.io/tags/"
+                />
+  </url><url>
     <loc>https://jgautierit.github.io/categories/</loc>
     <xhtml:link
                 rel="alternate"
@@ -51,18 +67,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://jgautierit.github.io/series/"
-                />
-  </url><url>
-    <loc>https://jgautierit.github.io/tags/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt"
-                href="https://jgautierit.github.io/pt/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://jgautierit.github.io/tags/"
                 />
   </url>
 </urlset>
