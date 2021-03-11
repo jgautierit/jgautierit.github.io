@@ -19,14 +19,14 @@
 
 <meta property="og:type" content="article">
 <meta name="description" content="After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0
-Im ny …">
+In my …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@jgautierit">
 <meta name="twitter:title" content="vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL" />
 <meta property="og:url" content="https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/" />
 <meta property="og:title" content="vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL" />
 <meta property="og:description" content="After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0
-Im ny …" />
+In my …" />
 <meta property="og:image" content="https://jgautierit.github.io/images/errorlcm.jpg" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
@@ -164,7 +164,7 @@ Im ny …" />
     
     <p>After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0</p>
 <p><img src="/synchcl.jpg" alt="LCM sync HCL"></p>
-<p>Im ny situation, the task was stuck at 10% and failing afterwards with the error &quot;A general system error occcured...&quot;</p>
+<p>In my situation, the task was stuck at 10% and failing afterwards with the error &quot;A general system error occcured...&quot;</p>
 <p><img src="/errorlcm.jpg" alt="Error HCL"></p>
 <p>Looking at the logs (/var/log/vmware/vmware-updatemgr/vum-server/vmware-vum-server.log), it was really difficult to find something relevant but it looks like the download was failing.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>20-06-23T10:09:55.200Z error vmware-vum-server<span class="o">[</span>28017<span class="o">]</span> <span class="o">[</span>Originator@6876 <span class="nv">sub</span><span class="o">=</span>com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask<span class="o">]</span> Task:com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask ID:52b92e6b-1b4c-1584-c1ad-da57f7571f88. Task Failed. Error: Error:

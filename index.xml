@@ -17,7 +17,7 @@
         
           &lt;p&gt;After upgrading vCenter 6.7 to 7.0 for one of my customer, I had a strange issue where I could not Sync the HCL with the Lifecycle Manager in vCenter 7.0&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/synchcl.jpg&#34; alt=&#34;LCM sync HCL&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Im ny situation, the task was stuck at 10% and failing afterwards with the error &amp;quot;A general system error occcured...&amp;quot;&lt;/p&gt;
+&lt;p&gt;In my situation, the task was stuck at 10% and failing afterwards with the error &amp;quot;A general system error occcured...&amp;quot;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/errorlcm.jpg&#34; alt=&#34;Error HCL&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Looking at the logs (/var/log/vmware/vmware-updatemgr/vum-server/vmware-vum-server.log), it was really difficult to find something relevant but it looks like the download was failing.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;20-06-23T10:09:55.200Z error vmware-vum-server&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;28017&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Originator@6876 &lt;span class=&#34;nv&#34;&gt;sub&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Task:com.vmware.vcIntegrity.hcl.UpdateHclDatastoreTask ID:52b92e6b-1b4c-1584-c1ad-da57f7571f88. Task Failed. Error: Error:
