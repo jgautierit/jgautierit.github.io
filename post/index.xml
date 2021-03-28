@@ -18,7 +18,7 @@
           &lt;p&gt;I recently decided to move my homelab from my appartment to the building&#39;s basement for noise and space purposes. I wanted to access my lab by buidling a simple VPN connection between my home internet router and a 4G router that I installed.&lt;/p&gt;
 &lt;p&gt;Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 but a nated address in their own space. Unless you find a port mapping, you won&#39;t be able to build your VPN connection.&lt;/p&gt;
 &lt;p&gt;I could have used Teamviewer or any other solutions in the market but I really wanted to access my vCenter like I would do if I would have built a VPN.&lt;/p&gt;
-&lt;h1 id=&#34;introducing-zerotier-one&#34;&gt;Introducing ZeroTier One&lt;/h1&gt;
+&lt;h1 id=&#34;introducing-zerotier&#34;&gt;Introducing ZeroTier&lt;/h1&gt;
 &lt;p&gt;ZeroTier one is a &amp;quot;free&amp;quot; software agent that creates secure networks between devices whether these devices are on-premise, cloud, desktop or mobile devices.&lt;/p&gt;
 &lt;h2 id=&#34;how-does-it-work&#34;&gt;How does it work?&lt;/h2&gt;
 &lt;p&gt;The first step is to create a network in their online portal. This will allow you to connect multiple devices the newly created network. The network will contain an ID that you need to keep as you will need to specify it when you will be connecting different devices.&lt;/p&gt;
