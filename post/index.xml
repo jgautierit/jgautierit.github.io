@@ -46,6 +46,8 @@ Let&#39;s now find out our IP addresses :&lt;/p&gt;
 &lt;p&gt;We can see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.&lt;/p&gt;
 &lt;p&gt;It is time now to add the route within the Tier Zero portal as we identified the IP addresses :&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/routes.jpg&#34; alt=&#34;routes&#34;&gt;&lt;/p&gt;
+&lt;p&gt;In the routes above, you will notice that I did not use a /24 for my internal lab. Following the documentation of Zerotier, they advise the following :&lt;/p&gt;
+&lt;p&gt;Configure the destination route as slightly larger than the actual physical subnet, here /23 instead of /24 (a smaller number is a bigger subnet in this notation) This makes devices that are on both the physical and the ZeroTier network prefer the physical connection.&lt;/p&gt;
 &lt;p&gt;Now, let&#39;s define some variables for future commands:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PHY_IFACE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ens160&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ZT_IFACE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ztyouyu7qc&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The next step is to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).&lt;/p&gt;

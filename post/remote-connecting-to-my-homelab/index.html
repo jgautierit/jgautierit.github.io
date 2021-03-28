@@ -191,6 +191,8 @@ Let's now find out our IP addresses :</p>
 <p>We can see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.</p>
 <p>It is time now to add the route within the Tier Zero portal as we identified the IP addresses :</p>
 <p><img src="/routes.jpg" alt="routes"></p>
+<p>In the routes above, you will notice that I did not use a /24 for my internal lab. Following the documentation of Zerotier, they advise the following :</p>
+<p>Configure the destination route as slightly larger than the actual physical subnet, here /23 instead of /24 (a smaller number is a bigger subnet in this notation) This makes devices that are on both the physical and the ZeroTier network prefer the physical connection.</p>
 <p>Now, let's define some variables for future commands:</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="nv">PHY_IFACE</span><span class="o">=</span>ens160<span class="p">;</span> <span class="nv">ZT_IFACE</span><span class="o">=</span>ztyouyu7qc<span class="p">;</span>
 </code></pre></div><p>The next step is to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).</p>
