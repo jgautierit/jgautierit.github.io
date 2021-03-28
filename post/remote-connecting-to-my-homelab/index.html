@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
   <head>
-<title>Update Manager 6.7 fails to remediate - Check your ports ! | Clarity</title>
+<title>Remote connecting to my VMware homelab - ZeroTier One | Clarity</title>
 <meta charset="utf-8">
 <meta name="generator" content="Hugo 0.81.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -18,14 +18,14 @@
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="This quick thread will relate issues regarding the remediation of my upgrade to 6.7. Working at a customer site and upgrading the hosts to 6.7, Update Manager …">
+<meta name="description" content="I recently decided to move my homelab from my appartment to the building&#39;s basement for noise and space purposes. I wanted to access my lab by buidling a simple …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@jgautierit">
-<meta name="twitter:title" content="Update Manager 6.7 fails to remediate - Check your ports !" />
+<meta name="twitter:title" content="Remote connecting to my VMware homelab - ZeroTier One" />
 <meta property="og:url" content="https://jgautierit.github.io/post/remote-connecting-to-my-homelab/" />
-<meta property="og:title" content="Update Manager 6.7 fails to remediate - Check your ports !" />
-<meta property="og:description" content="This quick thread will relate issues regarding the remediation of my upgrade to 6.7. Working at a customer site and upgrading the hosts to 6.7, Update Manager …" />
-<meta property="og:image" content="https://jgautierit.github.io/images/errorstd.png" />
+<meta property="og:title" content="Remote connecting to my VMware homelab - ZeroTier One" />
+<meta property="og:description" content="I recently decided to move my homelab from my appartment to the building&#39;s basement for noise and space purposes. I wanted to access my lab by buidling a simple …" />
+<meta property="og:image" content="https://jgautierit.github.io/images/zerotier.png" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
 <link rel="manifest" href='https://jgautierit.github.io/icons/site.webmanifest'>
@@ -119,16 +119,16 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Update Manager 6.7 fails to remediate - Check your ports !</h1><div class="post_meta">
+    <h1 class="post_title">Remote connecting to my VMware homelab - ZeroTier One</h1><div class="post_meta">
   
     <svg class="icon">
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      Sep 20, 2018</span>
-      <a href='https://jgautierit.github.io/tags/updatemanager' title="UpdateManager" class="post_tag button button_translucent">UpdateManager
+      Mar 28, 2021</span>
+      <a href='https://jgautierit.github.io/tags/homelab' title="homelab" class="post_tag button button_translucent">homelab
       </a>
-      <a href='https://jgautierit.github.io/tags/vcenter' title="vCenter" class="post_tag button button_translucent">vCenter
+      <a href='https://jgautierit.github.io/tags/zerotierone' title="zerotierone" class="post_tag button button_translucent">zerotierone
       </a>
       <a href='https://jgautierit.github.io/tags/vmware' title="VMware" class="post_tag button button_translucent">VMware
       </a>
@@ -137,12 +137,12 @@
     
   <div class="post_share">
     Share on:
-    <a href="https://twitter.com/intent/tweet?text=Update%20Manager%206.7%20fails%20to%20remediate%20-%20Check%20your%20ports%20%21&url=https%3a%2f%2fjgautierit.github.io%2fpost%2fremote-connecting-to-my-homelab%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <a href="https://twitter.com/intent/tweet?text=Remote%20connecting%20to%20my%20VMware%20homelab%20-%20ZeroTier%20One&url=https%3a%2f%2fjgautierit.github.io%2fpost%2fremote-connecting-to-my-homelab%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#twitter"></use>
 </svg>
     </a>
-    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjgautierit.github.io%2fpost%2fremote-connecting-to-my-homelab%2f&t=Update%20Manager%206.7%20fails%20to%20remediate%20-%20Check%20your%20ports%20%21" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjgautierit.github.io%2fpost%2fremote-connecting-to-my-homelab%2f&t=Remote%20connecting%20to%20my%20VMware%20homelab%20-%20ZeroTier%20One" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#facebook"></use>
 </svg>
@@ -160,35 +160,59 @@
   </div>
 
     
-    <p>This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
-Working at a customer site and upgrading the hosts to 6.7, Update Manager was failing to remediate my ESXi upgrade with the following error :</p>
-<p><img src="vumerror.png" alt="Remediate Error"></p>
-<p>What a nice error message ...Very Helpful!</p>
-<p>No more indication was provided by the vCenter tasks &amp; events so I had to look at the logs.</p>
-<p>In vCenter Server Appliance, the Update manager logs are located here :</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>/var/log/vmware/vmware-updatemgr/vum-server
-</code></pre></div><p>Looking at the last &quot;vmware-vum-server.log&quot;, I quickly matched an error with the last try :</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>2018-09-20T11:31:14.436Z warning vmware-vum-server[06197] [Originator@6876 sub=Default] Failed to connect socket; &lt;io_obj p:0x00007fb0840161f0, h:20, &lt;TCP &#39;X.X.X.X : 42026&#39;&gt;, &lt;TCP &#39;Y.Y.Y.Y : 80&#39;&gt;&gt;, e: 111(Connection refused)
-</code></pre></div><p>This error indicates that the IP X.X.X.X tries to communicate through the port 80 on the IP address Y.Y.Y.Y. X being my vCenter and Y my ESXi host.</p>
-<p>In order to prove that the error was the consequence of a blocked port, I used this the following command to test the ports :</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="c1"># curl -v telnet://Y.Y.Y.Y:80</span>
-</code></pre></div><p>Guess the result ?</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>* Rebuilt URL to: telnet://Y.Y.Y.Y:80/
-<span class="ln">2</span>*   Trying Y.Y.Y.Y...
-<span class="ln">3</span>* TCP_NODELAY set
-<span class="ln">4</span>* connect to Y.Y.Y.Y port 80 failed: Connection refused
-<span class="ln">5</span>* Failed to connect to Y.Y.Y.Y port 80: Connection refused
-<span class="ln">6</span>* Closing connection 0
-<span class="ln">7</span>curl: (7) Failed to connect to Y.Y.Y.Y port 80: Connection refused
-</code></pre></div><p>We then tested a known working port such as 443 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span># curl -v telnet://Y.Y.Y.Y:443
-<span class="ln">2</span>* Rebuilt URL to: telnet://Y.Y.Y.Y:443
-<span class="ln">3</span>*   Trying Y.Y.Y.Y...
-<span class="ln">4</span>* TCP_NODELAY set
-<span class="ln">5</span>* Connected to Y.Y.Y.Y (Y.Y.Y.Y) port 443 (#0)
-</code></pre></div><p>It become then obvious that the port was blocked by some firewall.</p>
-<p>We asked kindly the colleagues to open the port. Required ports for update manager are listed <a href="https://kb.vmware.com/s/article/1004543" title="KB1004543">here</a>:</p>
-<p>Problem Solved!</p>
+    <p>I recently decided to move my homelab from my appartment to the building's basement for noise and space purposes. I wanted to access my lab by buidling a simple VPN connection between my home internet router and a 4G router that I installed.</p>
+<p>Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 but a nated address in their own space. Unless you find a port mapping, you won't be able to build your VPN connection.</p>
+<p>I could have used Teamviewer or any other solutions in the market but I really wanted to access my vCenter like I would do if I would have built a VPN.</p>
+<h1 id="introducing-zerotier-one">Introducing ZeroTier One</h1>
+<p>ZeroTier one is a &quot;free&quot; software agent that creates secure networks between devices whether these devices are on-premise, cloud, desktop or mobile devices.</p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>The first step is to create a network in their online portal. This will allow you to connect multiple devices the newly created network. The network will contain an ID that you need to keep as you will need to specify it when you will be connecting different devices.</p>
+<p><img src="zerotiernetworkid.jpg" alt="Zero Tier Network ID"></p>
+<p>Once the network is created, you can select a range that will be used to provide IP addresses to the agents installed. Obviously, do not select a range that will overlap your current range.In my case, I selected the range 10.144.x.x/16.</p>
+<p><img src="zerotiernetworkrange.jpg" alt="Zero Tier Network Range"></p>
+<p>Once the network has been setup, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That's it. Devices can now communicate between each other within the ZeroTier network range.</p>
+<p><img src="zerotierdevices.jpg" alt="Zero Tier Devices"></p>
+<h2 id="how-do-you-access-machines-without-the-agent-">How do you access machines without the agent ?</h2>
+<p>Now that we've seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. Basically, we will route the Zerotier network to our physical network.</p>
+<p>This becomes possible by using a raspberry pi, or another machine (in my case I choose to use a virtual machine) as long as you have iptables. It will use a NAT/Masquerading method.</p>
+<p>My homelab is built as per the diagram below. The objectives here are to be able to reach the management VLAN 192.168.2.x network located in my basement from my home LAN which is 192.168.1.0/24.</p>
+<p><img src="homelabdiagram.jpg" alt="Homelab Diagram"></p>
+<p>First, we install Zerotier on the VM and join your network:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>curl -s https://install.zerotier.com <span class="p">|</span> sudo bash
+<span class="ln">2</span>sudo zerotier-cli join abcdefghi73
+</code></pre></div><p>Obviously I indicated a fake network id (abcdefghi73) do not forget to correct it.</p>
+<p>Then, we will identify the interfaces used :</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>iplink
+</code></pre></div><p><img src="iplink.jpg" alt="iplink result"></p>
+<p>As we can see here, ens160 is my virtual machine virtual interface and ztyouyu7qc is the zero tier virtual interface.
+Let's now find out our IP addresses :</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>ip a 
+</code></pre></div><p><img src="iparesult.jpg" alt="ip a result"></p>
+<p>We can also see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.</p>
+<p>It is time now to add the route within the Tier Zero portal as we identified the IP addresses :</p>
+<p><img src="routes.jpg" alt="routes"></p>
+<p>Now, let's define some variables for future commands:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="nv">PHY_IFACE</span><span class="o">=</span>ens160<span class="p">;</span> <span class="nv">ZT_IFACE</span><span class="o">=</span>ztyouyu7qc<span class="p">;</span>
+</code></pre></div><p>Once this has been done, we need to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>sudo sysctl -w net.ipv4.ip_forward<span class="o">=</span><span class="m">1</span>
+</code></pre></div><p>Uncomment net.ipv4.ip_forward by removing the # before the line.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>sudo vi /etc/sysctl.conf
+</code></pre></div><p><img src="forwarding.gif" alt="Forwarding"></p>
+<p>The device is now capable to forward packets between the physical (virtual in my case) interface and the virtual Zero tier interface.</p>
+<p>To conclude, we will now configure authorize these packets to go from one to another with iptables :</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>sudo iptables -t nat -A POSTROUTING -o <span class="nv">$PHY_IFACE</span> -j MASQUERADE
+<span class="ln">2</span>sudo iptables -A FORWARD -i <span class="nv">$PHY_IFACE</span> -o <span class="nv">$ZT_IFACE</span> -m state --state RELATED,ESTABLISHED -j ACCEPT
+<span class="ln">3</span>sudo iptables -A FORWARD -i <span class="nv">$ZT_IFACE</span> -o <span class="nv">$PHY_IFACE</span> -j ACCEPT
+</code></pre></div><p>In order to have these rules persistent across reboots :</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>sudo apt install iptables-persistent
+<span class="ln">2</span>sudo bash -c iptables-save &gt; /etc/iptables/rules.v4
+</code></pre></div><p>That's it! You should now be able to ping your internal IP addresses!</p>
+<p><img src="pingresult.jpg" alt="Ping results"></p>
+<p>I really like this software and it helped me a lot. I will now replace my virtual machine by a Raspberry pi in the next few weeks.</p>
+<p>Kudos to J.Wilk for sharing this with me!</p>
+<p>Sources :</p>
+<p><a href="https://www.zerotier.com/download/" title="Download Page">ZeroTierOne Download page</a>
+<a href="https://kb.vmware.com/s/article/1004543" title="Knowledge base">ZeroTierOne Knowledge base</a></p>
 
 
   </article>
@@ -237,12 +261,7 @@ Working at a customer site and upgrading the hosts to 6.7, Update Manager was fa
         
         <a href='https://jgautierit.github.io/tags/vcenter/' class="post_tag button button_translucent" title="vcenter">
           VCENTER
-          <span class="button_tally">6</span>
-        </a>
-        
-        <a href='https://jgautierit.github.io/tags/updatemanager/' class="post_tag button button_translucent" title="updatemanager">
-          UPDATEMANAGER
-          <span class="button_tally">4</span>
+          <span class="button_tally">5</span>
         </a>
         
         <a href='https://jgautierit.github.io/tags/hpe/' class="post_tag button button_translucent" title="hpe">
@@ -255,6 +274,11 @@ Working at a customer site and upgrading the hosts to 6.7, Update Manager was fa
           <span class="button_tally">3</span>
         </a>
         
+        <a href='https://jgautierit.github.io/tags/updatemanager/' class="post_tag button button_translucent" title="updatemanager">
+          UPDATEMANAGER
+          <span class="button_tally">3</span>
+        </a>
+        
         <a href='https://jgautierit.github.io/tags/network/' class="post_tag button button_translucent" title="network">
           NETWORK
           <span class="button_tally">2</span>
@@ -263,6 +287,11 @@ Working at a customer site and upgrading the hosts to 6.7, Update Manager was fa
         <a href='https://jgautierit.github.io/tags/nic/' class="post_tag button button_translucent" title="nic">
           NIC
           <span class="button_tally">2</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/homelab/' class="post_tag button button_translucent" title="homelab">
+          HOMELAB
+          <span class="button_tally">1</span>
         </a>
         
         <a href='https://jgautierit.github.io/tags/nutanix/' class="post_tag button button_translucent" title="nutanix">
@@ -282,6 +311,11 @@ Working at a customer site and upgrading the hosts to 6.7, Update Manager was fa
         
         <a href='https://jgautierit.github.io/tags/vxrail/' class="post_tag button button_translucent" title="vxrail">
           VXRAIL
+          <span class="button_tally">1</span>
+        </a>
+        
+        <a href='https://jgautierit.github.io/tags/zerotierone/' class="post_tag button button_translucent" title="zerotierone">
+          ZEROTIERONE
           <span class="button_tally">1</span>
         </a>
         

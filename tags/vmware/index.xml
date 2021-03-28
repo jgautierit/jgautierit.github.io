@@ -6,7 +6,73 @@
     <description>Recent content in VMware on Clarity</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 23 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/vmware/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 28 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/vmware/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Remote connecting to my VMware homelab - ZeroTier One</title>
+      <link>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</link>
+      <pubDate>Sun, 28 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</guid>
+      <description>
+        
+          &lt;p&gt;I recently decided to move my homelab from my appartment to the building&#39;s basement for noise and space purposes. I wanted to access my lab by buidling a simple VPN connection between my home internet router and a 4G router that I installed.&lt;/p&gt;
+&lt;p&gt;Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 but a nated address in their own space. Unless you find a port mapping, you won&#39;t be able to build your VPN connection.&lt;/p&gt;
+&lt;p&gt;I could have used Teamviewer or any other solutions in the market but I really wanted to access my vCenter like I would do if I would have built a VPN.&lt;/p&gt;
+&lt;h1 id=&#34;introducing-zerotier-one&#34;&gt;Introducing ZeroTier One&lt;/h1&gt;
+&lt;p&gt;ZeroTier one is a &amp;quot;free&amp;quot; software agent that creates secure networks between devices whether these devices are on-premise, cloud, desktop or mobile devices.&lt;/p&gt;
+&lt;h2 id=&#34;how-does-it-work&#34;&gt;How does it work?&lt;/h2&gt;
+&lt;p&gt;The first step is to create a network in their online portal. This will allow you to connect multiple devices the newly created network. The network will contain an ID that you need to keep as you will need to specify it when you will be connecting different devices.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;zerotiernetworkid.jpg&#34; alt=&#34;Zero Tier Network ID&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once the network is created, you can select a range that will be used to provide IP addresses to the agents installed. Obviously, do not select a range that will overlap your current range.In my case, I selected the range 10.144.x.x/16.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;zerotiernetworkrange.jpg&#34; alt=&#34;Zero Tier Network Range&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once the network has been setup, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That&#39;s it. Devices can now communicate between each other within the ZeroTier network range.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;zerotierdevices.jpg&#34; alt=&#34;Zero Tier Devices&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;how-do-you-access-machines-without-the-agent-&#34;&gt;How do you access machines without the agent ?&lt;/h2&gt;
+&lt;p&gt;Now that we&#39;ve seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. Basically, we will route the Zerotier network to our physical network.&lt;/p&gt;
+&lt;p&gt;This becomes possible by using a raspberry pi, or another machine (in my case I choose to use a virtual machine) as long as you have iptables. It will use a NAT/Masquerading method.&lt;/p&gt;
+&lt;p&gt;My homelab is built as per the diagram below. The objectives here are to be able to reach the management VLAN 192.168.2.x network located in my basement from my home LAN which is 192.168.1.0/24.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;homelabdiagram.jpg&#34; alt=&#34;Homelab Diagram&#34;&gt;&lt;/p&gt;
+&lt;p&gt;First, we install Zerotier on the VM and join your network:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;curl -s https://install.zerotier.com &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo bash
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo zerotier-cli join abcdefghi73
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Obviously I indicated a fake network id (abcdefghi73) do not forget to correct it.&lt;/p&gt;
+&lt;p&gt;Then, we will identify the interfaces used :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;iplink
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;iplink.jpg&#34; alt=&#34;iplink result&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As we can see here, ens160 is my virtual machine virtual interface and ztyouyu7qc is the zero tier virtual interface.
+Let&#39;s now find out our IP addresses :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;ip a 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;iparesult.jpg&#34; alt=&#34;ip a result&#34;&gt;&lt;/p&gt;
+&lt;p&gt;We can also see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.&lt;/p&gt;
+&lt;p&gt;It is time now to add the route within the Tier Zero portal as we identified the IP addresses :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;routes.jpg&#34; alt=&#34;routes&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now, let&#39;s define some variables for future commands:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PHY_IFACE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ens160&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ZT_IFACE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ztyouyu7qc&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once this has been done, we need to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo sysctl -w net.ipv4.ip_forward&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Uncomment net.ipv4.ip_forward by removing the # before the line.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo vi /etc/sysctl.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;forwarding.gif&#34; alt=&#34;Forwarding&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The device is now capable to forward packets between the physical (virtual in my case) interface and the virtual Zero tier interface.&lt;/p&gt;
+&lt;p&gt;To conclude, we will now configure authorize these packets to go from one to another with iptables :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo iptables -t nat -A POSTROUTING -o &lt;span class=&#34;nv&#34;&gt;$PHY_IFACE&lt;/span&gt; -j MASQUERADE
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo iptables -A FORWARD -i &lt;span class=&#34;nv&#34;&gt;$PHY_IFACE&lt;/span&gt; -o &lt;span class=&#34;nv&#34;&gt;$ZT_IFACE&lt;/span&gt; -m state --state RELATED,ESTABLISHED -j ACCEPT
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;sudo iptables -A FORWARD -i &lt;span class=&#34;nv&#34;&gt;$ZT_IFACE&lt;/span&gt; -o &lt;span class=&#34;nv&#34;&gt;$PHY_IFACE&lt;/span&gt; -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In order to have these rules persistent across reboots :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo apt install iptables-persistent
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo bash -c iptables-save &amp;gt; /etc/iptables/rules.v4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That&#39;s it! You should now be able to ping your internal IP addresses!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;pingresult.jpg&#34; alt=&#34;Ping results&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I really like this software and it helped me a lot. I will now replace my virtual machine by a Raspberry pi in the next few weeks.&lt;/p&gt;
+&lt;p&gt;Kudos to J.Wilk for sharing this with me!&lt;/p&gt;
+&lt;p&gt;Sources :&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zerotier.com/download/&#34; title=&#34;Download Page&#34;&gt;ZeroTierOne Download page&lt;/a&gt;
+&lt;a href=&#34;https://kb.vmware.com/s/article/1004543&#34; title=&#34;Knowledge base&#34;&gt;ZeroTierOne Knowledge base&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
     <item>
       <title>vSphere 7 Lifecycle Manager - Can&#39;t Sync the HCL</title>
       <link>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/</link>
@@ -422,48 +488,6 @@ N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delas
 &lt;span class=&#34;ln&#34;&gt;122&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Write-Host&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Done&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;-ForeGroundColor&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Cyan&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The rest of the procedure to apply the roles/permissionsa are available in Solve.&lt;/p&gt;
 &lt;p&gt;Hope this helps.&lt;/p&gt;
-
-        
-      </description>
-    </item>
-    
-    <item>
-      <title>Update Manager 6.7 fails to remediate - Check your ports !</title>
-      <link>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</link>
-      <pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</guid>
-      <description>
-        
-          &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
-Working at a customer site and upgrading the hosts to 6.7, Update Manager was failing to remediate my ESXi upgrade with the following error :&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
-&lt;p&gt;What a nice error message ...Very Helpful!&lt;/p&gt;
-&lt;p&gt;No more indication was provided by the vCenter tasks &amp;amp; events so I had to look at the logs.&lt;/p&gt;
-&lt;p&gt;In vCenter Server Appliance, the Update manager logs are located here :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;/var/log/vmware/vmware-updatemgr/vum-server
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Looking at the last &amp;quot;vmware-vum-server.log&amp;quot;, I quickly matched an error with the last try :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;2018-09-20T11:31:14.436Z warning vmware-vum-server[06197] [Originator@6876 sub=Default] Failed to connect socket; &amp;lt;io_obj p:0x00007fb0840161f0, h:20, &amp;lt;TCP &amp;#39;X.X.X.X : 42026&amp;#39;&amp;gt;, &amp;lt;TCP &amp;#39;Y.Y.Y.Y : 80&amp;#39;&amp;gt;&amp;gt;, e: 111(Connection refused)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This error indicates that the IP X.X.X.X tries to communicate through the port 80 on the IP address Y.Y.Y.Y. X being my vCenter and Y my ESXi host.&lt;/p&gt;
-&lt;p&gt;In order to prove that the error was the consequence of a blocked port, I used this the following command to test the ports :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# curl -v telnet://Y.Y.Y.Y:80&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Guess the result ?&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;* Rebuilt URL to: telnet://Y.Y.Y.Y:80/
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;*   Trying Y.Y.Y.Y...
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;* TCP_NODELAY set
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;* connect to Y.Y.Y.Y port 80 failed: Connection refused
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;* Failed to connect to Y.Y.Y.Y port 80: Connection refused
-&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;* Closing connection 0
-&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;curl: (7) Failed to connect to Y.Y.Y.Y port 80: Connection refused
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We then tested a known working port such as 443 :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;# curl -v telnet://Y.Y.Y.Y:443
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;* Rebuilt URL to: telnet://Y.Y.Y.Y:443
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;*   Trying Y.Y.Y.Y...
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;* TCP_NODELAY set
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;* Connected to Y.Y.Y.Y (Y.Y.Y.Y) port 443 (#0)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It become then obvious that the port was blocked by some firewall.&lt;/p&gt;
-&lt;p&gt;We asked kindly the colleagues to open the port. Required ports for update manager are listed &lt;a href=&#34;https://kb.vmware.com/s/article/1004543&#34; title=&#34;KB1004543&#34;&gt;here&lt;/a&gt;:&lt;/p&gt;
-&lt;p&gt;Problem Solved!&lt;/p&gt;
 
         
       </description>

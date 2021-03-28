@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zerotierone on Clarity</title>
+    <link>https://jgautierit.github.io/tags/zerotierone/</link>
+    <description>Recent content in zerotierone on Clarity</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
+    <lastBuildDate>Sun, 28 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/zerotierone/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Remote connecting to my VMware homelab - ZeroTier One</title>
+      <link>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</link>
+      <pubDate>Sun, 28 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</guid>
+      <description>
+        
+          &lt;p&gt;I recently decided to move my homelab from my appartment to the building&#39;s basement for noise and space purposes. I wanted to access my lab by buidling a simple VPN connection between my home internet router and a 4G router that I installed.&lt;/p&gt;
+&lt;p&gt;Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 but a nated address in their own space. Unless you find a port mapping, you won&#39;t be able to build your VPN connection.&lt;/p&gt;
+&lt;p&gt;I could have used Teamviewer or any other solutions in the market but I really wanted to access my vCenter like I would do if I would have built a VPN.&lt;/p&gt;
+&lt;h1 id=&#34;introducing-zerotier-one&#34;&gt;Introducing ZeroTier One&lt;/h1&gt;
+&lt;p&gt;ZeroTier one is a &amp;quot;free&amp;quot; software agent that creates secure networks between devices whether these devices are on-premise, cloud, desktop or mobile devices.&lt;/p&gt;
+&lt;h2 id=&#34;how-does-it-work&#34;&gt;How does it work?&lt;/h2&gt;
+&lt;p&gt;The first step is to create a network in their online portal. This will allow you to connect multiple devices the newly created network. The network will contain an ID that you need to keep as you will need to specify it when you will be connecting different devices.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;zerotiernetworkid.jpg&#34; alt=&#34;Zero Tier Network ID&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once the network is created, you can select a range that will be used to provide IP addresses to the agents installed. Obviously, do not select a range that will overlap your current range.In my case, I selected the range 10.144.x.x/16.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;zerotiernetworkrange.jpg&#34; alt=&#34;Zero Tier Network Range&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Once the network has been setup, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That&#39;s it. Devices can now communicate between each other within the ZeroTier network range.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;zerotierdevices.jpg&#34; alt=&#34;Zero Tier Devices&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;how-do-you-access-machines-without-the-agent-&#34;&gt;How do you access machines without the agent ?&lt;/h2&gt;
+&lt;p&gt;Now that we&#39;ve seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. Basically, we will route the Zerotier network to our physical network.&lt;/p&gt;
+&lt;p&gt;This becomes possible by using a raspberry pi, or another machine (in my case I choose to use a virtual machine) as long as you have iptables. It will use a NAT/Masquerading method.&lt;/p&gt;
+&lt;p&gt;My homelab is built as per the diagram below. The objectives here are to be able to reach the management VLAN 192.168.2.x network located in my basement from my home LAN which is 192.168.1.0/24.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;homelabdiagram.jpg&#34; alt=&#34;Homelab Diagram&#34;&gt;&lt;/p&gt;
+&lt;p&gt;First, we install Zerotier on the VM and join your network:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;curl -s https://install.zerotier.com &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo bash
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo zerotier-cli join abcdefghi73
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Obviously I indicated a fake network id (abcdefghi73) do not forget to correct it.&lt;/p&gt;
+&lt;p&gt;Then, we will identify the interfaces used :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;iplink
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;iplink.jpg&#34; alt=&#34;iplink result&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As we can see here, ens160 is my virtual machine virtual interface and ztyouyu7qc is the zero tier virtual interface.
+Let&#39;s now find out our IP addresses :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;ip a 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;iparesult.jpg&#34; alt=&#34;ip a result&#34;&gt;&lt;/p&gt;
+&lt;p&gt;We can also see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.&lt;/p&gt;
+&lt;p&gt;It is time now to add the route within the Tier Zero portal as we identified the IP addresses :&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;routes.jpg&#34; alt=&#34;routes&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now, let&#39;s define some variables for future commands:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;PHY_IFACE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ens160&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ZT_IFACE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;ztyouyu7qc&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once this has been done, we need to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo sysctl -w net.ipv4.ip_forward&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Uncomment net.ipv4.ip_forward by removing the # before the line.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo vi /etc/sysctl.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;forwarding.gif&#34; alt=&#34;Forwarding&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The device is now capable to forward packets between the physical (virtual in my case) interface and the virtual Zero tier interface.&lt;/p&gt;
+&lt;p&gt;To conclude, we will now configure authorize these packets to go from one to another with iptables :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo iptables -t nat -A POSTROUTING -o &lt;span class=&#34;nv&#34;&gt;$PHY_IFACE&lt;/span&gt; -j MASQUERADE
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo iptables -A FORWARD -i &lt;span class=&#34;nv&#34;&gt;$PHY_IFACE&lt;/span&gt; -o &lt;span class=&#34;nv&#34;&gt;$ZT_IFACE&lt;/span&gt; -m state --state RELATED,ESTABLISHED -j ACCEPT
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;sudo iptables -A FORWARD -i &lt;span class=&#34;nv&#34;&gt;$ZT_IFACE&lt;/span&gt; -o &lt;span class=&#34;nv&#34;&gt;$PHY_IFACE&lt;/span&gt; -j ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In order to have these rules persistent across reboots :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;sudo apt install iptables-persistent
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo bash -c iptables-save &amp;gt; /etc/iptables/rules.v4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;That&#39;s it! You should now be able to ping your internal IP addresses!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;pingresult.jpg&#34; alt=&#34;Ping results&#34;&gt;&lt;/p&gt;
+&lt;p&gt;I really like this software and it helped me a lot. I will now replace my virtual machine by a Raspberry pi in the next few weeks.&lt;/p&gt;
+&lt;p&gt;Kudos to J.Wilk for sharing this with me!&lt;/p&gt;
+&lt;p&gt;Sources :&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.zerotier.com/download/&#34; title=&#34;Download Page&#34;&gt;ZeroTierOne Download page&lt;/a&gt;
+&lt;a href=&#34;https://kb.vmware.com/s/article/1004543&#34; title=&#34;Knowledge base&#34;&gt;ZeroTierOne Knowledge base&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>
