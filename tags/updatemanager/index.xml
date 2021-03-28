@@ -77,7 +77,7 @@
         
           &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
 Working at a customer site and upgrading the hosts to 6.7, Update Manager was failing to remediate my ESXi upgrade with the following error :&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
 &lt;p&gt;What a nice error message ...Very Helpful!&lt;/p&gt;
 &lt;p&gt;No more indication was provided by the vCenter tasks &amp;amp; events so I had to look at the logs.&lt;/p&gt;
 &lt;p&gt;In vCenter Server Appliance, the Update manager logs are located here :&lt;/p&gt;

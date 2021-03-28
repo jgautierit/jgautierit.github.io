@@ -85,9 +85,9 @@ Things changed a bit since the creation of this article so I will describe the p
 &lt;h2 id=&#34;start-the-vm-installation&#34;&gt;Start the VM installation&lt;/h2&gt;
 &lt;p&gt;The next step is to boot the VM on the Windows ISO.&lt;/p&gt;
 &lt;p&gt;Do not forget to include the Windows ISO of the VMware tools in order to detect your disk (using the paravirtual driver).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;tools.jpg&#34; alt=&#34;Tools&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/tools.jpg&#34; alt=&#34;Tools&#34;&gt;&lt;/p&gt;
 &lt;p&gt;When the driver is installed and the disk is detected, please proceed and select &amp;quot;New&amp;quot;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;newdisk.jpg&#34; alt=&#34;New&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/newdisk.jpg&#34; alt=&#34;New&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Microsoft will create 4 partitions necessary for the Windows Server&#39;s installation.
 {: .text-justify}
 Identify the partition that we are going to use to install the system (the biggest) and press with your keyboard Shift + F10.&lt;/p&gt;
@@ -106,7 +106,7 @@ Identify the partition that we are going to use to install the system (the bigge
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/refresh.jpg&#34; alt=&#34;Refresh&#34;&gt;&lt;/p&gt;
 &lt;p&gt;As soon as your Windows installation is completed, you can verify the NTFS block size with the following command :&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;DISKPART&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;filesystems
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;ntfs8k.jpg&#34; alt=&#34;NTFS&#34;&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/ntfs8k.jpg&#34; alt=&#34;NTFS&#34;&gt;&lt;/p&gt;
 
         
       </description>
@@ -262,7 +262,7 @@ N.B : This script is valid as of 11/01/2021. Updated by my colleague Steve Delas
         
           &lt;p&gt;This quick thread will relate issues regarding the remediation of my upgrade to 6.7.
 Working at a customer site and upgrading the hosts to 6.7, Update Manager was failing to remediate my ESXi upgrade with the following error :&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/vumerror.png&#34; alt=&#34;Remediate Error&#34;&gt;&lt;/p&gt;
 &lt;p&gt;What a nice error message ...Very Helpful!&lt;/p&gt;
 &lt;p&gt;No more indication was provided by the vCenter tasks &amp;amp; events so I had to look at the logs.&lt;/p&gt;
 &lt;p&gt;In vCenter Server Appliance, the Update manager logs are located here :&lt;/p&gt;

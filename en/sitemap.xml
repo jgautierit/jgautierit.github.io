@@ -2,11 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://jgautierit.github.io/about/</loc>
-    <lastmod>2021-02-27T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://jgautierit.github.io/</loc>
-    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -18,11 +15,17 @@
                 href="https://jgautierit.github.io/"
                 />
   </url><url>
+    <loc>https://jgautierit.github.io/tags/homelab/</loc>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://jgautierit.github.io/post/</loc>
-    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</loc>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/tags/</loc>
-    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -34,13 +37,19 @@
                 href="https://jgautierit.github.io/tags/"
                 />
   </url><url>
+    <loc>https://jgautierit.github.io/tags/vmware/</loc>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/zerotierone/</loc>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/about/</loc>
+    <lastmod>2021-02-27T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://jgautierit.github.io/tags/updatemanager/</loc>
     <lastmod>2020-06-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/tags/vcenter/</loc>
-    <lastmod>2020-06-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://jgautierit.github.io/tags/vmware/</loc>
     <lastmod>2020-06-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/post/lifecycle-manager-cant-sync-the-hcl/</loc>
