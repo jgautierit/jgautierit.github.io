@@ -173,7 +173,7 @@
 <p>The network has been setup. Now, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That's it. Devices can now communicate between each other within the ZeroTier network range.</p>
 <p><img src="/zerotierdevices.jpg" alt="Zero Tier Devices"></p>
 <h2 id="how-do-you-access-machines-without-the-agent-">How do you access machines without the agent ?</h2>
-<p>Now that we've seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. Basically, we will route the Zerotier network to our physical network.</p>
+<p>Now that we've seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. As an example for my homelab, I want to be able to access my vCenter or every other ESXis without installing an agent on it. Basically, we will route the Zerotier network to our physical network.</p>
 <p>This becomes possible by using a raspberry pi, or another machine (in my case I choose to use a virtual machine) as long as you have iptables. It will use a NAT/Masquerading method.</p>
 <p>My homelab is built as per the diagram below. The objectives here are to be able to reach the management VLAN 192.168.2.x network located in my basement from my home LAN which is 192.168.1.0/24.</p>
 <p><img src="/homelabdiagram.jpg" alt="Homelab Diagram"></p>
