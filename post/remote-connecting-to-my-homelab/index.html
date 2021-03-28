@@ -188,12 +188,12 @@
 Let's now find out our IP addresses :</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>ip a 
 </code></pre></div><p><img src="/iparesult.jpg" alt="ip a result"></p>
-<p>We can also see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.</p>
+<p>We can see that my IP address is 192.168.100.160/24 in my private LAN and 10.144.49.76/16 in the ZeroTier Network.</p>
 <p>It is time now to add the route within the Tier Zero portal as we identified the IP addresses :</p>
 <p><img src="/routes.jpg" alt="routes"></p>
 <p>Now, let's define some variables for future commands:</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span><span class="nv">PHY_IFACE</span><span class="o">=</span>ens160<span class="p">;</span> <span class="nv">ZT_IFACE</span><span class="o">=</span>ztyouyu7qc<span class="p">;</span>
-</code></pre></div><p>Once this has been done, we need to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).</p>
+</code></pre></div><p>The next step is to enable IP Forwarding. We need to enable it now and make sure it persists between reboot (I am running Ubuntu).</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>sudo sysctl -w net.ipv4.ip_forward<span class="o">=</span><span class="m">1</span>
 </code></pre></div><p>Uncomment net.ipv4.ip_forward by removing the # before the line.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>sudo vi /etc/sysctl.conf
