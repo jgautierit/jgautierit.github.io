@@ -170,7 +170,7 @@
 <p><img src="/zerotiernetworkid.jpg" alt="Zero Tier Network ID"></p>
 <p>Once the network is created, you can select a range that will be used to provide IP addresses to the agents installed. Obviously, do not select a range that will overlap your current range.In my case, I selected the range 10.144.x.x/16.</p>
 <p><img src="/zerotiernetworkrange.jpg" alt="Zero Tier Network Range"></p>
-<p>Once the network has been setup, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That's it. Devices can now communicate between each other within the ZeroTier network range.</p>
+<p>The network has been setup. Now, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That's it. Devices can now communicate between each other within the ZeroTier network range.</p>
 <p><img src="/zerotierdevices.jpg" alt="Zero Tier Devices"></p>
 <h2 id="how-do-you-access-machines-without-the-agent-">How do you access machines without the agent ?</h2>
 <p>Now that we've seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. Basically, we will route the Zerotier network to our physical network.</p>
@@ -182,7 +182,7 @@
 <span class="ln">2</span>sudo zerotier-cli join abcdefghi73
 </code></pre></div><p>Obviously I indicated a fake network id (abcdefghi73) do not forget to correct it.</p>
 <p>Then, we will identify the interfaces used :</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>iplink
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>ip link
 </code></pre></div><p><img src="/iplink.jpg" alt="iplink result"></p>
 <p>As we can see here, ens160 is my virtual machine virtual interface and ztyouyu7qc is the zero tier virtual interface.
 Let's now find out our IP addresses :</p>

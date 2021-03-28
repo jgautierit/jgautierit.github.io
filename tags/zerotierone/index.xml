@@ -25,7 +25,7 @@
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/zerotiernetworkid.jpg&#34; alt=&#34;Zero Tier Network ID&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Once the network is created, you can select a range that will be used to provide IP addresses to the agents installed. Obviously, do not select a range that will overlap your current range.In my case, I selected the range 10.144.x.x/16.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/zerotiernetworkrange.jpg&#34; alt=&#34;Zero Tier Network Range&#34;&gt;&lt;/p&gt;
-&lt;p&gt;Once the network has been setup, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That&#39;s it. Devices can now communicate between each other within the ZeroTier network range.&lt;/p&gt;
+&lt;p&gt;The network has been setup. Now, you need to install the agent within the device you want to connect. Specify the network to join (the network ID created before) and authorize the device within the online portal. That&#39;s it. Devices can now communicate between each other within the ZeroTier network range.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/zerotierdevices.jpg&#34; alt=&#34;Zero Tier Devices&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;how-do-you-access-machines-without-the-agent-&#34;&gt;How do you access machines without the agent ?&lt;/h2&gt;
 &lt;p&gt;Now that we&#39;ve seen how to connect devices to the ZeroTierOne network, we will see a method to do not have to install an agent on all devices. Basically, we will route the Zerotier network to our physical network.&lt;/p&gt;
@@ -37,7 +37,7 @@
 &lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;sudo zerotier-cli join abcdefghi73
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Obviously I indicated a fake network id (abcdefghi73) do not forget to correct it.&lt;/p&gt;
 &lt;p&gt;Then, we will identify the interfaces used :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;iplink
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;ip link
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/iplink.jpg&#34; alt=&#34;iplink result&#34;&gt;&lt;/p&gt;
 &lt;p&gt;As we can see here, ens160 is my virtual machine virtual interface and ztyouyu7qc is the zero tier virtual interface.
 Let&#39;s now find out our IP addresses :&lt;/p&gt;
