@@ -23,6 +23,7 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ esxcfg-module -s &lt;span class=&#34;s1&#34;&gt;&amp;#39;ql2xnvmesupport=0&amp;#39;&lt;/span&gt; qlnativefc
 &lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;$ reboot
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The duplicate ports will disappear after the reboot.&lt;/p&gt;
+&lt;p&gt;A new offical KB article will be released for this, I will publish the article as soon as it is out.&lt;/p&gt;
 
         
       </description>
