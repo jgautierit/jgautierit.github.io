@@ -1,8 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="en" data-figures="">
+<html lang="en" data-figures="" class="page">
   <head>
-<title>homelab | Clarity</title>
+<title>Duplicate HBA ports using Qlnativefc | Clarity</title>
 <meta charset="utf-8">
 <meta name="generator" content="Hugo 0.81.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -14,17 +14,18 @@
   gtag('js', new Date());
   gtag('config', 'XXXXXXXXXX');
 </script>
+  
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="7.0.2 reports duplicate HBA FC ports">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@jgautierit">
-<meta name="twitter:title" content="homelab" />
-<meta property="og:url" content="https://jgautierit.github.io/tags/homelab/" />
-<meta property="og:title" content="homelab" />
-<meta property="og:description" content="" />
-<meta property="og:image" content="https://jgautierit.github.io/images/thumbnail.png" />
+<meta name="twitter:title" content="Duplicate HBA ports using Qlnativefc" />
+<meta property="og:url" content="https://jgautierit.github.io/post/duplicate-hba-ports/" />
+<meta property="og:title" content="Duplicate HBA ports using Qlnativefc" />
+<meta property="og:description" content="7.0.2 reports duplicate HBA FC ports" />
+<meta property="og:image" content="https://jgautierit.github.io/images/hba.jpg" />
 <link rel="apple-touch-icon" sizes="180x180" href='https://jgautierit.github.io/icons/apple-touch-icon.png'>
 <link rel="icon" type="image/png" sizes="32x32" href='https://jgautierit.github.io/icons/favicon-32x32.png'>
 <link rel="manifest" href='https://jgautierit.github.io/icons/site.webmanifest'>
@@ -32,8 +33,7 @@
 <meta name="msapplication-TileColor" content="#002538">
 <meta name="theme-color" content="#002538">
 
-<link rel="canonical" href="https://jgautierit.github.io/tags/homelab/">
-<link rel="alternate" type="application/rss+xml" href="https://jgautierit.github.io/tags/homelab/index.xml" title="Clarity" />
+<link rel="canonical" href="https://jgautierit.github.io/post/duplicate-hba-ports/">
 
     
 
@@ -116,54 +116,61 @@
 </header>
 
     <main>
-
+  
 <div class="grid-inverse wrap content">
-  <ul class="posts" id="posts">
-      <li class="post_item">
-  <div class="excerpt">
-    <div class="excerpt_header">
-      <h3 class="post_link">
-        <a href="https://jgautierit.github.io/post/remote-connecting-to-my-homelab/" title="Remote connecting to my VMware homelab - ZeroTier">Remote connecting to my VMware homelab - ZeroTier</a>
-      </h3>
-      <div class="post_meta">
+  <article class="post_content">
+    <h1 class="post_title">Duplicate HBA ports using Qlnativefc</h1><div class="post_meta">
   
     <svg class="icon">
   <use xlink:href="#calendar"></use>
 </svg>
     <span class="post_date">
-      Mar 28, 2021</span>
-      <a href='https://jgautierit.github.io/tags/homelab' title="homelab" class="post_tag button button_translucent">homelab
+      Jun 8, 2021</span>
+      <a href='https://jgautierit.github.io/tags/hba' title="hba" class="post_tag button button_translucent">hba
       </a>
-      <a href='https://jgautierit.github.io/tags/zerotier' title="zerotier" class="post_tag button button_translucent">zerotier
+      <a href='https://jgautierit.github.io/tags/fc' title="fc" class="post_tag button button_translucent">fc
       </a>
       <a href='https://jgautierit.github.io/tags/vmware' title="VMware" class="post_tag button button_translucent">VMware
       </a>
 </div>
 
-    </div>
-    <div class="excerpt_footer partition">
-      <div class="excerpt_thumbnail">
-        <img src='https://jgautierit.github.io/images/zerotier.png' alt="Remote connecting to my VMware homelab - ZeroTier">
-      </div>
-      
-        <div>
-          <p class="pale">
-            
-              I recently decided to move my homelab from my appartment to the building's basement for noise and space purposes. I wanted to access my lab by buidling a simple VPN connection between my home internet router and a 4G router that I installed.
-Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 â€¦
-            
-          </p>
-          <a href="https://jgautierit.github.io/post/remote-connecting-to-my-homelab/" title="Read More" class="excerpt_more button">Read More</a>
-        </div>
-      </div>
-    </div>
-  </li>
+    
+  <div class="post_share">
+    Share on:
+    <a href="https://twitter.com/intent/tweet?text=Duplicate%20HBA%20ports%20using%20Qlnativefc&url=https%3a%2f%2fjgautierit.github.io%2fpost%2fduplicate-hba-ports%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#twitter"></use>
+</svg>
+    </a>
+    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fjgautierit.github.io%2fpost%2fduplicate-hba-ports%2f&t=Duplicate%20HBA%20ports%20using%20Qlnativefc" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#facebook"></use>
+</svg>
+    </a>
+    <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
+      <svg class="icon">
+  <use xlink:href="#linkedin"></use>
+</svg>
+    </a>
+    <a href="https://jgautierit.github.io/post/duplicate-hba-ports/" title="Copy Link" class="link link_yank">
+      <svg class="icon">
+  <use xlink:href="#copy"></use>
+</svg>
+    </a>
+  </div>
 
-    <li>
+    
+    <p>A small article to report some questions you could have in regards to Qlogic HBAs and ESXi 7.0.0.2</p>
+<p>If you have recently upgaded to the version above, you probably noticed twice the amount of HBA ports in your ESXi.</p>
+<p><img src="/duplicate.jpg" alt="Duplicate"></p>
+<p>This is because the qlnativefc driver has nvme support enabled and the wwnn and wwpn are same for NVMe and SCSI adapter.</p>
+<p>To workaround this &quot;cosmetic&quot; issue, disable NVMe support for your HBA and reboot the host (make sure it's in maintenance mode before..)</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="ln">1</span>$ esxcfg-module -s <span class="s1">&#39;ql2xnvmesupport=0&#39;</span> qlnativefc
+<span class="ln">2</span>$ reboot
+</code></pre></div><p>The duplicate ports will disappear after the reboot.</p>
 
 
-    </li>
-  </ul>
+  </article>
 <aside class="sidebar">
   <section class="sidebar_inner">
     
@@ -174,9 +181,6 @@ Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 â
       <a href='https://jgautierit.github.io/about/' class="button mt-1" role="button" title='Read More'>Read More</a>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
-      <li>
-        <a href="https://jgautierit.github.io/post/duplicate-hba-ports/" class="nav-link" title="Duplicate HBA ports using Qlnativefc">Duplicate HBA ports using Qlnativefc</a>
-      </li>
       <li>
         <a href="https://jgautierit.github.io/post/remote-connecting-to-my-homelab/" class="nav-link" title="Remote connecting to my VMware homelab - ZeroTier">Remote connecting to my VMware homelab - ZeroTier</a>
       </li>
@@ -197,6 +201,9 @@ Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 â
       </li>
       <li>
         <a href="https://jgautierit.github.io/post/simplivity-windowsserver/" class="nav-link" title="Windows Server 2019 optimized for SimpliVity">Windows Server 2019 optimized for SimpliVity</a>
+      </li>
+      <li>
+        <a href="https://jgautierit.github.io/post/vxrail-roles/" class="nav-link" title="VxRAIL Roles Script">VxRAIL Roles Script</a>
       </li>
     </ul>
     <div>
@@ -349,9 +356,8 @@ Problem : Most of the 4G providers in Switzerland do not provide a public IPv4 â
   </section>
 </aside>
 
+  
 </div>
-
-
     </main><svg width="0" height="0" class="hidden">
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="facebook">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h151V331h-60v-90h60v-61c0-49.629 40.371-90 90-90h91v90h-91v61h91l-15 90h-76v181h121c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zm0 0"></path>

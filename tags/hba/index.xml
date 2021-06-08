@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hba on Clarity</title>
+    <link>https://jgautierit.github.io/tags/hba/</link>
+    <description>Recent content in hba on Clarity</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018–2021, Jonathan Gautier; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 08 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://jgautierit.github.io/tags/hba/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Duplicate HBA ports using Qlnativefc</title>
+      <link>https://jgautierit.github.io/post/duplicate-hba-ports/</link>
+      <pubDate>Tue, 08 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://jgautierit.github.io/post/duplicate-hba-ports/</guid>
+      <description>
+        
+          &lt;p&gt;A small article to report some questions you could have in regards to Qlogic HBAs and ESXi 7.0.0.2&lt;/p&gt;
+&lt;p&gt;If you have recently upgaded to the version above, you probably noticed twice the amount of HBA ports in your ESXi.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jgautierit.github.io/duplicate.jpg&#34; alt=&#34;Duplicate&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This is because the qlnativefc driver has nvme support enabled and the wwnn and wwpn are same for NVMe and SCSI adapter.&lt;/p&gt;
+&lt;p&gt;To workaround this &amp;quot;cosmetic&amp;quot; issue, disable NVMe support for your HBA and reboot the host (make sure it&#39;s in maintenance mode before..)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ esxcfg-module -s &lt;span class=&#34;s1&#34;&gt;&amp;#39;ql2xnvmesupport=0&amp;#39;&lt;/span&gt; qlnativefc
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;$ reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The duplicate ports will disappear after the reboot.&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

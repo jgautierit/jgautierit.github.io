@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://jgautierit.github.io/</loc>
-    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -15,17 +15,20 @@
                 href="https://jgautierit.github.io/"
                 />
   </url><url>
-    <loc>https://jgautierit.github.io/tags/homelab/</loc>
-    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+    <loc>https://jgautierit.github.io/post/duplicate-hba-ports/</loc>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/fc/</loc>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/hba/</loc>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/post/</loc>
-    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</loc>
-    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/tags/</loc>
-    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt"
@@ -38,6 +41,12 @@
                 />
   </url><url>
     <loc>https://jgautierit.github.io/tags/vmware/</loc>
+    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/tags/homelab/</loc>
+    <lastmod>2021-03-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://jgautierit.github.io/post/remote-connecting-to-my-homelab/</loc>
     <lastmod>2021-03-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://jgautierit.github.io/tags/zerotier/</loc>
